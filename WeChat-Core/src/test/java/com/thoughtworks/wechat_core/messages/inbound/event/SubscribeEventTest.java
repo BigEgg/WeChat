@@ -4,8 +4,9 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 public class SubscribeEventTest {
     @Test
@@ -22,11 +23,12 @@ public class SubscribeEventTest {
         xstream.processAnnotations(SubscribeEvent.class);
         SubscribeEvent event = (SubscribeEvent) xstream.fromXML(message);
 
-        assertNotNull(event);
-        assertEquals("toUser", event.getToUser());
-        assertEquals("FromUser", event.getFromUser());
-        assertEquals(123456789, event.getCreatedTime());
-        assertEquals("event", event.getMessageType());
-        assertEquals("subscribe", event.getEventType());
+        assertThat(event, notNullValue());
+        assertThat(event.getToUser(), equalTo("toUser"));
+        assertThat(event.getFromUser(), equalTo("FromUser"));
+        assertThat(event.getFromUser(), equalTo("FromUser"));
+        assertThat(event.getCreatedTime(), equalTo(123456789));
+        assertThat(event.getMessageType(), equalTo("event"));
+        assertThat(event.getEventType(), equalTo("subscribe"));
     }
 }
