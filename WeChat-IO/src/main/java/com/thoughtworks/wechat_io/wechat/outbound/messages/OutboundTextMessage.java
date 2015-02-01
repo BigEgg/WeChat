@@ -8,6 +8,7 @@ public class OutboundTextMessage extends OutboundMessageBase {
 
     public OutboundTextMessage(String content) {
         super(OutboundMessageType.TEXT, DateTime.now());
+        this.content = content;
     }
 
     public String getContent() {

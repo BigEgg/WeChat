@@ -5,6 +5,7 @@ import com.thoughtworks.wechat_io.wechat.outbound.OutboundMessageEnvelop;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -26,6 +27,7 @@ public class InboundMessageEnvelopTest {
         OutboundMessage outboundMessage = mock(OutboundMessage.class);
 
         OutboundMessageEnvelop outboundEnvelop = envelop.reply(outboundMessage);
+        assertThat(outboundEnvelop, notNullValue());
         assertThat(outboundEnvelop.getFromUser(), equalTo("user2"));
         assertThat(outboundEnvelop.getToUser(), equalTo("user1"));
         assertThat(outboundEnvelop.getMessage(), equalTo(outboundMessage));
