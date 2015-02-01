@@ -10,4 +10,16 @@ public class OutboundMessageEnvelop {
         this.toUser = toUser;
         this.message = message;
     }
+
+    public String getFromUser() {
+        return fromUser;
+    }
+
+    public String getToUser() {
+        return toUser;
+    }
+
+    public OutboundMessage getMessage() {
+        return message;
+    }
 }
