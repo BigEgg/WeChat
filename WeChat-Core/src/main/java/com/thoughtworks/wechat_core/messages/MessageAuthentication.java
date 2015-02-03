@@ -39,6 +39,6 @@ public final class MessageAuthentication {
             builder.append(item);
         }
 
-        return signature.contentEquals(sha1Encrypt(builder.toString()));
+        return signature.toUpperCase().equals(sha1Encrypt(builder.toString()));
     }
 }

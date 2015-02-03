@@ -26,7 +26,7 @@ public class ArgumentPreconditionTest {
     }
 
     @Test
-    public void testCheckNotBlank_Sucess() throws Exception {
+    public void testCheckNotBlank_Success() throws Exception {
         checkNotBlank("data");
     }
 
@@ -58,7 +58,7 @@ public class ArgumentPreconditionTest {
     }
 
     @Test
-    public void testCheckNotBlank_Sucess_WithMessage() throws Exception {
+    public void testCheckNotBlank_Success_WithMessage() throws Exception {
         checkNotBlank("data", ERROR_MESSAGE);
     }
 
