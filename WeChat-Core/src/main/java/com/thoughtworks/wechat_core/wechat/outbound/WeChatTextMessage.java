@@ -4,7 +4,7 @@ import com.thoughtworks.wechat_core.util.xstream.XStreamCData;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("xml")
-public class TextMessage {
+public class WeChatTextMessage {
     @XStreamAlias("ToUserName")
     @XStreamCData
     private String toUser;
@@ -20,7 +20,7 @@ public class TextMessage {
     @XStreamCData
     private String content;
 
-    public TextMessage(String toUser, String fromUser, int createdTime, String messageType, String content) {
+    public WeChatTextMessage(String toUser, String fromUser, int createdTime, String messageType, String content) {
         this.toUser = toUser;
         this.fromUser = fromUser;
         this.createdTime = createdTime;

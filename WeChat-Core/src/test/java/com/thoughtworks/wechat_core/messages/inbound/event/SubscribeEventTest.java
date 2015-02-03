@@ -1,6 +1,7 @@
 package com.thoughtworks.wechat_core.messages.inbound.event;
 
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageType;
+import com.thoughtworks.wechat_core.wechat.inbound.event.WeChatSubscribeEvent;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -9,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class SubscribeEventTest {
     @Test
     public void testConstructor() throws Exception {
-        com.thoughtworks.wechat_core.wechat.inbound.event.SubscribeEvent event = new com.thoughtworks.wechat_core.wechat.inbound.event.SubscribeEvent("toUser", "fromUser", 1422800623, "event", "subscribe");
+        WeChatSubscribeEvent event = new WeChatSubscribeEvent("toUser", "fromUser", 1422800623, "event", "subscribe");
         SubscribeEvent subscribeEvent = new SubscribeEvent(event);
 
         assertThat(subscribeEvent.getMessageType(), equalTo(InboundMessageType.EVENT));
