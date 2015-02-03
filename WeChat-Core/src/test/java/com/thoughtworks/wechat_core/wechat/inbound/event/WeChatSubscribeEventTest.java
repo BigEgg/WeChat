@@ -36,7 +36,7 @@ public class WeChatSubscribeEventTest {
     }
 
     @Test
-    public void testToEnvelop() {
+    public void testToEnvelop() throws Exception {
         String message = "<xml>\n" +
                 "<ToUserName><![CDATA[toUser]]></ToUserName>\n" +
                 "<FromUserName><![CDATA[FromUser]]></FromUserName>\n" +

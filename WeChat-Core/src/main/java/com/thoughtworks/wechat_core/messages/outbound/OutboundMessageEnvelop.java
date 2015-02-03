@@ -1,5 +1,7 @@
 package com.thoughtworks.wechat_core.messages.outbound;
 
+import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutbound;
+
 public class OutboundMessageEnvelop {
     private String fromUser;
     private String toUser;
@@ -21,5 +23,9 @@ public class OutboundMessageEnvelop {
 
     public OutboundMessage getMessage() {
         return message;
+    }
+
+    public WeChatOutbound toWeChat() {
+        return message.toWeChat(this);
     }
 }

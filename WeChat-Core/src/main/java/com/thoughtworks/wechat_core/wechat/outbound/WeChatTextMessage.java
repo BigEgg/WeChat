@@ -4,7 +4,7 @@ import com.thoughtworks.wechat_core.util.xstream.XStreamCData;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("xml")
-public class WeChatTextMessage {
+public class WeChatTextMessage implements WeChatOutbound {
     @XStreamAlias("ToUserName")
     @XStreamCData
     private String toUser;

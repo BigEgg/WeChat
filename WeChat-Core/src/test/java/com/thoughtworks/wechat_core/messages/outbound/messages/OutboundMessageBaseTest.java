@@ -1,6 +1,8 @@
 package com.thoughtworks.wechat_core.messages.outbound.messages;
 
+import com.thoughtworks.wechat_core.messages.outbound.OutboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessageType;
+import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutbound;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -19,6 +21,11 @@ public class OutboundMessageBaseTest {
     public class MockOutboundMessage extends OutboundMessageBase {
         public MockOutboundMessage(OutboundMessageType messageType, DateTime createdTime) {
             super(messageType, createdTime);
+        }
+
+        @Override
+        public WeChatOutbound toWeChat(OutboundMessageEnvelop envelop) {
+            return null;
         }
     }
 }
