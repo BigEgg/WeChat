@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 
 public class MessageAuthenticationTest {
     @Test
-    public void testValidation_Success() throws Exception {
+    public void should_pass_validation() throws Exception {
         final String signature = "411ea6a5d9d2f4bc17d82bd56897bd45efe5a3db";
         final String timestamp = "timestamp";
         final String nonce = "nonce";
@@ -18,7 +18,7 @@ public class MessageAuthenticationTest {
     }
 
     @Test
-    public void testValidation_failed() throws Exception {
+    public void should_not_pass_validation() throws Exception {
         final String signature = "411ea6a5d9d2f4bc17d82bd56897bd45efe5a3db";
         final String timestamp = "timestamp";
         final String nonce = "nonce1";
