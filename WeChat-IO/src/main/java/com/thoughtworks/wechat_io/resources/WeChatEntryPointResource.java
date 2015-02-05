@@ -1,5 +1,7 @@
 package com.thoughtworks.wechat_io.resources;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessageEnvelop;
 import com.thoughtworks.wechat_io.WeChatConfiguration;
@@ -15,10 +17,12 @@ import java.util.Optional;
 
 import static com.thoughtworks.wechat_core.messages.MessageAuthentication.validation;
 
+@Singleton
 @Path("/wechat")
 public class WeChatEntryPointResource {
     private final String appToken;
 
+    @Inject
     public WeChatEntryPointResource(WeChatConfiguration config) {
         appToken = config.getAppToken();
     }

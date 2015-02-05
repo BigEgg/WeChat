@@ -6,6 +6,8 @@ import com.thoughtworks.wechat_core.wechat.outbound.WeChatTextMessage;
 import com.thoughtworks.xstream.XStream;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static com.thoughtworks.wechat_core.util.xstream.XStreamExtension.createXStreamWithCData;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -22,7 +24,7 @@ public class OutboundTextMessageTest {
     @Test
     public void testToWeChat() throws Exception {
         OutboundTextMessage textMessage = new OutboundTextMessage("content");
-        OutboundMessageEnvelop envelop = new OutboundMessageEnvelop("fromUser", "toUser", textMessage);
+        OutboundMessageEnvelop envelop = new OutboundMessageEnvelop("fromUser", "toUser", Optional.of(textMessage));
 
         WeChatTextMessage weChatTextMessage = (WeChatTextMessage) textMessage.toWeChat(envelop);
         XStream xStream = createXStreamWithCData();

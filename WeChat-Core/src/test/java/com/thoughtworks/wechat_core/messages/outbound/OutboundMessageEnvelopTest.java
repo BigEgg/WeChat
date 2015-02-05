@@ -4,6 +4,8 @@ import com.thoughtworks.wechat_core.wechat.outbound.WeChatTextMessage;
 import com.thoughtworks.xstream.XStream;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static com.thoughtworks.wechat_core.util.xstream.XStreamExtension.createXStreamWithCData;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -16,10 +18,11 @@ public class OutboundMessageEnvelopTest {
     @Test
     public void testConstructor() throws Exception {
         OutboundMessage message = mock(OutboundMessage.class);
-        OutboundMessageEnvelop envelop = new OutboundMessageEnvelop("fromUser", "toUser", message);
+        OutboundMessageEnvelop envelop = new OutboundMessageEnvelop("fromUser", "toUser", Optional.of(message));
         assertThat(envelop.getFromUser(), equalTo("fromUser"));
         assertThat(envelop.getToUser(), equalTo("toUser"));
-        assertThat(envelop.getMessage(), equalTo(message));
+        assertThat(envelop.getMessage().isPresent(), equalTo(true));
+        assertThat(envelop.getMessage().get(), equalTo(message));
 
         when(message.toWeChat(eq(envelop))).thenReturn(new WeChatTextMessage("toUser", "fromUser", 12345678, "text", "hello"));
         WeChatTextMessage weChatTextMessage = (WeChatTextMessage) envelop.toWeChat();

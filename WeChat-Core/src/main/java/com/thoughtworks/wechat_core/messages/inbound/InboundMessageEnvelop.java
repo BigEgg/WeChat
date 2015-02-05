@@ -3,6 +3,8 @@ package com.thoughtworks.wechat_core.messages.inbound;
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessage;
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessageEnvelop;
 
+import java.util.Optional;
+
 public class InboundMessageEnvelop {
     private String fromUser;
     private String toUser;
@@ -26,7 +28,7 @@ public class InboundMessageEnvelop {
         return message;
     }
 
-    public OutboundMessageEnvelop reply(OutboundMessage message) {
+    public OutboundMessageEnvelop reply(Optional<OutboundMessage> message) {
         return new OutboundMessageEnvelop(toUser, fromUser, message);
     }
 }

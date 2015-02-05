@@ -1,7 +1,10 @@
 package com.thoughtworks.wechat_core.wechat.outbound;
 
 import com.thoughtworks.wechat_core.util.xstream.XStreamCData;
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+import static com.thoughtworks.wechat_core.util.xstream.XStreamExtension.createXStreamWithCData;
 
 @XStreamAlias("xml")
 public class WeChatTextMessage implements WeChatOutbound {
@@ -26,5 +29,12 @@ public class WeChatTextMessage implements WeChatOutbound {
         this.createdTime = createdTime;
         this.messageType = messageType;
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        XStream xStream = createXStreamWithCData();
+        xStream.processAnnotations(WeChatTextMessage.class);
+        return xStream.toXML(this);
     }
 }

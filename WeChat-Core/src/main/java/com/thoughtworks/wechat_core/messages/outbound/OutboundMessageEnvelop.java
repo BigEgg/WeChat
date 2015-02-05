@@ -1,13 +1,16 @@
 package com.thoughtworks.wechat_core.messages.outbound;
 
+import com.thoughtworks.wechat_core.wechat.outbound.WeChatEmptyMessage;
 import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutbound;
+
+import java.util.Optional;
 
 public class OutboundMessageEnvelop {
     private String fromUser;
     private String toUser;
-    private OutboundMessage message;
+    private Optional<OutboundMessage> message;
 
-    public OutboundMessageEnvelop(String fromUser, String toUser, OutboundMessage message) {
+    public OutboundMessageEnvelop(String fromUser, String toUser, Optional<OutboundMessage> message) {
         this.fromUser = fromUser;
         this.toUser = toUser;
         this.message = message;
@@ -21,11 +24,13 @@ public class OutboundMessageEnvelop {
         return toUser;
     }
 
-    public OutboundMessage getMessage() {
+    public Optional<OutboundMessage> getMessage() {
         return message;
     }
 
     public WeChatOutbound toWeChat() {
-        return message.toWeChat(this);
+        return message.isPresent()
+                ? message.get().toWeChat(this)
+                : new WeChatEmptyMessage();
     }
 }
