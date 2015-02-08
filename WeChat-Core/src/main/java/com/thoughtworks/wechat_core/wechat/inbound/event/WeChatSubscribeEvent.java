@@ -6,7 +6,7 @@ import com.thoughtworks.wechat_core.wechat.inbound.WeChatInbound;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("xml")
-public class WeChatSubscribeEvent implements WeChatInbound {
+public class WeChatSubscribeEvent implements WeChatInboundEvent {
     @XStreamAlias("ToUserName")
     private String toUser;
     @XStreamAlias("FromUserName")
@@ -26,29 +26,34 @@ public class WeChatSubscribeEvent implements WeChatInbound {
         this.eventType = eventType;
     }
 
+    @Override
     public String getToUser() {
         return toUser;
     }
 
+    @Override
     public String getFromUser() {
         return fromUser;
     }
 
+    @Override
     public int getCreatedTime() {
         return createdTime;
     }
 
+    @Override
     public String getMessageType() {
         return messageType;
-    }
-
-    public String getEventType() {
-        return eventType;
     }
 
     @Override
     public InboundMessageEnvelop toEnvelop() {
         SubscribeEvent subscribeEvent = new SubscribeEvent(this);
         return new InboundMessageEnvelop(fromUser, toUser, subscribeEvent);
+    }
+
+    @Override
+    public String getEventType() {
+        return eventType;
     }
 }
