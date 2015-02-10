@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="1" author="jianming.xiao">
+        <createTable tableName="Member">
+            <column name="Id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="WeChatOpenId" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Subscribed" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ModifiedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="Member" indexName="WeChatOpenIdIndex">
+            <column name="WeChatOpenId"/>
+        </createIndex>
+
+        <createTable tableName="EventLog">
+            <column name="Id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="Member" type="bigint" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EventType" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EventName" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EventValue" type="varchar(255)"/>
+            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="KF_EventLog_MemberId_to_Member_Id"
+                                 baseTableName="EventLog"
+                                 baseColumnNames="Member"
+                                 referencedTableName="Member"
+                                 referencedColumnNames="Id"/>
+
+        <createTable tableName="AdminUser">
+            <column name="Id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="Username" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Password" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Member" type="bigint" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="KF_AdminUser_MemberId_to_Member_Id"
+                                 baseTableName="AdminUser"
+                                 baseColumnNames="Member"
+                                 referencedTableName="Member"
+                                 referencedColumnNames="Id"/>
+
+        <createTable tableName="Label">
+            <column name="Id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="Name" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="MemberLabelRelation">
+            <column name="MemberId" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LabelId" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="MemberLabelRelation" columnNames="MemberId, LabelId"/>
+
+        <addForeignKeyConstraint constraintName="KF_MemberLabelRelation_MemberId_to_Member_Id"
+                                 baseTableName="MemberLabelRelation"
+                                 baseColumnNames="MemberId"
+                                 referencedTableName="Member"
+                                 referencedColumnNames="Id"/>
+
+        <addForeignKeyConstraint constraintName="KF_MemberLabelRelation_LabelId_to_Label_Id"
+                                 baseTableName="MemberLabelRelation"
+                                 baseColumnNames="LabelId"
+                                 referencedTableName="Label"
+                                 referencedColumnNames="Id"/>
+
+        <createTable tableName="QRCodeAction">
+            <column name="Id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="SceneId" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Action" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ActionKey" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ActionValue" type="varchar(64)"/>
+            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ModifiedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="TextMessage">
+            <column name="Id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ActionKey" type="nvarchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ModifiedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="TextMessageLabelRelation">
+            <column name="TextMessageId" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LabelId" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="TextMessageLabelRelation" columnNames="TextMessageId, LabelId"/>
+
+        <addForeignKeyConstraint constraintName="KF_TextMessageLabelRelation_TextMessageId_to_Member_Id"
+                                 baseTableName="TextMessageLabelRelation"
+                                 baseColumnNames="TextMessageId"
+                                 referencedTableName="Member"
+                                 referencedColumnNames="Id"/>
+
+        <addForeignKeyConstraint constraintName="KF_TextMessageLabelRelation_LabelId_to_Label_Id"
+                                 baseTableName="TextMessageLabelRelation"
+                                 baseColumnNames="LabelId"
+                                 referencedTableName="Label"
+                                 referencedColumnNames="Id"/>
+
+        <createTable tableName="ExpirableResources">
+            <column name="Id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="Key" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Type" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Value" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ExpiresInSecond" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ModifiedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
