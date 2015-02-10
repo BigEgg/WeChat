@@ -25,7 +25,7 @@
             </column>
         </createTable>
 
-        <createIndex tableName="Member" indexName="WeChatOpenIdIndex">
+        <createIndex tableName="Member" unique="true" indexName="WeChatOpenIdIndex">
             <column name="WeChatOpenId"/>
         </createIndex>
 
