@@ -3,9 +3,15 @@ package com.thoughtworks.wechat_core.util;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import java.sql.Timestamp;
+
 public final class DateTimeExtension {
-    public static int toUnixTimeStamp(DateTime dateTime) {
+    public static int toUnixTimeStampInt(DateTime dateTime) {
         return (int) (dateTime.toDateTime(DateTimeZone.UTC).getMillis() / 1000);
+    }
+
+    public static Timestamp toUnixTimestamp(DateTime dateTime) {
+        return new Timestamp(dateTime.toDateTime(DateTimeZone.UTC).getMillis());
     }
 
     public static DateTime toUTCDateTime(int timeStamp) {

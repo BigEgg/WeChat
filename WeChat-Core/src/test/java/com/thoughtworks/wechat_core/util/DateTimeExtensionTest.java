@@ -5,7 +5,7 @@ import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUTCDateTime;
-import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimeStamp;
+import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimeStampInt;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -13,7 +13,7 @@ public class DateTimeExtensionTest {
 
     @Test
     public void testToUnixTimeStamp() throws Exception {
-        int timeStamp = toUnixTimeStamp(new DateTime(2015, 2, 1, 14, 23, 43, DateTimeZone.UTC));
+        int timeStamp = toUnixTimeStampInt(new DateTime(2015, 2, 1, 14, 23, 43, DateTimeZone.UTC));
         assertThat(timeStamp, equalTo(1422800623));
     }
 

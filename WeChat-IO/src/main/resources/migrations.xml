@@ -48,7 +48,7 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint constraintName="KF_EventLog_MemberId_to_Member_Id"
+        <addForeignKeyConstraint constraintName="FK_EventLog_MemberId_to_Member_Id"
                                  baseTableName="EventLog"
                                  baseColumnNames="MemberId"
                                  referencedTableName="Member"
@@ -106,13 +106,13 @@
             <column name="LabelId"/>
         </createIndex>
 
-        <addForeignKeyConstraint constraintName="KF_MemberLabelRelation_MemberId_to_Member_Id"
+        <addForeignKeyConstraint constraintName="FK_MemberLabelRelation_MemberId_to_Member_Id"
                                  baseTableName="MemberLabelRelation"
                                  baseColumnNames="MemberId"
                                  referencedTableName="Member"
                                  referencedColumnNames="Id"/>
 
-        <addForeignKeyConstraint constraintName="KF_MemberLabelRelation_LabelId_to_Label_Id"
+        <addForeignKeyConstraint constraintName="FK_MemberLabelRelation_LabelId_to_Label_Id"
                                  baseTableName="MemberLabelRelation"
                                  baseColumnNames="LabelId"
                                  referencedTableName="Label"
@@ -166,13 +166,13 @@
 
         <addPrimaryKey tableName="TextMessageLabelRelation" columnNames="TextMessageId, LabelId"/>
 
-        <addForeignKeyConstraint constraintName="KF_TextMessageLabelRelation_TextMessageId_to_Member_Id"
+        <addForeignKeyConstraint constraintName="FK_TextMessageLabelRelation_TextMessageId_to_Member_Id"
                                  baseTableName="TextMessageLabelRelation"
                                  baseColumnNames="TextMessageId"
                                  referencedTableName="Member"
                                  referencedColumnNames="Id"/>
 
-        <addForeignKeyConstraint constraintName="KF_TextMessageLabelRelation_LabelId_to_Label_Id"
+        <addForeignKeyConstraint constraintName="FK_TextMessageLabelRelation_LabelId_to_Label_Id"
                                  baseTableName="TextMessageLabelRelation"
                                  baseColumnNames="LabelId"
                                  referencedTableName="Label"

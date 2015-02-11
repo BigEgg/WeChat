@@ -12,6 +12,8 @@ import org.skife.jdbi.v2.DBI;
 import java.sql.Connection;
 import java.sql.Timestamp;
 
+import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimestamp;
+
 public abstract class AbstractDAOTest {
     protected JdbcConnectionPool pool;
     private DBI jdbi;
@@ -42,6 +44,6 @@ public abstract class AbstractDAOTest {
     }
 
     protected Timestamp getHappenedTime() {
-        return new Timestamp(DateTime.now().getMillis());
+        return toUnixTimestamp(DateTime.now());
     }
 }
