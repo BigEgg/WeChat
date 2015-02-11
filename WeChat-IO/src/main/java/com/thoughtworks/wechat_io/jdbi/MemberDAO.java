@@ -11,7 +11,7 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import java.sql.Timestamp;
 
 @RegisterMapper(MemberMapper.class)
-public interface MemberRepository extends Repository {
+public interface MemberDAO extends DAO {
     @SqlQuery("SELECT * FROM Member WHERE WeChatOpenId = :openId")
     Member getMemberByOpenId(@Bind("openId") String openId);
 

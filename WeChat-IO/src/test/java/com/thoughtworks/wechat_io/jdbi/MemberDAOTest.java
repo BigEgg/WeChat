@@ -8,35 +8,35 @@ import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
-public class MemberRepositoryTest extends AbstractRepositoryTest {
-    private MemberRepository memberRepository;
+public class MemberDAOTest extends AbstractDAOTest {
+    private MemberDAO memberDAO;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        memberRepository = getRepository(MemberRepository.class);
+        memberDAO = getDAO(MemberDAO.class);
     }
 
     @Test
     public void testCreateMember() throws Exception {
-        long id = memberRepository.createMember("OpenId1", getHappenedTime());
+        long id = memberDAO.createMember("OpenId1", getHappenedTime());
         assertThat(id, equalTo(1L));
-        id = memberRepository.createMember("OpenId2", getHappenedTime());
+        id = memberDAO.createMember("OpenId2", getHappenedTime());
         assertThat(id, equalTo(2L));
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
     public void testCreateMember_FailedWithSameOpenId() throws Exception {
-        memberRepository.createMember("OpenId", getHappenedTime());
-        memberRepository.createMember("OpenId", getHappenedTime());
+        memberDAO.createMember("OpenId", getHappenedTime());
+        memberDAO.createMember("OpenId", getHappenedTime());
     }
 
     @Test
     public void testGetMemberById() throws Exception {
-        long id = memberRepository.createMember("OpenId1", getHappenedTime());
+        long id = memberDAO.createMember("OpenId1", getHappenedTime());
 
-        Member member = memberRepository.getMemberById(id);
+        Member member = memberDAO.getMemberById(id);
         assertThat(member, notNullValue());
         assertThat(member.getId(), equalTo(id));
         assertThat(member.getWeChatOpenId(), equalTo("OpenId1"));
@@ -45,16 +45,16 @@ public class MemberRepositoryTest extends AbstractRepositoryTest {
 
     @Test
     public void testGetMemberById_NotExist() throws Exception {
-        Member member = memberRepository.getMemberById(0);
+        Member member = memberDAO.getMemberById(0);
         assertThat(member, nullValue());
     }
 
     @Test
     public void testGetMemberByOpenId() throws Exception {
         String openId = "OpenId1";
-        long id = memberRepository.createMember(openId, getHappenedTime());
+        long id = memberDAO.createMember(openId, getHappenedTime());
 
-        Member member = memberRepository.getMemberByOpenId(openId);
+        Member member = memberDAO.getMemberByOpenId(openId);
         assertThat(member, notNullValue());
         assertThat(member.getId(), equalTo(id));
         assertThat(member.getWeChatOpenId(), equalTo(openId));
@@ -63,22 +63,22 @@ public class MemberRepositoryTest extends AbstractRepositoryTest {
 
     @Test
     public void testGetMemberByOpenId_NotExist() throws Exception {
-        Member member = memberRepository.getMemberByOpenId("OpenId");
+        Member member = memberDAO.getMemberByOpenId("OpenId");
         assertThat(member, nullValue());
     }
 
     @Test
     public void testUpdateSubscribed() throws Exception {
-        long id = memberRepository.createMember("OpenId1", getHappenedTime());
-        Member member = memberRepository.getMemberById(id);
+        long id = memberDAO.createMember("OpenId1", getHappenedTime());
+        Member member = memberDAO.getMemberById(id);
         assertThat(member.isSubscribed(), equalTo(true));
 
-        memberRepository.updateSubscribed(id, false);
-        member = memberRepository.getMemberById(id);
+        memberDAO.updateSubscribed(id, false);
+        member = memberDAO.getMemberById(id);
         assertThat(member.isSubscribed(), equalTo(false));
 
-        memberRepository.updateSubscribed(id, true);
-        member = memberRepository.getMemberById(id);
+        memberDAO.updateSubscribed(id, true);
+        member = memberDAO.getMemberById(id);
         assertThat(member.isSubscribed(), equalTo(true));
     }
 }

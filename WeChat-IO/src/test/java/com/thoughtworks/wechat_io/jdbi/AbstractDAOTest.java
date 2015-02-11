@@ -12,7 +12,7 @@ import org.skife.jdbi.v2.DBI;
 import java.sql.Connection;
 import java.sql.Timestamp;
 
-public abstract class AbstractRepositoryTest {
+public abstract class AbstractDAOTest {
     protected JdbcConnectionPool pool;
     private DBI jdbi;
 
@@ -37,8 +37,8 @@ public abstract class AbstractRepositoryTest {
         pool.dispose();
     }
 
-    protected <SqlObjectType> SqlObjectType getRepository(Class<SqlObjectType> repositoryClass) {
-        return jdbi.onDemand(repositoryClass);
+    protected <SqlObjectType> SqlObjectType getDAO(Class<SqlObjectType> daoClass) {
+        return jdbi.onDemand(daoClass);
     }
 
     protected Timestamp getHappenedTime() {
