@@ -33,7 +33,7 @@
             <column name="Id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="Member" type="bigint" autoIncrement="true">
+            <column name="MemberId" type="bigint" autoIncrement="true">
                 <constraints nullable="false"/>
             </column>
             <column name="EventType" type="varchar(32)">
@@ -43,14 +43,14 @@
                 <constraints nullable="false"/>
             </column>
             <column name="EventValue" type="varchar(255)"/>
-            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="HappenedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
         <addForeignKeyConstraint constraintName="KF_EventLog_MemberId_to_Member_Id"
                                  baseTableName="EventLog"
-                                 baseColumnNames="Member"
+                                 baseColumnNames="MemberId"
                                  referencedTableName="Member"
                                  referencedColumnNames="Id"/>
 
