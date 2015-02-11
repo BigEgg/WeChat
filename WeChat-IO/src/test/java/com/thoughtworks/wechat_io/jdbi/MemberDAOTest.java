@@ -124,7 +124,7 @@ public class MemberDAOTest extends AbstractDAOTest {
         assertThat(members, notNullValue());
         assertThat(members.size(), equalTo(1));
         assertThat(members.get(0).getWeChatOpenId(), equalTo("OpenId"));
-        assertThat(members.get(0).getId(), equalTo(1L));
+        assertThat(members.get(0).getId(), equalTo(memberId));
     }
 
     @Test

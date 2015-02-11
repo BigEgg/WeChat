@@ -23,4 +23,10 @@ public interface LabelDAO extends DAO {
 
     @SqlUpdate("DELETE FROM Label WHERE Id = :id")
     void deleteLabel(@Bind("id") final long id);
+
+    @SqlQuery("SELECT l.* FROM MemberLabelRelation AS r" +
+            "  JOIN Label AS l" +
+            "  ON l.Id = r.LabelId" +
+            "  WHERE r.MemberId = :memberId")
+    List<Label> getMemberLabels(@Bind("memberId") final long memberId);
 }

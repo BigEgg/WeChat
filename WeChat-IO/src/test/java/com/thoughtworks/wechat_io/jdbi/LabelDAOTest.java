@@ -12,10 +12,12 @@ import static org.junit.Assert.assertThat;
 
 public class LabelDAOTest extends AbstractDAOTest {
     private LabelDAO labelDAO;
+    private MemberDAO memberDAO;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        memberDAO = getDAO(MemberDAO.class);
         labelDAO = getDAO(LabelDAO.class);
     }
 
@@ -64,5 +66,35 @@ public class LabelDAOTest extends AbstractDAOTest {
         assertThat(labels.size(), equalTo(1));
         assertThat(labels.get(0).getId(), equalTo(2L));
         assertThat(labels.get(0).getName(), equalTo("Label2"));
+    }
+
+    @Test
+    public void testGetMemberLabels() throws Exception {
+        final long labelId = labelDAO.createLabel("Label", getHappenedTime());
+        final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
+        memberDAO.linkMemberWithLabel(memberId, labelId);
+
+        List<Label> labels = labelDAO.getMemberLabels(memberId);
+        assertThat(labels, notNullValue());
+        assertThat(labels.size(), equalTo(1));
+        assertThat(labels.get(0).getId(), equalTo(labelId));
+        assertThat(labels.get(0).getName(), equalTo("Label"));
+    }
+
+    @Test
+    public void testGetMemberLabels_NoLink() throws Exception {
+        final long labelId = labelDAO.createLabel("Label", getHappenedTime());
+        final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
+
+        List<Label> labels = labelDAO.getMemberLabels(memberId);
+        assertThat(labels, notNullValue());
+        assertThat(labels.size(), equalTo(0));
+    }
+
+    @Test
+    public void testGetMemberLabels_NoMember() throws Exception {
+        List<Label> labels = labelDAO.getMemberLabels(0);
+        assertThat(labels, notNullValue());
+        assertThat(labels.size(), equalTo(0));
     }
 }
