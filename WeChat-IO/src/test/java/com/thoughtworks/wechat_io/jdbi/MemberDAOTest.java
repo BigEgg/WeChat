@@ -34,9 +34,9 @@ public class MemberDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetMemberById() throws Exception {
-        long id = memberDAO.createMember("OpenId1", getHappenedTime());
+        final long id = memberDAO.createMember("OpenId1", getHappenedTime());
 
-        Member member = memberDAO.getMemberById(id);
+        final Member member = memberDAO.getMemberById(id);
         assertThat(member, notNullValue());
         assertThat(member.getId(), equalTo(id));
         assertThat(member.getWeChatOpenId(), equalTo("OpenId1"));
@@ -45,16 +45,16 @@ public class MemberDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetMemberById_NotExist() throws Exception {
-        Member member = memberDAO.getMemberById(0);
+        final Member member = memberDAO.getMemberById(0);
         assertThat(member, nullValue());
     }
 
     @Test
     public void testGetMemberByOpenId() throws Exception {
-        String openId = "OpenId1";
-        long id = memberDAO.createMember(openId, getHappenedTime());
+        final String openId = "OpenId1";
+        final long id = memberDAO.createMember(openId, getHappenedTime());
 
-        Member member = memberDAO.getMemberByOpenId(openId);
+        final Member member = memberDAO.getMemberByOpenId(openId);
         assertThat(member, notNullValue());
         assertThat(member.getId(), equalTo(id));
         assertThat(member.getWeChatOpenId(), equalTo(openId));
@@ -63,13 +63,13 @@ public class MemberDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetMemberByOpenId_NotExist() throws Exception {
-        Member member = memberDAO.getMemberByOpenId("OpenId");
+        final Member member = memberDAO.getMemberByOpenId("OpenId");
         assertThat(member, nullValue());
     }
 
     @Test
     public void testUpdateSubscribed() throws Exception {
-        long id = memberDAO.createMember("OpenId1", getHappenedTime());
+        final long id = memberDAO.createMember("OpenId1", getHappenedTime());
         Member member = memberDAO.getMemberById(id);
         assertThat(member.isSubscribed(), equalTo(true));
 

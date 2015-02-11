@@ -61,19 +61,18 @@
             <column name="Username" type="varchar(32)">
                 <constraints nullable="false"/>
             </column>
-            <column name="Password" type="varchar(32)">
+            <column name="Password" type="varchar(256)">
                 <constraints nullable="false"/>
             </column>
-            <column name="Member" type="bigint" autoIncrement="true">
-                <constraints nullable="false"/>
-            </column>
+            <column name="MemberId" type="bigint"/>
         </createTable>
 
-        <addForeignKeyConstraint constraintName="KF_AdminUser_MemberId_to_Member_Id"
-                                 baseTableName="AdminUser"
-                                 baseColumnNames="Member"
-                                 referencedTableName="Member"
-                                 referencedColumnNames="Id"/>
+        <addUniqueConstraint tableName="AdminUser" columnNames="Username"/>
+
+        <createIndex tableName="AdminUser" unique="true" indexName="AdminUserIndex">
+            <column name="Username"/>
+            <column name="Password"/>
+        </createIndex>
 
         <createTable tableName="Label">
             <column name="Id" type="bigint" autoIncrement="true">

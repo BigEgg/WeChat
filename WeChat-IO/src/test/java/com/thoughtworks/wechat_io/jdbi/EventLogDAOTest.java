@@ -24,7 +24,7 @@ public class EventLogDAOTest extends AbstractDAOTest {
 
     @Test
     public void testInsertEventLog_WithEventValue() throws Exception {
-        long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
+        final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
 
         long id = eventLogDAO.insertEventLog(memberId, "Redirect", "SomePage", "Parameters", getHappenedTime());
         assertThat(id, equalTo(1L));
@@ -34,7 +34,7 @@ public class EventLogDAOTest extends AbstractDAOTest {
 
     @Test
     public void testInsertEventLog_WithoutEventValue() throws Exception {
-        long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
+        final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
 
         long id = eventLogDAO.insertEventLog(memberId, "ClickMenu", "ViewLatestNews", getHappenedTime());
         assertThat(id, equalTo(1L));
