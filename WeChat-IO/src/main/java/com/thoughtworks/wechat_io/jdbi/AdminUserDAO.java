@@ -11,14 +11,14 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 @RegisterMapper(AdminUserMapper.class)
 public interface AdminUserDAO extends DAO {
     @SqlQuery("SELECT * FROM AdminUser WHERE Username = :username AND Password = :password")
-    public AdminUser getAdminUserByUsernameAndPassword(@Bind("username") String username,
-                                                       @Bind("password") String password);
+    AdminUser getAdminUserByUsernameAndPassword(@Bind("username") final String username,
+                                                @Bind("password") final String password);
 
     @SqlUpdate("INSERT INTO AdminUser (UserName, Password) VALUES (:username, :password)")
     @GetGeneratedKeys
-    public long createAdminUser(@Bind("username") String username,
-                                @Bind("password") String password);
+    long createAdminUser(@Bind("username") final String username,
+                         @Bind("password") final String password);
 
     @SqlUpdate("UPDATE AdminUser SET MemberId = :memberId")
-    public void setMember(@Bind("memberId") long memberId);
+    void setMember(@Bind("memberId") final long memberId);
 }

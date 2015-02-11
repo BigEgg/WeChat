@@ -25,7 +25,7 @@
             </column>
         </createTable>
 
-        <createIndex tableName="Member" unique="true" indexName="WeChatOpenIdIndex">
+        <createIndex tableName="Member" unique="true" indexName="IX_Member_WeChatOpenId">
             <column name="WeChatOpenId"/>
         </createIndex>
 
@@ -67,7 +67,7 @@
             <column name="MemberId" type="bigint"/>
         </createTable>
 
-        <createIndex tableName="AdminUser" unique="true" indexName="AdminUserIndex">
+        <createIndex tableName="AdminUser" unique="true" indexName="IX_AdminUser">
             <column name="Username"/>
             <column name="Password"/>
         </createIndex>
@@ -93,7 +93,18 @@
             </column>
         </createTable>
 
-        <addPrimaryKey tableName="MemberLabelRelation" columnNames="MemberId, LabelId"/>
+        <createIndex tableName="MemberLabelRelation" indexName="IX_MemberLabelRelation_MemberId">
+            <column name="MemberId"/>
+        </createIndex>
+
+        <createIndex tableName="MemberLabelRelation" indexName="IX_MemberLabelRelation_LabelId">
+            <column name="LabelId"/>
+        </createIndex>
+
+        <createIndex tableName="MemberLabelRelation" indexName="UX_MemberLabelRelation" unique="true">
+            <column name="MemberId"/>
+            <column name="LabelId"/>
+        </createIndex>
 
         <addForeignKeyConstraint constraintName="KF_MemberLabelRelation_MemberId_to_Member_Id"
                                  baseTableName="MemberLabelRelation"

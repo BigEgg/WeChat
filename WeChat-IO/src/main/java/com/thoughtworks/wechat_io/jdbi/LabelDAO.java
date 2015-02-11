@@ -15,12 +15,12 @@ import java.util.List;
 public interface LabelDAO extends DAO {
     @SqlUpdate("INSERT INTO Label (Name, CreatedTime) VALUES (:name, :createdTime)")
     @GetGeneratedKeys
-    public long createLabel(@Bind("name") String name,
-                            @Bind("createdTime") Timestamp createdTime);
+    long createLabel(@Bind("name") final String name,
+                     @Bind("createdTime") final Timestamp createdTime);
 
     @SqlQuery("SELECT * FROM Label")
-    public List<Label> getAllLabel();
+    List<Label> getAllLabel();
 
     @SqlUpdate("DELETE FROM Label WHERE Id = :id")
-    public void deleteLabel(@Bind("id") long id);
+    void deleteLabel(@Bind("id") final long id);
 }
