@@ -1,16 +1,16 @@
 package com.thoughtworks.wechat_io.core;
 
 public class Label {
-    private long Id;
+    private long id;
     private String name;
 
     public Label(long id, String name) {
-        Id = id;
+        this.id = id;
         this.name = name;
     }
 
     public long getId() {
-        return Id;
+        return id;
     }
 
     public String getName() {

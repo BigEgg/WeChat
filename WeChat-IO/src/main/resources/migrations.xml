@@ -118,33 +118,14 @@
                                  referencedTableName="Label"
                                  referencedColumnNames="Id"/>
 
-        <createTable tableName="QRCodeAction">
-            <column name="Id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="SceneId" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="Action" type="varchar(32)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ActionKey" type="varchar(64)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ActionValue" type="varchar(64)"/>
-            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ModifiedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
         <createTable tableName="TextMessage">
             <column name="Id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="ActionKey" type="nvarchar(255)">
+            <column name="Title" type="nvarchar(32)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="Content" type="nvarchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
