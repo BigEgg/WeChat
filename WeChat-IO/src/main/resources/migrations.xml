@@ -145,12 +145,23 @@
             </column>
         </createTable>
 
-        <addPrimaryKey tableName="TextMessageLabelRelation" columnNames="TextMessageId, LabelId"/>
+        <createIndex tableName="TextMessageLabelRelation" indexName="IX_TextMessageLabelRelation_TextMessageId">
+            <column name="TextMessageId"/>
+        </createIndex>
 
-        <addForeignKeyConstraint constraintName="FK_TextMessageLabelRelation_TextMessageId_to_Member_Id"
+        <createIndex tableName="TextMessageLabelRelation" indexName="IX_TextMessageLabelRelation_LabelId">
+            <column name="LabelId"/>
+        </createIndex>
+
+        <createIndex tableName="TextMessageLabelRelation" indexName="UX_TextMessageLabelRelation" unique="true">
+            <column name="TextMessageId"/>
+            <column name="LabelId"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="FK_TextMessageLabelRelation_TextMessageId_to_TextMessage_Id"
                                  baseTableName="TextMessageLabelRelation"
                                  baseColumnNames="TextMessageId"
-                                 referencedTableName="Member"
+                                 referencedTableName="TextMessage"
                                  referencedColumnNames="Id"/>
 
         <addForeignKeyConstraint constraintName="FK_TextMessageLabelRelation_LabelId_to_Label_Id"

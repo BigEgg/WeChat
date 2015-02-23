@@ -13,12 +13,14 @@ import static org.junit.Assert.assertThat;
 public class LabelDAOTest extends AbstractDAOTest {
     private LabelDAO labelDAO;
     private MemberDAO memberDAO;
+    private TextMessageDAO textMessageDAO;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         memberDAO = getDAO(MemberDAO.class);
         labelDAO = getDAO(LabelDAO.class);
+        textMessageDAO = getDAO(TextMessageDAO.class);
     }
 
     @Test
@@ -83,7 +85,6 @@ public class LabelDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetMemberLabels_NoLink() throws Exception {
-        final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
 
         List<Label> labels = labelDAO.getMemberLabels(memberId);
@@ -94,6 +95,35 @@ public class LabelDAOTest extends AbstractDAOTest {
     @Test
     public void testGetMemberLabels_NoMember() throws Exception {
         List<Label> labels = labelDAO.getMemberLabels(0);
+        assertThat(labels, notNullValue());
+        assertThat(labels.size(), equalTo(0));
+    }
+
+    @Test
+    public void testGetTextMessageLabels() throws Exception {
+        final long labelId = labelDAO.createLabel("Label", getHappenedTime());
+        final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
+        textMessageDAO.linkTextMessageWithLabel(messageId, labelId);
+
+        List<Label> labels = labelDAO.getTextMessageLables(messageId);
+        assertThat(labels, notNullValue());
+        assertThat(labels.size(), equalTo(1));
+        assertThat(labels.get(0).getId(), equalTo(labelId));
+        assertThat(labels.get(0).getName(), equalTo("Label"));
+    }
+
+    @Test
+    public void testGetTextMessageLabels_NoLink() throws Exception {
+        final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
+
+        List<Label> labels = labelDAO.getTextMessageLables(messageId);
+        assertThat(labels, notNullValue());
+        assertThat(labels.size(), equalTo(0));
+    }
+
+    @Test
+    public void testGetTextMessageLabels_NoMember() throws Exception {
+        List<Label> labels = labelDAO.getTextMessageLables(0);
         assertThat(labels, notNullValue());
         assertThat(labels.size(), equalTo(0));
     }

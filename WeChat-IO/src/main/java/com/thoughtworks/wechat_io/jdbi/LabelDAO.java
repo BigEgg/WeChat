@@ -29,4 +29,10 @@ public interface LabelDAO extends DAO {
             "  ON l.Id = r.LabelId" +
             "  WHERE r.MemberId = :memberId")
     List<Label> getMemberLabels(@Bind("memberId") final long memberId);
+
+    @SqlQuery("SELECT l.* FROM TextMessageLabelRelation AS r" +
+            "  JOIN Label AS l" +
+            "  ON l.Id = r.LabelId" +
+            "  WHERE r.TextMessageId = :textMessageId")
+    List<Label> getTextMessageLables(@Bind("textMessageId") final long textMessageId);
 }
