@@ -41,6 +41,10 @@ public interface MemberDAO extends DAO {
     void linkMemberWithLabel(@Bind("memberId") final long memberId,
                              @Bind("labelId") final long labelId);
 
+    @SqlUpdate("UPDATE MemberLabelRelation SET LabelId = :labelId WHERE MemberId = :memberId")
+    void updateMemberLabel(@Bind("memberId") final long memberId,
+                           @Bind("labelId") final long labelId);
+
     @SqlUpdate("DELETE FROM MemberLabelRelation WHERE MemberId = :memberId AND LabelId = :labelId")
     void delinkMemberWithLabel(@Bind("memberId") final long memberId,
                                @Bind("labelId") final long labelId);

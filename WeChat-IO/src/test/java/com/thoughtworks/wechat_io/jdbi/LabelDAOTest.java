@@ -6,8 +6,7 @@ import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class LabelDAOTest extends AbstractDAOTest {
@@ -76,27 +75,33 @@ public class LabelDAOTest extends AbstractDAOTest {
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
         memberDAO.linkMemberWithLabel(memberId, labelId);
 
-        List<Label> labels = labelDAO.getMemberLabels(memberId);
-        assertThat(labels, notNullValue());
-        assertThat(labels.size(), equalTo(1));
-        assertThat(labels.get(0).getId(), equalTo(labelId));
-        assertThat(labels.get(0).getName(), equalTo("Label"));
+        Label label = labelDAO.getMemberLabels(memberId);
+        assertThat(label, notNullValue());
+        assertThat(label.getId(), equalTo(labelId));
+        assertThat(label.getName(), equalTo("Label"));
     }
 
     @Test
     public void testGetMemberLabels_NoLink() throws Exception {
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
 
-        List<Label> labels = labelDAO.getMemberLabels(memberId);
-        assertThat(labels, notNullValue());
-        assertThat(labels.size(), equalTo(0));
+        Label label = labelDAO.getMemberLabels(memberId);
+        assertThat(label, nullValue());
     }
 
     @Test
     public void testGetMemberLabels_NoMember() throws Exception {
-        List<Label> labels = labelDAO.getMemberLabels(0);
-        assertThat(labels, notNullValue());
-        assertThat(labels.size(), equalTo(0));
+        Label label = labelDAO.getMemberLabels(0);
+        assertThat(label, nullValue());
+    }
+
+    @Test(expected = UnableToExecuteStatementException.class)
+    public void testDeleteLabel_HaveMember() throws Exception {
+        final long labelId = labelDAO.createLabel("Label", getHappenedTime());
+        final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
+        memberDAO.linkMemberWithLabel(memberId, labelId);
+
+        labelDAO.deleteLabel(labelId);
     }
 
     @Test
@@ -126,5 +131,14 @@ public class LabelDAOTest extends AbstractDAOTest {
         List<Label> labels = labelDAO.getTextMessageLables(0);
         assertThat(labels, notNullValue());
         assertThat(labels.size(), equalTo(0));
+    }
+
+    @Test(expected = UnableToExecuteStatementException.class)
+    public void testDeleteLabel_HaveTextMessage() throws Exception {
+        final long labelId = labelDAO.createLabel("Label", getHappenedTime());
+        final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
+        textMessageDAO.linkTextMessageWithLabel(messageId, labelId);
+
+        labelDAO.deleteLabel(labelId);
     }
 }

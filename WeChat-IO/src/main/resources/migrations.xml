@@ -86,23 +86,14 @@
 
         <createTable tableName="MemberLabelRelation">
             <column name="MemberId" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="LabelId" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <createIndex tableName="MemberLabelRelation" indexName="IX_MemberLabelRelation_MemberId">
-            <column name="MemberId"/>
-        </createIndex>
-
         <createIndex tableName="MemberLabelRelation" indexName="IX_MemberLabelRelation_LabelId">
-            <column name="LabelId"/>
-        </createIndex>
-
-        <createIndex tableName="MemberLabelRelation" indexName="UX_MemberLabelRelation" unique="true">
-            <column name="MemberId"/>
             <column name="LabelId"/>
         </createIndex>
 
