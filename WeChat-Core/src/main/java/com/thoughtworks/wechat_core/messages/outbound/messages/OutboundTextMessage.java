@@ -6,7 +6,7 @@ import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutbound;
 import com.thoughtworks.wechat_core.wechat.outbound.WeChatTextMessage;
 import org.joda.time.DateTime;
 
-import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimeStampInt;
+import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimestampInt;
 
 public class OutboundTextMessage extends OutboundMessageBase {
     private String content;
@@ -22,6 +22,6 @@ public class OutboundTextMessage extends OutboundMessageBase {
 
     @Override
     public WeChatOutbound toWeChat(OutboundMessageEnvelop envelop) {
-        return new WeChatTextMessage(envelop.getToUser(), envelop.getFromUser(), toUnixTimeStampInt(this.getCreatedTime()), this.getMessageType().toString().toLowerCase(), this.getContent());
+        return new WeChatTextMessage(envelop.getToUser(), envelop.getFromUser(), toUnixTimestampInt(this.getCreatedTime()), this.getMessageType().toString().toLowerCase(), this.getContent());
     }
 }
