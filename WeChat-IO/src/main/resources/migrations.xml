@@ -162,7 +162,7 @@
                                  referencedColumnNames="Id"/>
 
         <createTable tableName="ExpirableResources">
-            <column name="Id" type="bigint">
+            <column name="Id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="Key" type="varchar(32)">
@@ -184,5 +184,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <createIndex tableName="ExpirableResources" indexName="UX_ExpirableResources" unique="true">
+            <column name="Key"/>
+            <column name="Type"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>
