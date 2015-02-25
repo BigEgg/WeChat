@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_io;
+package com.thoughtworks.wechat_io.configs;
 
 /**
  * Created by BigEgg on 2/5/15.
