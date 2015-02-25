@@ -1,8 +1,10 @@
 package com.thoughtworks.wechat_io.configs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.inject.Singleton;
 import org.hibernate.validator.constraints.NotEmpty;
 
+@Singleton
 public class WeChatConfigurationImpl implements WeChatConfiguration {
     @JsonProperty("app_secret")
     @NotEmpty
