@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_io.resources;
 
-import com.thoughtworks.wechat_io.WeChatConfiguration;
+import com.thoughtworks.wechat_io.configs.WeChatConfiguration;
 import com.thoughtworks.wechat_io.resources.exceptions.WeChatMessageAuthenticationException;
 import com.thoughtworks.wechat_io.resources.exceptions.WebApplicationNotAcceptableException;
 import org.junit.Before;

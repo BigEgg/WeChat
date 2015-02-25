@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessageEnvelop;
-import com.thoughtworks.wechat_io.WeChatConfiguration;
+import com.thoughtworks.wechat_io.configs.WeChatConfiguration;
 import com.thoughtworks.wechat_io.resources.exceptions.WeChatMessageAuthenticationException;
 import com.thoughtworks.wechat_io.resources.exceptions.WebApplicationNotAcceptableException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
