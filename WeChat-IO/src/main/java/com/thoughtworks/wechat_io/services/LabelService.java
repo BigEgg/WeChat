@@ -48,6 +48,10 @@ public class LabelService {
         return new ArrayList<>(getLabels().values());
     }
 
+    public Optional<Label> get(long id) {
+        return Optional.ofNullable(getLabels().get(id));
+    }
+
     void deleteLabel(final long id) {
         checkArgument(id > 0);
 

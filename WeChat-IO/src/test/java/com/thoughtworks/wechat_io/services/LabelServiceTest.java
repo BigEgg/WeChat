@@ -54,7 +54,7 @@ public class LabelServiceTest {
     }
 
     @Test
-    public void testCreateLabel_HaveCache_NotExist() throws Exception {
+    public void testCreateLabel_WithCache_NotExist() throws Exception {
         Label label2 = createLabel2();
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel1()), Arrays.asList(createLabel1(), label2));
         when(labelDAO.createLabel(eq(label2.getName()), any(Timestamp.class))).thenReturn(label2.getId());
@@ -87,7 +87,7 @@ public class LabelServiceTest {
     }
 
     @Test
-    public void testCreateLabel_HaveCache_Exist() throws Exception {
+    public void testCreateLabel_WithCache_Exist() throws Exception {
         Label label1 = createLabel1();
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(label1, createLabel2()));
         when(labelDAO.createLabel(eq(label1.getName()), any(Timestamp.class))).thenReturn(label1.getId());
@@ -155,6 +155,58 @@ public class LabelServiceTest {
     }
 
     @Test
+    public void testGet_NoCache_NotExist() throws Exception {
+        when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel2()));
+
+        LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
+        Optional<Label> label = service.get(1L);
+
+        verify(labelDAO, times(1)).getAllLabel();
+        assertThat(label.isPresent(), equalTo(false));
+    }
+
+    @Test
+    public void testGet_NoCache_Exist() throws Exception {
+        Label label1 = createLabel1();
+        when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(label1, createLabel2()));
+
+        LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
+        Optional<Label> label = service.get(1L);
+
+        verify(labelDAO, times(1)).getAllLabel();
+        assertThat(label.isPresent(), equalTo(true));
+        assertThat(label.get().getId(), equalTo(1L));
+        assertThat(label.get().getName(), equalTo(label1.getName()));
+    }
+
+    @Test
+    public void testGet_WithCache_NotExist() throws Exception {
+        when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel2()));
+
+        LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
+        service.getAllLabel();
+        Optional<Label> label = service.get(1L);
+
+        verify(labelDAO, times(1)).getAllLabel();
+        assertThat(label.isPresent(), equalTo(false));
+    }
+
+    @Test
+    public void testGet_WithCache_Exist() throws Exception {
+        Label label1 = createLabel1();
+        when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(label1, createLabel2()));
+
+        LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
+        service.getAllLabel();
+        Optional<Label> label = service.get(1L);
+
+        verify(labelDAO, times(1)).getAllLabel();
+        assertThat(label.isPresent(), equalTo(true));
+        assertThat(label.get().getId(), equalTo(1L));
+        assertThat(label.get().getName(), equalTo(label1.getName()));
+    }
+
+    @Test
     public void testDeleteLabel_NoCache_NotExist() throws Exception {
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel2()));
 
@@ -177,7 +229,7 @@ public class LabelServiceTest {
     }
 
     @Test
-    public void testDeleteLabel_HasCache_NotExist() throws Exception {
+    public void testDeleteLabel_WithCache_NotExist() throws Exception {
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel2()));
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
@@ -189,7 +241,7 @@ public class LabelServiceTest {
     }
 
     @Test
-    public void testDeleteLabel_HasCache_Exist() throws Exception {
+    public void testDeleteLabel_WithCache_Exist() throws Exception {
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel1(), createLabel2()));
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
