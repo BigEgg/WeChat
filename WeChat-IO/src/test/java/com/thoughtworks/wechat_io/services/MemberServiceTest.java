@@ -58,7 +58,7 @@ public class MemberServiceTest {
 
     @Test
     public void testGetMemberByOpenId_Exist() throws Exception {
-        when(memberDAO.getMemberByOpenId("openId")).thenReturn(createMember());
+        when(memberDAO.getMemberByOpenId("openId")).thenReturn(createUnsubscribeMember());
 
         Optional<Member> member = memberService.getMemberByOpenId("openId");
 
@@ -81,7 +81,7 @@ public class MemberServiceTest {
 
     @Test
     public void testSubscribeMember_NotExist() throws Exception {
-        Member mockMember = createMember();
+        Member mockMember = createUnsubscribeMember();
         when(memberDAO.getMemberByOpenId("openId")).thenReturn(null, mockMember);
         when(memberDAO.createMember(eq("openId"), any(Timestamp.class))).thenReturn(mockMember.getId());
 
@@ -98,7 +98,7 @@ public class MemberServiceTest {
 
     @Test
     public void testSubscribeMember_Exist() throws Exception {
-        when(memberDAO.getMemberByOpenId("openId")).thenReturn(createMember(), createSubscribeMember());
+        when(memberDAO.getMemberByOpenId("openId")).thenReturn(createUnsubscribeMember(), createSubscribeMember());
 
         Member member = memberService.subscribeMember("openId");
 
@@ -178,7 +178,7 @@ public class MemberServiceTest {
         verify(memberDAO, never()).delinkMemberWithLabel(anyLong(), anyLong());
     }
 
-    private Member createMember() {
+    private Member createUnsubscribeMember() {
         return new Member(1L, "openId", false);
     }
 
