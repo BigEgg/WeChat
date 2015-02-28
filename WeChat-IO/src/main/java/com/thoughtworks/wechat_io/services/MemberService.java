@@ -1,5 +1,7 @@
 package com.thoughtworks.wechat_io.services;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.thoughtworks.wechat_io.core.Label;
 import com.thoughtworks.wechat_io.core.Member;
 import com.thoughtworks.wechat_io.jdbi.MemberDAO;
@@ -11,10 +13,12 @@ import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimestam
 import static com.thoughtworks.wechat_core.util.precondition.ArgumentPrecondition.checkNotBlank;
 import static org.apache.commons.lang.Validate.notNull;
 
+@Singleton
 public class MemberService {
     private MemberDAO memberDAO;
     private LabelService labelService;
 
+    @Inject
     public MemberService(MemberDAO memberDAO, LabelService labelService) {
         this.memberDAO = memberDAO;
         this.labelService = labelService;

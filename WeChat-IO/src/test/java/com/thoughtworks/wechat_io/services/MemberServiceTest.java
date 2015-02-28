@@ -1,5 +1,7 @@
 package com.thoughtworks.wechat_io.services;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.thoughtworks.wechat_io.core.Label;
 import com.thoughtworks.wechat_io.core.Member;
 import com.thoughtworks.wechat_io.jdbi.MemberDAO;
@@ -29,6 +31,29 @@ public class MemberServiceTest {
     @Before
     public void setUp() throws Exception {
         memberService = new MemberService(memberDAO, labelService);
+    }
+
+    @Test
+    public void testInject() {
+        Injector injector = Guice.createInjector(binder -> {
+            binder.bind(MemberDAO.class).toInstance(memberDAO);
+            binder.bind(LabelService.class).toInstance(labelService);
+        });
+
+        MemberService service = injector.getInstance(MemberService.class);
+        assertThat(service, notNullValue());
+    }
+
+    @Test
+    public void testInject_Singleton() {
+        Injector injector = Guice.createInjector(binder -> {
+            binder.bind(MemberDAO.class).toInstance(memberDAO);
+            binder.bind(LabelService.class).toInstance(labelService);
+        });
+
+        MemberService service = injector.getInstance(MemberService.class);
+        MemberService anotherService = injector.getInstance(MemberService.class);
+        assertThat(service, equalTo(anotherService));
     }
 
     @Test

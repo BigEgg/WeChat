@@ -1,5 +1,7 @@
 package com.thoughtworks.wechat_io.utils;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -8,6 +10,17 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class CacheManagerTest {
+    @Test
+    public void testInject_Singleton() {
+        Injector injector = Guice.createInjector(binder -> {
+        });
+
+        CacheManager cacheManager = injector.getInstance(CacheManager.class);
+        CacheManager anotherCacheManager = injector.getInstance(CacheManager.class);
+
+        assertThat(cacheManager, equalTo(anotherCacheManager));
+    }
+
     @Test
     public void testPutGet() throws Exception {
         final String key = "key";

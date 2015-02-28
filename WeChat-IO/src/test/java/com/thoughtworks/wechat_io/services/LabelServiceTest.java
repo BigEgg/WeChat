@@ -1,5 +1,7 @@
 package com.thoughtworks.wechat_io.services;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.thoughtworks.wechat_io.configs.CacheConfiguration;
 import com.thoughtworks.wechat_io.core.Label;
 import com.thoughtworks.wechat_io.core.Member;
@@ -34,6 +36,29 @@ public class LabelServiceTest {
     @Before
     public void setUp() throws Exception {
         when(configuration.getLabelCacheSeconds()).thenReturn(10);
+    }
+
+    @Test
+    public void testInject() {
+        Injector injector = Guice.createInjector(binder -> {
+            binder.bind(LabelDAO.class).toInstance(labelDAO);
+            binder.bind(CacheConfiguration.class).toInstance(configuration);
+        });
+
+        LabelService labelService = injector.getInstance(LabelService.class);
+        assertThat(labelService, notNullValue());
+    }
+
+    @Test
+    public void testInject_Singleton() {
+        Injector injector = Guice.createInjector(binder -> {
+            binder.bind(LabelDAO.class).toInstance(labelDAO);
+            binder.bind(CacheConfiguration.class).toInstance(configuration);
+        });
+
+        LabelService labelService = injector.getInstance(LabelService.class);
+        LabelService anotherLabelService = injector.getInstance(LabelService.class);
+        assertThat(labelService, equalTo(anotherLabelService));
     }
 
     @Test
