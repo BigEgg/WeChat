@@ -27,50 +27,72 @@ public class AdminUserDAOTest extends AbstractDAOTest {
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
-    public void testCreateAdminUser_WithSameUsernameAndPassword() throws Exception {
-        adminUserDAO.createAdminUser("username", "encryptPassword");
-        adminUserDAO.createAdminUser("username", "encryptPassword");
-    }
-
-    @Test(expected = UnableToExecuteStatementException.class)
     public void testCreateAdminUser_WithSameUsername() throws Exception {
-        adminUserDAO.createAdminUser("username1", "encryptPassword1");
-        adminUserDAO.createAdminUser("username1", "encryptPassword2");
+        adminUserDAO.createAdminUser("username", "encryptPassword1");
+        adminUserDAO.createAdminUser("username", "encryptPassword2");
     }
 
     @Test
-    public void testGetAdminUserByUsernameAndPassword() throws Exception {
+    public void testGetAdminUserByUsername() throws Exception {
         final String username = "username";
         final String encryptPassword = "encryptPassword";
         long id = adminUserDAO.createAdminUser(username, encryptPassword);
-        final AdminUser user = adminUserDAO.getAdminUserByUsernameAndPassword(username, encryptPassword);
+        final AdminUser user = adminUserDAO.getAdminUserByUsername(username);
 
         assertThat(user, notNullValue());
         assertThat(user.getId(), equalTo(id));
         assertThat(user.getUsername(), equalTo(username));
-        assertThat(user.getEncryptedPassword(), equalTo(encryptPassword));
+        assertThat(user.getHashedPassword(), equalTo(encryptPassword));
         assertThat(user.getMemberId().isPresent(), equalTo(false));
     }
 
     @Test
-    public void testGetAdminUserByUsernameAndPassword_NoMatchAdminUser() throws Exception {
-        final AdminUser user = adminUserDAO.getAdminUserByUsernameAndPassword("username", "encryptPassword");
+    public void testGetAdminUserByUsername_NoMatchAdminUser() throws Exception {
+        final AdminUser user = adminUserDAO.getAdminUserByUsername("username");
         assertThat(user, nullValue());
     }
 
     @Test
     public void testSetMember() throws Exception {
         final String username = "username";
-        final String encryptPassword = "encryptPassword";
-        adminUserDAO.createAdminUser(username, encryptPassword);
-        AdminUser user = adminUserDAO.getAdminUserByUsernameAndPassword(username, encryptPassword);
-
+        final long adminUserId = adminUserDAO.createAdminUser(username, "encryptPassword");
+        final AdminUser user = adminUserDAO.getAdminUserByUsername(username);
         assertThat(user.getMemberId().isPresent(), equalTo(false));
-        final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
-        adminUserDAO.setMember(memberId);
 
-        user = adminUserDAO.getAdminUserByUsernameAndPassword(username, encryptPassword);
-        assertThat(user.getMemberId().isPresent(), equalTo(true));
-        assertThat(user.getMemberId().get(), equalTo(memberId));
+        final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
+        adminUserDAO.setMember(adminUserId, memberId);
+
+        final AdminUser currentUser = adminUserDAO.getAdminUserByUsername(username);
+        assertThat(currentUser.getMemberId().isPresent(), equalTo(true));
+        assertThat(currentUser.getMemberId().get(), equalTo(memberId));
+    }
+
+    @Test
+    public void testSetMember_SameMemberId() throws Exception {
+        final long adminUser1Id = adminUserDAO.createAdminUser("username1", "encryptPassword");
+        final long adminUser2Id = adminUserDAO.createAdminUser("username2", "encryptPassword");
+
+        final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
+        adminUserDAO.setMember(adminUser1Id, memberId);
+        adminUserDAO.setMember(adminUser2Id, memberId);
+    }
+
+    @Test
+    public void testGetAdminUserByMemberId() throws Exception {
+        final long adminUserId = adminUserDAO.createAdminUser("username", "encryptPassword");
+        final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
+        adminUserDAO.setMember(adminUserId, memberId);
+
+        AdminUser adminUser = adminUserDAO.getAdminUserByMemberId(memberId);
+        assertThat(adminUser, notNullValue());
+        assertThat(adminUser.getId(), equalTo(1L));
+        assertThat(adminUser.getMemberId(), equalTo(1L));
+        assertThat(adminUser.getUsername(), equalTo("username"));
+    }
+
+    @Test
+    public void testGetAdminUserByMemberId_NotExist() throws Exception {
+        AdminUser adminUser = adminUserDAO.getAdminUserByMemberId(1L);
+        assertThat(adminUser, nullValue());
     }
 }

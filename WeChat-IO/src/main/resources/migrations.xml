@@ -61,15 +61,20 @@
             <column name="Username" type="varchar(32)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="Password" type="varchar(256)">
+            <column name="Password" type="varchar(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="MemberId" type="bigint"/>
+            <column name="MemberId" type="bigint">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
 
-        <createIndex tableName="AdminUser" unique="true" indexName="IX_AdminUser">
+        <createIndex tableName="AdminUser" indexName="IX_AdminUser_Username">
             <column name="Username"/>
-            <column name="Password"/>
+        </createIndex>
+
+        <createIndex tableName="AdminUser" indexName="IX_AdminUser_MemberId">
+            <column name="MemberId"/>
         </createIndex>
 
         <createTable tableName="Label">

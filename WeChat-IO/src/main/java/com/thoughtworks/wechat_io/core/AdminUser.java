@@ -5,13 +5,13 @@ import java.util.Optional;
 public class AdminUser {
     private long id;
     private String username;
-    private String encryptedPassword;
+    private String hashedPassword;
     private Optional<Long> memberId;
 
-    public AdminUser(long id, String username, String encryptedPassword, Optional<Long> memberId) {
+    public AdminUser(long id, String username, String hashedPassword, Optional<Long> memberId) {
         this.id = id;
         this.username = username;
-        this.encryptedPassword = encryptedPassword;
+        this.hashedPassword = hashedPassword;
         this.memberId = memberId;
     }
 
@@ -23,8 +23,8 @@ public class AdminUser {
         return username;
     }
 
-    public String getEncryptedPassword() {
-        return encryptedPassword;
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 
     public Optional<Long> getMemberId() {
