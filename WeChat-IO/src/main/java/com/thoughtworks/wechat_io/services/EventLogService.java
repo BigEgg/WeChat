@@ -14,7 +14,7 @@ public class EventLogService {
     private final MemberEventLogService memberEventLogService;
 
     @Inject
-    public EventLogService(EventLogDAO eventLogDAO) {
+    public EventLogService(final EventLogDAO eventLogDAO) {
         this.eventLogDAO = eventLogDAO;
 
         memberEventLogService = new MemberEventLogService();
@@ -30,11 +30,11 @@ public class EventLogService {
         private final String SUBSCRIBE_EVENT = "Subscribe";
         private final String UNSUBSCRIBE_EVENT = "Unsubscribe";
 
-        public void subscribe(Member member, DateTime happenedTime) {
+        public void subscribe(final Member member, final DateTime happenedTime) {
             eventLogDAO.insertEventLog(member.getId(), EVENT_NAME, SUBSCRIBE_EVENT, toUnixTimestamp(happenedTime));
         }
 
-        public void unsubscribe(Member member, DateTime happenedTime) {
+        public void unsubscribe(final Member member, final DateTime happenedTime) {
             eventLogDAO.insertEventLog(member.getId(), EVENT_NAME, UNSUBSCRIBE_EVENT, toUnixTimestamp(happenedTime));
         }
     }

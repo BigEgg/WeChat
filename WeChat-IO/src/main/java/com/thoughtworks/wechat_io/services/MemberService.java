@@ -22,12 +22,12 @@ public class MemberService {
     private LabelService labelService;
 
     @Inject
-    public MemberService(MemberDAO memberDAO, LabelService labelService) {
+    public MemberService(final MemberDAO memberDAO, final LabelService labelService) {
         this.memberDAO = memberDAO;
         this.labelService = labelService;
     }
 
-    public Optional<Member> getMemberByOpenId(String openId) {
+    public Optional<Member> getMemberByOpenId(final String openId) {
         checkNotBlank(openId);
 
         Optional<Member> member = Optional.ofNullable(memberDAO.getMemberByOpenId(openId));
@@ -35,7 +35,7 @@ public class MemberService {
         return member;
     }
 
-    public Member subscribeMember(String openId) {
+    public Member subscribeMember(final String openId) {
         checkNotBlank(openId);
 
         LOGGER.info("[SubscribeMember] Try subscribe member: {}", openId);
@@ -54,7 +54,7 @@ public class MemberService {
         return memberDAO.getMemberByOpenId(openId);
     }
 
-    public void unsubscribeMember(String openId) {
+    public void unsubscribeMember(final String openId) {
         checkNotBlank(openId);
 
         LOGGER.info("[UnsubscribeMember] Try unsubscribe member: {}.", openId);
@@ -65,7 +65,7 @@ public class MemberService {
         }
     }
 
-    public void linkMemberToLabel(Member member, Label label) {
+    public void linkMemberToLabel(final Member member, final Label label) {
         notNull(member);
         notNull(label);
 
@@ -80,7 +80,7 @@ public class MemberService {
         }
     }
 
-    public void delinkMemberLabel(Member member) {
+    public void delinkMemberLabel(final Member member) {
         notNull(member);
 
         LOGGER.info("[DelinkMemberLabel] Try delink member(id: {})'s label.", member.getId());

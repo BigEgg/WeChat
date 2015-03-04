@@ -28,7 +28,7 @@ public class LabelService {
     private final int labelCacheSeconds;
 
     @Inject
-    public LabelService(LabelDAO labelDAO, CacheConfiguration cacheConfiguration, CacheManager cacheManager) {
+    public LabelService(final LabelDAO labelDAO, final CacheConfiguration cacheConfiguration, final CacheManager cacheManager) {
         this.labelDAO = labelDAO;
         this.cacheManager = cacheManager;
         this.labelCacheSeconds = cacheConfiguration.getLabelCacheSeconds();
@@ -56,7 +56,7 @@ public class LabelService {
         return labels;
     }
 
-    public Optional<Label> get(long id) {
+    public Optional<Label> get(final long id) {
         Optional<Label> label = Optional.ofNullable(getLabels().get(id));
         LOGGER.info("[Get] Try get label with id: {}. Status: {}.", id, label.isPresent());
         return label;
