@@ -3,16 +3,12 @@ package com.thoughtworks.wechat_core.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class EncryptHelper {
-    public static String sha1Encrypt(String str) throws NoSuchAlgorithmException {
-        return encrypt(str, "SHA1");
+public class HashHelper {
+    public static String sha1Hash(String str) throws NoSuchAlgorithmException {
+        return hash(str, "SHA1");
     }
 
-    public static String md5Encrypt(String str) throws NoSuchAlgorithmException {
-        return encrypt(str, "MD5");
-    }
-
-    private static String encrypt(String str, String algorithm) throws NoSuchAlgorithmException {
+    public static String hash(String str, String algorithm) throws NoSuchAlgorithmException {
         MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
         messageDigest.update(str.getBytes());
         return byteArrayToHex(messageDigest.digest());

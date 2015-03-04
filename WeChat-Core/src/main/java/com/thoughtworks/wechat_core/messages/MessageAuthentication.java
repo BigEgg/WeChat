@@ -3,7 +3,7 @@ package com.thoughtworks.wechat_core.messages;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import static com.thoughtworks.wechat_core.util.EncryptHelper.sha1Encrypt;
+import static com.thoughtworks.wechat_core.util.HashHelper.sha1Hash;
 import static com.thoughtworks.wechat_core.util.precondition.ArgumentPrecondition.checkNotBlank;
 
 public final class MessageAuthentication {
@@ -21,6 +21,6 @@ public final class MessageAuthentication {
             builder.append(item);
         }
 
-        return signature.toUpperCase().equals(sha1Encrypt(builder.toString()));
+        return signature.toUpperCase().equals(sha1Hash(builder.toString()));
     }
 }
