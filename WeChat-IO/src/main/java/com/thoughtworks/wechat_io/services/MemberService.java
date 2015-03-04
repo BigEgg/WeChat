@@ -88,7 +88,7 @@ public class MemberService {
         if (currentLabel.isPresent()) {
             memberDAO.delinkMemberWithLabel(member.getId(), currentLabel.get().getId());
             LOGGER.info("[DelinkMemberLabel] Delink member from label(id: {}).", currentLabel.get().getId());
-        }else {
+        } else {
             LOGGER.info("[DelinkMemberLabel] Member don't have label. Skip.");
         }
     }
