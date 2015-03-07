@@ -72,10 +72,10 @@ public class MemberService {
         LOGGER.info("[LinkMemberToLabel] Try link member(id: {}) to label(id: {}).", member.getId(), label.getId());
         Optional<Label> currentLabel = labelService.getMemberLabels(member);
         if (currentLabel.isPresent()) {
-            memberDAO.updateMemberLabel(member.getId(), label.getId());
+            memberDAO.updateMemberLabel(member.getId(), label.getId(), toUnixTimestamp(DateTime.now()));
             LOGGER.info("[LinkMemberToLabel] Member(id: {}) already have a label(id: {}), update it.", member.getId(), currentLabel.get().getId());
         } else {
-            memberDAO.linkMemberWithLabel(member.getId(), label.getId());
+            memberDAO.linkMemberWithLabel(member.getId(), label.getId(), toUnixTimestamp(DateTime.now()));
             LOGGER.info("[LinkMemberToLabel] Link member(id: {}) to label success.", member.getId());
         }
     }

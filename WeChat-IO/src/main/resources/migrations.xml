@@ -17,10 +17,10 @@
             <column name="Subscribed" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
-            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="CreatedTime" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="ModifiedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="ModifiedTime" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -43,7 +43,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="EventValue" type="varchar(255)"/>
-            <column name="HappenedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="HappenedTime" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -84,7 +84,7 @@
             <column name="Name" type="varchar(32)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="CreatedTime" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -94,6 +94,9 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="LabelId" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LinkedTime" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -124,10 +127,10 @@
             <column name="Content" type="nvarchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="CreatedTime" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="ModifiedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="ModifiedTime" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -186,10 +189,10 @@
             <column name="ExpiresInSecond" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="CreatedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="CreatedTime" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="ModifiedTime" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="ModifiedTime" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>

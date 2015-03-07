@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MemberServiceTest {
@@ -140,8 +141,8 @@ public class MemberServiceTest {
         memberService.linkMemberToLabel(member, label);
 
         verify(labelService, times(1)).getMemberLabels(eq(member));
-        verify(memberDAO, times(1)).linkMemberWithLabel(eq(member.getId()), eq(label.getId()));
-        verify(memberDAO, never()).updateMemberLabel(anyLong(), anyLong());
+        verify(memberDAO, times(1)).linkMemberWithLabel(eq(member.getId()), eq(label.getId()), any(Timestamp.class));
+        verify(memberDAO, never()).updateMemberLabel(anyLong(), anyLong(), any(Timestamp.class));
     }
 
     @Test
@@ -152,8 +153,8 @@ public class MemberServiceTest {
         memberService.linkMemberToLabel(member, createLabel2());
 
         verify(labelService, times(1)).getMemberLabels(eq(member));
-        verify(memberDAO, times(1)).updateMemberLabel(eq(member.getId()), eq(2L));
-        verify(memberDAO, never()).linkMemberWithLabel(anyLong(), anyLong());
+        verify(memberDAO, times(1)).updateMemberLabel(eq(member.getId()), eq(2L), any(Timestamp.class));
+        verify(memberDAO, never()).linkMemberWithLabel(anyLong(), anyLong(), any(Timestamp.class));
     }
 
     @Test

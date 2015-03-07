@@ -38,13 +38,15 @@ public interface MemberDAO extends DAO {
             "  WHERE r.LabelId IN (<labelId>)")
     List<Member> getMembersByLabelIds(@BindIn("labelId") final List<Long> labelId);
 
-    @SqlUpdate("INSERT INTO MemberLabelRelation (MemberId, LabelId) VALUES (:memberId, :labelId)")
+    @SqlUpdate("INSERT INTO MemberLabelRelation (MemberId, LabelId, LinkedTime) VALUES (:memberId, :labelId, :linkedTime)")
     void linkMemberWithLabel(@Bind("memberId") final long memberId,
-                             @Bind("labelId") final long labelId);
+                             @Bind("labelId") final long labelId,
+                             @Bind("linkedTime") final Timestamp linkedTime);
 
-    @SqlUpdate("UPDATE MemberLabelRelation SET LabelId = :labelId WHERE MemberId = :memberId")
+    @SqlUpdate("UPDATE MemberLabelRelation SET LabelId = :labelId, LinkedTime = :linkedTime WHERE MemberId = :memberId")
     void updateMemberLabel(@Bind("memberId") final long memberId,
-                           @Bind("labelId") final long labelId);
+                           @Bind("labelId") final long labelId,
+                           @Bind("linkedTime") final Timestamp linkedTime);
 
     @SqlUpdate("DELETE FROM MemberLabelRelation WHERE MemberId = :memberId AND LabelId = :labelId")
     void delinkMemberWithLabel(@Bind("memberId") final long memberId,

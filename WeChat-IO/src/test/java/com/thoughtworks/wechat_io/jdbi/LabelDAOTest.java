@@ -73,7 +73,7 @@ public class LabelDAOTest extends AbstractDAOTest {
     public void testGetMemberLabels() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
-        memberDAO.linkMemberWithLabel(memberId, labelId);
+        memberDAO.linkMemberWithLabel(memberId, labelId, getHappenedTime());
 
         Label label = labelDAO.getMemberLabel(memberId);
         assertThat(label, notNullValue());
@@ -99,7 +99,7 @@ public class LabelDAOTest extends AbstractDAOTest {
     public void testDeleteLabel_HaveMember() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
-        memberDAO.linkMemberWithLabel(memberId, labelId);
+        memberDAO.linkMemberWithLabel(memberId, labelId, getHappenedTime());
 
         labelDAO.deleteLabel(labelId);
     }

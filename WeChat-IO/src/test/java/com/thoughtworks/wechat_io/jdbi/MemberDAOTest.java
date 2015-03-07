@@ -92,27 +92,27 @@ public class MemberDAOTest extends AbstractDAOTest {
     public void testLinkMemberWithLabel() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
-        memberDAO.linkMemberWithLabel(memberId, labelId);
+        memberDAO.linkMemberWithLabel(memberId, labelId, getHappenedTime());
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
     public void testLinkMemberWithLabel_NoMember() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
-        memberDAO.linkMemberWithLabel(1, labelId);
+        memberDAO.linkMemberWithLabel(1, labelId, getHappenedTime());
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
     public void testLinkMemberWithLabel_NoLabel() throws Exception {
         final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
-        memberDAO.linkMemberWithLabel(memberId, 1);
+        memberDAO.linkMemberWithLabel(memberId, 1, getHappenedTime());
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
     public void testLinkMemberWithLabel_Existed() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
-        memberDAO.linkMemberWithLabel(memberId, labelId);
-        memberDAO.linkMemberWithLabel(memberId, labelId);
+        memberDAO.linkMemberWithLabel(memberId, labelId, getHappenedTime());
+        memberDAO.linkMemberWithLabel(memberId, labelId, getHappenedTime());
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
@@ -120,15 +120,15 @@ public class MemberDAOTest extends AbstractDAOTest {
         final long labelId1 = labelDAO.createLabel("Label1", getHappenedTime());
         final long labelId2 = labelDAO.createLabel("Label2", getHappenedTime());
         final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
-        memberDAO.linkMemberWithLabel(memberId, labelId1);
-        memberDAO.linkMemberWithLabel(memberId, labelId2);
+        memberDAO.linkMemberWithLabel(memberId, labelId1, getHappenedTime());
+        memberDAO.linkMemberWithLabel(memberId, labelId2, getHappenedTime());
     }
 
     @Test
     public void testGetMembersByLabelIds() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
-        memberDAO.linkMemberWithLabel(memberId, labelId);
+        memberDAO.linkMemberWithLabel(memberId, labelId, getHappenedTime());
 
         final List<Member> members = memberDAO.getMembersByLabelIds(Arrays.asList(labelId));
         assertThat(members, notNullValue());
@@ -142,8 +142,8 @@ public class MemberDAOTest extends AbstractDAOTest {
         final long labelId1 = labelDAO.createLabel("Label1", getHappenedTime());
         final long labelId2 = labelDAO.createLabel("Label2", getHappenedTime());
         final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
-        memberDAO.linkMemberWithLabel(memberId, labelId1);
-        memberDAO.updateMemberLabel(memberId, labelId2);
+        memberDAO.linkMemberWithLabel(memberId, labelId1, getHappenedTime());
+        memberDAO.updateMemberLabel(memberId, labelId2, getHappenedTime());
 
         List<Member> members = memberDAO.getMembersByLabelIds(Arrays.asList(labelId1));
         assertThat(members, notNullValue());
@@ -156,7 +156,7 @@ public class MemberDAOTest extends AbstractDAOTest {
     @Test
     public void testUpdateMemberLabel_NoMember() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
-        memberDAO.updateMemberLabel(1, labelId);
+        memberDAO.updateMemberLabel(1, labelId, getHappenedTime());
 
         List<Member> members = memberDAO.getMembersByLabelIds(Arrays.asList(labelId));
         assertThat(members.size(), equalTo(0));
@@ -165,7 +165,7 @@ public class MemberDAOTest extends AbstractDAOTest {
     @Test
     public void testUpdateMemberLabel_NoLabel() throws Exception {
         final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
-        memberDAO.updateMemberLabel(memberId, 1);
+        memberDAO.updateMemberLabel(memberId, 1, getHappenedTime());
 
         Label label = labelDAO.getMemberLabel(memberId);
         assertThat(label, nullValue());
@@ -175,7 +175,7 @@ public class MemberDAOTest extends AbstractDAOTest {
     public void testDelinkMemberWithLabel() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
-        memberDAO.linkMemberWithLabel(memberId, labelId);
+        memberDAO.linkMemberWithLabel(memberId, labelId, getHappenedTime());
 
         List<Member> members = memberDAO.getMembersByLabelIds(Arrays.asList(labelId));
         assertThat(members, notNullValue());
