@@ -42,6 +42,8 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
         final ExpirableResource resource = expirableResourceDAO.getResource("key", "type");
         assertThat(resource, notNullValue());
+        assertThat(resource.getKey(), equalTo("key"));
+        assertThat(resource.getType(), equalTo("type"));
         assertThat(resource.isExpired(), equalTo(false));
         assertThat(resource.getValue().isPresent(), equalTo(true));
         assertThat(resource.getValue().get(), equalTo("newValue"));
@@ -57,13 +59,31 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetResource_Expire() throws Exception {
-        long resourceId = expirableResourceDAO.createResource("key", "type", "value", 0, getHappenedTime(), getHappenedTime());
+        long resourceId = expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime(), getHappenedTime());
         assertThat(resourceId, equalTo(1L));
 
+        Thread.sleep(5000);
         final ExpirableResource resource = expirableResourceDAO.getResource("key", "type");
         assertThat(resource, notNullValue());
+        assertThat(resource.getKey(), equalTo("key"));
+        assertThat(resource.getType(), equalTo("type"));
         assertThat(resource.isExpired(), equalTo(true));
         assertThat(resource.getValue().isPresent(), equalTo(false));
+    }
+
+    @Test
+    public void testGetResource_NeverExpire() throws Exception {
+        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 0, getHappenedTime(), getHappenedTime());
+        assertThat(resourceId, equalTo(1L));
+
+        Thread.sleep(5000);
+        final ExpirableResource resource = expirableResourceDAO.getResource("key", "type");
+        assertThat(resource, notNullValue());
+        assertThat(resource.getKey(), equalTo("key"));
+        assertThat(resource.getType(), equalTo("type"));
+        assertThat(resource.isExpired(), equalTo(false));
+        assertThat(resource.getValue().isPresent(), equalTo(true));
+        assertThat(resource.getValue().get(), equalTo("value"));
     }
 
     @Test
@@ -73,6 +93,8 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
         final ExpirableResource resource = expirableResourceDAO.getResource("key", "type");
         assertThat(resource, notNullValue());
+        assertThat(resource.getKey(), equalTo("key"));
+        assertThat(resource.getType(), equalTo("type"));
         assertThat(resource.isExpired(), equalTo(false));
         assertThat(resource.getValue().isPresent(), equalTo(true));
         assertThat(resource.getValue().get(), equalTo("value"));

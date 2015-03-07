@@ -9,12 +9,17 @@ public class ExpirableResource {
     private String type;
     private String value;
     private DateTime expireTime;
+    private boolean isNeverExpired;
 
     public ExpirableResource(String key, String type, String value, int expiresInSecond, DateTime createdTime) {
         this.key = key;
         this.type = type;
         this.value = value;
         this.expireTime = createdTime.plusSeconds(expiresInSecond);
+
+        if (expiresInSecond == 0) {
+            isNeverExpired = true;
+        }
     }
 
     public String getKey() {
@@ -26,11 +31,11 @@ public class ExpirableResource {
     }
 
     public boolean isExpired() {
-        return expireTime.isBeforeNow();
+        return !isNeverExpired && expireTime.isBeforeNow();
     }
 
     public Optional<String> getValue() {
-        return expireTime.isBeforeNow()
+        return isExpired()
                 ? Optional.<String>empty()
                 : Optional.of(value);
     }
