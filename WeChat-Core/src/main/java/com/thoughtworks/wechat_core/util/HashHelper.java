@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashHelper {
     public static String sha1Hash(String str) throws NoSuchAlgorithmException {
-        return hash(str, "SHA1");
+        return hash(str, "SHA-1");
     }
 
     public static String hash(String str, String algorithm) throws NoSuchAlgorithmException {
