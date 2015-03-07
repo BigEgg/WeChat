@@ -12,7 +12,7 @@ public class LabelMapper implements ResultSetMapper<Label> {
     public Label map(int i, ResultSet resultSet, StatementContext statementContext) throws SQLException {
         return new Label(
                 resultSet.getLong("Id"),
-                resultSet.getString("Name")
+                resultSet.getString("Title")
         );
     }
 }

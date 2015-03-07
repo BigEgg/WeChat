@@ -66,7 +66,7 @@ public class LabelDAOTest extends AbstractDAOTest {
         labels = labelDAO.getAllLabel();
         assertThat(labels.size(), equalTo(1));
         assertThat(labels.get(0).getId(), equalTo(2L));
-        assertThat(labels.get(0).getName(), equalTo("Label2"));
+        assertThat(labels.get(0).getTitle(), equalTo("Label2"));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class LabelDAOTest extends AbstractDAOTest {
         Label label = labelDAO.getMemberLabel(memberId);
         assertThat(label, notNullValue());
         assertThat(label.getId(), equalTo(labelId));
-        assertThat(label.getName(), equalTo("Label"));
+        assertThat(label.getTitle(), equalTo("Label"));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class LabelDAOTest extends AbstractDAOTest {
         assertThat(labels, notNullValue());
         assertThat(labels.size(), equalTo(1));
         assertThat(labels.get(0).getId(), equalTo(labelId));
-        assertThat(labels.get(0).getName(), equalTo("Label"));
+        assertThat(labels.get(0).getTitle(), equalTo("Label"));
     }
 
     @Test

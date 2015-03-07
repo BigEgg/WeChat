@@ -69,7 +69,7 @@ public class TextMessageServiceTest {
 
     @Test
     public void testNewTextMessage_Exist() throws Exception {
-        when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage1());
+        when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage());
 
         boolean result = textMessageService.newTextMessage("Title", "Content");
 
@@ -80,7 +80,7 @@ public class TextMessageServiceTest {
 
     @Test
     public void testUpdateContent() throws Exception {
-        when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage1());
+        when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage());
 
         boolean result = textMessageService.updateContent("Title", "Something different");
 
@@ -111,7 +111,7 @@ public class TextMessageServiceTest {
 
     @Test
     public void testDeleteMessage() throws Exception {
-        when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage1());
+        when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage());
 
         boolean result = textMessageService.deleteMessage("Title");
 
@@ -133,7 +133,7 @@ public class TextMessageServiceTest {
 
     @Test
     public void testGetTextMessageByLabel() throws Exception {
-        when(textMessageDAO.getTextMessageByLabelIds(Arrays.asList(1L))).thenReturn(Arrays.asList(createTextMessage1()));
+        when(textMessageDAO.getTextMessageByLabelIds(Arrays.asList(1L))).thenReturn(Arrays.asList(createTextMessage()));
 
         List<TextMessage> messages = textMessageService.getTextMessageByLabel(createLabel1());
 
@@ -144,7 +144,7 @@ public class TextMessageServiceTest {
 
     @Test
     public void testGetTextMessageByLabels() throws Exception {
-        when(textMessageDAO.getTextMessageByLabelIds(Arrays.asList(1L, 2L))).thenReturn(Arrays.asList(createTextMessage1()));
+        when(textMessageDAO.getTextMessageByLabelIds(Arrays.asList(1L, 2L))).thenReturn(Arrays.asList(createTextMessage()));
 
         List<TextMessage> messages = textMessageService.getTextMessageByLabels(Arrays.asList(createLabel1(), createLabel2()));
 
@@ -154,7 +154,7 @@ public class TextMessageServiceTest {
 
     @Test
     public void testLinkTextMessageToLabel() throws Exception {
-        TextMessage textMessage = createTextMessage1();
+        TextMessage textMessage = createTextMessage();
         when(labelService.getTextMessageLabels(textMessage)).thenReturn(Arrays.asList(createLabel1()));
 
         textMessageService.linkTextMessageToLabel(textMessage, createLabel2());
@@ -165,7 +165,7 @@ public class TextMessageServiceTest {
 
     @Test
     public void testLinkTextMessageToLabel_AlreadyLinked() throws Exception {
-        TextMessage textMessage = createTextMessage1();
+        TextMessage textMessage = createTextMessage();
         when(labelService.getTextMessageLabels(textMessage)).thenReturn(Arrays.asList(createLabel1(), createLabel2()));
 
         textMessageService.linkTextMessageToLabel(textMessage, createLabel2());
@@ -176,7 +176,7 @@ public class TextMessageServiceTest {
 
     @Test
     public void testDelinkTextMessageWithLabel() throws Exception {
-        TextMessage textMessage = createTextMessage1();
+        TextMessage textMessage = createTextMessage();
         when(labelService.getTextMessageLabels(textMessage)).thenReturn(Arrays.asList(createLabel1(), createLabel2()));
 
         textMessageService.delinkTextMessageWithLabel(textMessage, createLabel2());
@@ -187,7 +187,7 @@ public class TextMessageServiceTest {
 
     @Test
     public void testDelinkTextMessageWithLabel_NotLinked() throws Exception {
-        TextMessage textMessage = createTextMessage1();
+        TextMessage textMessage = createTextMessage();
         when(labelService.getTextMessageLabels(textMessage)).thenReturn(Arrays.asList(createLabel1()));
 
         textMessageService.delinkTextMessageWithLabel(textMessage, createLabel2());
@@ -196,12 +196,8 @@ public class TextMessageServiceTest {
         verify(textMessageDAO, never()).delinkTextMessageWithLabel(anyLong(), anyLong());
     }
 
-    private TextMessage createTextMessage1() {
+    private TextMessage createTextMessage() {
         return new TextMessage(1L, "Title", "Content");
-    }
-
-    private TextMessage createTextMessage2() {
-        return new TextMessage(1L, "Title", "Something different.");
     }
 
     private Label createLabel1() {

@@ -65,48 +65,48 @@ public class LabelServiceTest {
     public void testCreateLabel_NoCache_NotExist() throws Exception {
         Label label1 = createLabel1();
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(), Arrays.asList(label1));
-        when(labelDAO.createLabel(eq(label1.getName()), any(Timestamp.class))).thenReturn(label1.getId());
+        when(labelDAO.createLabel(eq(label1.getTitle()), any(Timestamp.class))).thenReturn(label1.getId());
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
-        Optional<Label> label = service.createLabel(label1.getName());
+        Optional<Label> label = service.createLabel(label1.getTitle());
 
         verify(labelDAO, times(2)).getAllLabel();
-        verify(labelDAO, times(1)).createLabel(eq(label1.getName()), any(Timestamp.class));
+        verify(labelDAO, times(1)).createLabel(eq(label1.getTitle()), any(Timestamp.class));
 
         assertThat(label.isPresent(), equalTo(true));
         assertThat(label.get().getId(), equalTo(1L));
-        assertThat(label.get().getName(), equalTo(label1.getName()));
+        assertThat(label.get().getTitle(), equalTo(label1.getTitle()));
     }
 
     @Test
     public void testCreateLabel_WithCache_NotExist() throws Exception {
         Label label2 = createLabel2();
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel1()), Arrays.asList(createLabel1(), label2));
-        when(labelDAO.createLabel(eq(label2.getName()), any(Timestamp.class))).thenReturn(label2.getId());
+        when(labelDAO.createLabel(eq(label2.getTitle()), any(Timestamp.class))).thenReturn(label2.getId());
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
         service.getAllLabels();
-        Optional<Label> label = service.createLabel(label2.getName());
+        Optional<Label> label = service.createLabel(label2.getTitle());
 
         verify(labelDAO, times(2)).getAllLabel();
-        verify(labelDAO, times(1)).createLabel(eq(label2.getName()), any(Timestamp.class));
+        verify(labelDAO, times(1)).createLabel(eq(label2.getTitle()), any(Timestamp.class));
 
         assertThat(label.isPresent(), equalTo(true));
         assertThat(label.get().getId(), equalTo(2L));
-        assertThat(label.get().getName(), equalTo(label2.getName()));
+        assertThat(label.get().getTitle(), equalTo(label2.getTitle()));
     }
 
     @Test
     public void testCreateLabel_NoCache_Exist() throws Exception {
         Label label1 = createLabel1();
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(label1, createLabel2()));
-        when(labelDAO.createLabel(eq(label1.getName()), any(Timestamp.class))).thenReturn(label1.getId());
+        when(labelDAO.createLabel(eq(label1.getTitle()), any(Timestamp.class))).thenReturn(label1.getId());
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
-        Optional<Label> label = service.createLabel(label1.getName());
+        Optional<Label> label = service.createLabel(label1.getTitle());
 
         verify(labelDAO, times(1)).getAllLabel();
-        verify(labelDAO, never()).createLabel(eq(label1.getName()), any(Timestamp.class));
+        verify(labelDAO, never()).createLabel(eq(label1.getTitle()), any(Timestamp.class));
 
         assertThat(label.isPresent(), equalTo(false));
     }
@@ -115,14 +115,14 @@ public class LabelServiceTest {
     public void testCreateLabel_WithCache_Exist() throws Exception {
         Label label1 = createLabel1();
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(label1, createLabel2()));
-        when(labelDAO.createLabel(eq(label1.getName()), any(Timestamp.class))).thenReturn(label1.getId());
+        when(labelDAO.createLabel(eq(label1.getTitle()), any(Timestamp.class))).thenReturn(label1.getId());
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
         service.getAllLabels();
-        Optional<Label> label = service.createLabel(label1.getName());
+        Optional<Label> label = service.createLabel(label1.getTitle());
 
         verify(labelDAO, times(1)).getAllLabel();
-        verify(labelDAO, never()).createLabel(eq(label1.getName()), any(Timestamp.class));
+        verify(labelDAO, never()).createLabel(eq(label1.getTitle()), any(Timestamp.class));
 
         assertThat(label.isPresent(), equalTo(false));
     }
@@ -184,7 +184,7 @@ public class LabelServiceTest {
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel2()));
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
-        Optional<Label> label = service.get(1L);
+        Optional<Label> label = service.get("Label1");
 
         verify(labelDAO, times(1)).getAllLabel();
         assertThat(label.isPresent(), equalTo(false));
@@ -196,12 +196,12 @@ public class LabelServiceTest {
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(label1, createLabel2()));
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
-        Optional<Label> label = service.get(1L);
+        Optional<Label> label = service.get("Label1");
 
         verify(labelDAO, times(1)).getAllLabel();
         assertThat(label.isPresent(), equalTo(true));
         assertThat(label.get().getId(), equalTo(1L));
-        assertThat(label.get().getName(), equalTo(label1.getName()));
+        assertThat(label.get().getTitle(), equalTo(label1.getTitle()));
     }
 
     @Test
@@ -210,7 +210,7 @@ public class LabelServiceTest {
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
         service.getAllLabels();
-        Optional<Label> label = service.get(1L);
+        Optional<Label> label = service.get("Label1");
 
         verify(labelDAO, times(1)).getAllLabel();
         assertThat(label.isPresent(), equalTo(false));
@@ -223,12 +223,12 @@ public class LabelServiceTest {
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
         service.getAllLabels();
-        Optional<Label> label = service.get(1L);
+        Optional<Label> label = service.get("Label1");
 
         verify(labelDAO, times(1)).getAllLabel();
         assertThat(label.isPresent(), equalTo(true));
         assertThat(label.get().getId(), equalTo(1L));
-        assertThat(label.get().getName(), equalTo(label1.getName()));
+        assertThat(label.get().getTitle(), equalTo(label1.getTitle()));
     }
 
     @Test
@@ -236,7 +236,7 @@ public class LabelServiceTest {
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel2()));
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
-        service.deleteLabel(1L);
+        service.deleteLabel("Label1");
 
         verify(labelDAO, times(1)).getAllLabel();
         verify(labelDAO, never()).deleteLabel(1L);
@@ -247,7 +247,7 @@ public class LabelServiceTest {
         when(labelDAO.getAllLabel()).thenReturn(Arrays.asList(createLabel1(), createLabel2()));
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
-        service.deleteLabel(1L);
+        service.deleteLabel("Label1");
 
         verify(labelDAO, times(1)).getAllLabel();
         verify(labelDAO, times(1)).deleteLabel(1L);
@@ -259,7 +259,7 @@ public class LabelServiceTest {
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
         service.getAllLabels();
-        service.deleteLabel(1L);
+        service.deleteLabel("Label1");
 
         verify(labelDAO, times(1)).getAllLabel();
         verify(labelDAO, never()).deleteLabel(1L);
@@ -271,7 +271,7 @@ public class LabelServiceTest {
 
         LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
         service.getAllLabels();
-        service.deleteLabel(1L);
+        service.deleteLabel("Label1");
 
         verify(labelDAO, times(1)).getAllLabel();
         verify(labelDAO, times(1)).deleteLabel(1L);
@@ -292,7 +292,7 @@ public class LabelServiceTest {
         verify(labelDAO, times(1)).getMemberLabel(eq(1L));
         assertThat(memberLabels.isPresent(), equalTo(true));
         assertThat(memberLabels.get().getId(), equalTo(1L));
-        assertThat(memberLabels.get().getName(), equalTo(label1.getName()));
+        assertThat(memberLabels.get().getTitle(), equalTo(label1.getTitle()));
     }
 
     @Test

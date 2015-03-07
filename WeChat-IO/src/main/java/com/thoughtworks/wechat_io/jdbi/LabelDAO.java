@@ -13,9 +13,9 @@ import java.util.List;
 
 @RegisterMapper(LabelMapper.class)
 public interface LabelDAO extends DAO {
-    @SqlUpdate("INSERT INTO Label (Name, CreatedTime) VALUES (:name, :createdTime)")
+    @SqlUpdate("INSERT INTO Label (Title, CreatedTime) VALUES (:title, :createdTime)")
     @GetGeneratedKeys
-    long createLabel(@Bind("name") final String name,
+    long createLabel(@Bind("title") final String title,
                      @Bind("createdTime") final Timestamp createdTime);
 
     @SqlQuery("SELECT * FROM Label")

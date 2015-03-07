@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimestamp;
 import static com.thoughtworks.wechat_core.util.precondition.ArgumentPrecondition.checkNotBlank;
@@ -34,20 +33,20 @@ public class LabelService {
         this.labelCacheSeconds = cacheConfiguration.getLabelCacheSeconds();
     }
 
-    public Optional<Label> createLabel(final String name) {
-        checkNotBlank(name);
+    public Optional<Label> createLabel(final String title) {
+        checkNotBlank(title);
 
-        LOGGER.info("[CreateLabel] Try create label with name {}.", name);
+        LOGGER.info("[CreateLabel] Try create label with title {}.", title);
         final Collection<Label> oldLabels = getLabels().values();
-        if (oldLabels.parallelStream().anyMatch((l) -> l.getName().equalsIgnoreCase(name))) {
-            LOGGER.warn("[CreateLabel] Already have a label exist with same name.");
+        if (oldLabels.parallelStream().anyMatch((l) -> l.getTitle().equalsIgnoreCase(title))) {
+            LOGGER.warn("[CreateLabel] Already have a label exist with same title.");
             return Optional.empty();
         }
 
         cacheManager.expire(LABEL_CACHE_KEY);
-        final long id = labelDAO.createLabel(name, toUnixTimestamp(DateTime.now()));
+        final long id = labelDAO.createLabel(title, toUnixTimestamp(DateTime.now()));
         LOGGER.info("[CreateLabel] Create a label with id: {}.", id);
-        return Optional.of(getLabels().get(id));
+        return Optional.of(getLabels().get(title));
     }
 
     public List<Label> getAllLabels() {
@@ -56,21 +55,26 @@ public class LabelService {
         return labels;
     }
 
-    public Optional<Label> get(final long id) {
-        Optional<Label> label = Optional.ofNullable(getLabels().get(id));
-        LOGGER.info("[Get] Try get label with id: {}. Status: {}.", id, label.isPresent());
+    public Optional<Label> get(final String title) {
+        checkNotBlank(title);
+
+        Optional<Label> label = Optional.ofNullable(getLabels().get(title));
+        LOGGER.info("[Get] Try get label with title: {}. Status: {}.", title, label.isPresent());
         return label;
     }
 
-    void deleteLabel(final long id) {
-        checkArgument(id > 0);
+    void deleteLabel(final String title) {
+        checkNotBlank(title);
 
-        LOGGER.info("[DeleteLabel] Try delete label with id: {}.", id);
-        final Collection<Label> oldLabels = getLabels().values();
-        if (oldLabels.parallelStream().anyMatch((l) -> l.getId() == id)) {
+        LOGGER.info("[DeleteLabel] Try delete label with title: {}.", title);
+        Label label = getLabels().get(title);
+
+        if (label != null) {
             cacheManager.expire(LABEL_CACHE_KEY);
-            LOGGER.info("[DeleteLabel] Find the label(id: {}), delete it.", id);
-            labelDAO.deleteLabel(id);
+            labelDAO.deleteLabel(label.getId());
+            LOGGER.info("[DeleteLabel] Find the label(title: {}), delete it.", title);
+        } else {
+            LOGGER.info("[DeleteLabel] Not find the label(title: {}). Skip it.", title);
         }
     }
 
@@ -90,18 +94,18 @@ public class LabelService {
         return labels;
     }
 
-    private Map<Long, Label> getLabels() {
+    private Map<String, Label> getLabels() {
         Optional<Map> cache = cacheManager.get(LABEL_CACHE_KEY, Map.class);
         if (!cache.isPresent()) {
             LOGGER.info("[LabelCache] Cache expired, read from database.");
             List<Label> labels = labelDAO.getAllLabel();
-            Map<Long, Label> labelCache = new HashMap<>();
-            labels.forEach(l -> labelCache.put(l.getId(), l));
+            Map<String, Label> labelCache = new HashMap<>();
+            labels.forEach(l -> labelCache.put(l.getTitle(), l));
 
             cacheManager.put(LABEL_CACHE_KEY, labelCache, labelCacheSeconds);
         }
 
         cache = cacheManager.get(LABEL_CACHE_KEY, Map.class);
-        return (Map<Long, Label>) cache.get();
+        return (Map<String, Label>) cache.get();
     }
 }

@@ -81,7 +81,7 @@
             <column name="Id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="Name" type="varchar(32)">
+            <column name="Title" type="varchar(32)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="CreatedTime" type="timestamp">
