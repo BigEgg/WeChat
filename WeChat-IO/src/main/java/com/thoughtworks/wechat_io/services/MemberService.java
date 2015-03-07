@@ -43,13 +43,13 @@ public class MemberService {
         if (member != null) {
             if (!member.isSubscribed()) {
                 memberDAO.updateSubscribed(member.getId(), true);
-                LOGGER.info("[SubscribeMember] An unsubscribe member existed, mark as subscribe.");
+                LOGGER.info("[SubscribeMember] An unsubscribe member(id: {}, OpenId: {}) existed, mark as subscribe.", member.getId(), openId);
             } else {
-                LOGGER.info("[SubscribeMember] An subscribed member existed, skip.");
+                LOGGER.info("[SubscribeMember] An subscribed member(id: {}, OpenId: {}) existed, skip.", member.getId(), openId);
             }
         } else {
             long memberId = memberDAO.createMember(openId, toUnixTimestamp(DateTime.now()));
-            LOGGER.info("[SubscribeMember] Create new member, id: {}.", memberId);
+            LOGGER.info("[SubscribeMember] Create new member, id: {}, OpenId: {}.", memberId, openId);
         }
         return memberDAO.getMemberByOpenId(openId);
     }
@@ -57,11 +57,11 @@ public class MemberService {
     public void unsubscribeMember(final String openId) {
         checkNotBlank(openId);
 
-        LOGGER.info("[UnsubscribeMember] Try unsubscribe member: {}.", openId);
+        LOGGER.info("[UnsubscribeMember] Try unsubscribe member, open id: {}.", openId);
         Member member = memberDAO.getMemberByOpenId(openId);
         if (member != null && member.isSubscribed()) {
             memberDAO.updateSubscribed(member.getId(), false);
-            LOGGER.info("[UnsubscribeMember] Mark member(id: {}) to unsubscribe.", openId);
+            LOGGER.info("[UnsubscribeMember] Mark member(id: {}, OpenId: {}) to unsubscribe.", member.getId(), openId);
         }
     }
 
@@ -73,10 +73,10 @@ public class MemberService {
         Optional<Label> currentLabel = labelService.getMemberLabels(member);
         if (currentLabel.isPresent()) {
             memberDAO.updateMemberLabel(member.getId(), label.getId());
-            LOGGER.info("[LinkMemberToLabel] Member already have a label(id: {}), update it.", currentLabel.get().getId());
+            LOGGER.info("[LinkMemberToLabel] Member(id: {}) already have a label(id: {}), update it.", member.getId(), currentLabel.get().getId());
         } else {
             memberDAO.linkMemberWithLabel(member.getId(), label.getId());
-            LOGGER.info("[LinkMemberToLabel] Link member to label success.");
+            LOGGER.info("[LinkMemberToLabel] Link member(id: {}) to label success.", member.getId());
         }
     }
 
@@ -87,9 +87,9 @@ public class MemberService {
         Optional<Label> currentLabel = labelService.getMemberLabels(member);
         if (currentLabel.isPresent()) {
             memberDAO.delinkMemberWithLabel(member.getId(), currentLabel.get().getId());
-            LOGGER.info("[DelinkMemberLabel] Delink member from label(id: {}).", currentLabel.get().getId());
+            LOGGER.info("[DelinkMemberLabel] Delink member(id: {}) from label(id: {}).", member.getId(), currentLabel.get().getId());
         } else {
-            LOGGER.info("[DelinkMemberLabel] Member don't have label. Skip.");
+            LOGGER.info("[DelinkMemberLabel] Member(id: {}) don't have label. Skip.", member.getId());
         }
     }
 }

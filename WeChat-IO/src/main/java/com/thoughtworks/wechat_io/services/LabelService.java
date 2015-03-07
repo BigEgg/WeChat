@@ -69,7 +69,7 @@ public class LabelService {
         final Collection<Label> oldLabels = getLabels().values();
         if (oldLabels.parallelStream().anyMatch((l) -> l.getId() == id)) {
             cacheManager.expire(LABEL_CACHE_KEY);
-            LOGGER.info("[DeleteLabel] Find the label, delete it.");
+            LOGGER.info("[DeleteLabel] Find the label(id: {}), delete it.", id);
             labelDAO.deleteLabel(id);
         }
     }
