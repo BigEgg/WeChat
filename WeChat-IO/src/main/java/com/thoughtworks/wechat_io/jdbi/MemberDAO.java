@@ -29,7 +29,8 @@ public interface MemberDAO extends DAO {
 
     @SqlUpdate("UPDATE Member SET Subscribed = :subscribed WHERE Id = :id")
     void updateSubscribed(@Bind("id") final long id,
-                          @Bind("subscribed") final boolean subscribed);
+                          @Bind("subscribed") final boolean subscribed,
+                          @Bind("modifiedTime") final Timestamp modifiedTime);
 
     @SqlQuery("SELECT m.* FROM MemberLabelRelation AS r" +
             "  JOIN Member AS m" +

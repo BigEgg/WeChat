@@ -89,7 +89,7 @@ public class MemberServiceTest {
 
         verify(memberDAO, times(2)).getMemberByOpenId(eq("openId"));
         verify(memberDAO, times(1)).createMember(eq("openId"), any(Timestamp.class));
-        verify(memberDAO, never()).updateSubscribed(anyLong(), anyBoolean());
+        verify(memberDAO, never()).updateSubscribed(anyLong(), anyBoolean(), any(Timestamp.class));
         assertThat(member, notNullValue());
         assertThat(member.getId(), equalTo(1L));
         assertThat(member.getWeChatOpenId(), equalTo("openId"));
@@ -103,7 +103,7 @@ public class MemberServiceTest {
         Member member = memberService.subscribeMember("openId");
 
         verify(memberDAO, times(2)).getMemberByOpenId(eq("openId"));
-        verify(memberDAO, times(1)).updateSubscribed(eq(1L), eq(true));
+        verify(memberDAO, times(1)).updateSubscribed(eq(1L), eq(true), any(Timestamp.class));
         verify(memberDAO, never()).createMember(anyString(), any(Timestamp.class));
         assertThat(member, notNullValue());
         assertThat(member.getId(), equalTo(1L));
@@ -118,7 +118,7 @@ public class MemberServiceTest {
         memberService.unsubscribeMember("openId");
 
         verify(memberDAO, times(1)).getMemberByOpenId(eq("openId"));
-        verify(memberDAO, times(1)).updateSubscribed(eq(1L), eq(false));
+        verify(memberDAO, times(1)).updateSubscribed(eq(1L), eq(false), any(Timestamp.class));
     }
 
     @Test
@@ -128,7 +128,7 @@ public class MemberServiceTest {
         memberService.unsubscribeMember("openId");
 
         verify(memberDAO, times(1)).getMemberByOpenId(eq("openId"));
-        verify(memberDAO, never()).updateSubscribed(anyLong(), anyBoolean());
+        verify(memberDAO, never()).updateSubscribed(anyLong(), anyBoolean(), any(Timestamp.class));
     }
 
     @Test

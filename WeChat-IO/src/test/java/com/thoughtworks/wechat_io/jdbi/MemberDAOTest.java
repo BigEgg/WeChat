@@ -79,11 +79,11 @@ public class MemberDAOTest extends AbstractDAOTest {
         Member member = memberDAO.getMemberById(id);
         assertThat(member.isSubscribed(), equalTo(true));
 
-        memberDAO.updateSubscribed(id, false);
+        memberDAO.updateSubscribed(id, false, getHappenedTime());
         member = memberDAO.getMemberById(id);
         assertThat(member.isSubscribed(), equalTo(false));
 
-        memberDAO.updateSubscribed(id, true);
+        memberDAO.updateSubscribed(id, true, getHappenedTime());
         member = memberDAO.getMemberById(id);
         assertThat(member.isSubscribed(), equalTo(true));
     }

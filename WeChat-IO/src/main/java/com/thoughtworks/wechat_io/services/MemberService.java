@@ -42,7 +42,7 @@ public class MemberService {
         Member member = memberDAO.getMemberByOpenId(openId);
         if (member != null) {
             if (!member.isSubscribed()) {
-                memberDAO.updateSubscribed(member.getId(), true);
+                memberDAO.updateSubscribed(member.getId(), true, toUnixTimestamp(DateTime.now()));
                 LOGGER.info("[SubscribeMember] An unsubscribe member(id: {}, OpenId: {}) existed, mark as subscribe.", member.getId(), openId);
             } else {
                 LOGGER.info("[SubscribeMember] An subscribed member(id: {}, OpenId: {}) existed, skip.", member.getId(), openId);
@@ -60,7 +60,7 @@ public class MemberService {
         LOGGER.info("[UnsubscribeMember] Try unsubscribe member, open id: {}.", openId);
         Member member = memberDAO.getMemberByOpenId(openId);
         if (member != null && member.isSubscribed()) {
-            memberDAO.updateSubscribed(member.getId(), false);
+            memberDAO.updateSubscribed(member.getId(), false, toUnixTimestamp(DateTime.now()));
             LOGGER.info("[UnsubscribeMember] Mark member(id: {}, OpenId: {}) to unsubscribe.", member.getId(), openId);
         }
     }
