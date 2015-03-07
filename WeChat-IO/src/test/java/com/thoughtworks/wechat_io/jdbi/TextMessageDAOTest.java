@@ -124,34 +124,34 @@ public class TextMessageDAOTest extends AbstractDAOTest {
     public void testLinkTextMessageWithLabel() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
-        textMessageDAO.linkTextMessageWithLabel(messageId, labelId);
+        textMessageDAO.linkTextMessageWithLabel(messageId, labelId, getHappenedTime());
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
     public void testLinkTextMessageWithLabel_NoMessage() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
-        textMessageDAO.linkTextMessageWithLabel(1, labelId);
+        textMessageDAO.linkTextMessageWithLabel(1, labelId, getHappenedTime());
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
     public void testLinkTextMessageWithLabel_NoLabel() throws Exception {
         final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
-        textMessageDAO.linkTextMessageWithLabel(messageId, 1);
+        textMessageDAO.linkTextMessageWithLabel(messageId, 1, getHappenedTime());
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
     public void testLinkTextMessageWithLabel_Existed() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
-        textMessageDAO.linkTextMessageWithLabel(messageId, labelId);
-        textMessageDAO.linkTextMessageWithLabel(messageId, labelId);
+        textMessageDAO.linkTextMessageWithLabel(messageId, labelId, getHappenedTime());
+        textMessageDAO.linkTextMessageWithLabel(messageId, labelId, getHappenedTime());
     }
 
     @Test
     public void testGetMembersByLabelIds() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
-        textMessageDAO.linkTextMessageWithLabel(messageId, labelId);
+        textMessageDAO.linkTextMessageWithLabel(messageId, labelId, getHappenedTime());
 
         final List<TextMessage> messages = textMessageDAO.getTextMessageByLabelIds(Arrays.asList(labelId));
         assertThat(messages, notNullValue());
@@ -165,7 +165,7 @@ public class TextMessageDAOTest extends AbstractDAOTest {
     public void testDelinkTextMessageWithLabel() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
-        textMessageDAO.linkTextMessageWithLabel(messageId, labelId);
+        textMessageDAO.linkTextMessageWithLabel(messageId, labelId, getHappenedTime());
 
         List<TextMessage> messages = textMessageDAO.getTextMessageByLabelIds(Arrays.asList(labelId));
         assertThat(messages, notNullValue());

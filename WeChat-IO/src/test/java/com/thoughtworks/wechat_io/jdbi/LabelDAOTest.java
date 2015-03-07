@@ -108,7 +108,7 @@ public class LabelDAOTest extends AbstractDAOTest {
     public void testGetTextMessageLabels() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
-        textMessageDAO.linkTextMessageWithLabel(messageId, labelId);
+        textMessageDAO.linkTextMessageWithLabel(messageId, labelId, getHappenedTime());
 
         List<Label> labels = labelDAO.getTextMessageLabels(messageId);
         assertThat(labels, notNullValue());
@@ -137,7 +137,7 @@ public class LabelDAOTest extends AbstractDAOTest {
     public void testDeleteLabel_HaveTextMessage() throws Exception {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
-        textMessageDAO.linkTextMessageWithLabel(messageId, labelId);
+        textMessageDAO.linkTextMessageWithLabel(messageId, labelId, getHappenedTime());
 
         labelDAO.deleteLabel(labelId);
     }

@@ -146,6 +146,9 @@
             <column name="LabelId" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="LinkedTime" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createIndex tableName="TextMessageLabelRelation" indexName="IX_TextMessageLabelRelation_TextMessageId">

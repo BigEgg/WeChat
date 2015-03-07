@@ -42,9 +42,10 @@ public interface TextMessageDAO extends DAO {
             "  WHERE r.LabelId IN (<labelId>)")
     List<TextMessage> getTextMessageByLabelIds(@BindIn("labelId") final List<Long> labelId);
 
-    @SqlUpdate("INSERT INTO TextMessageLabelRelation (TextMessageId, LabelId) VALUES (:textMessageId, :labelId)")
+    @SqlUpdate("INSERT INTO TextMessageLabelRelation (TextMessageId, LabelId, LinkedTime) VALUES (:textMessageId, :labelId, :linkedTime)")
     void linkTextMessageWithLabel(@Bind("textMessageId") final long textMessageId,
-                                  @Bind("labelId") final long labelId);
+                                  @Bind("labelId") final long labelId,
+                                  @Bind("linkedTime") final Timestamp linkedTime);
 
     @SqlUpdate("DELETE FROM TextMessageLabelRelation WHERE TextMessageId = :textMessageId AND LabelId = :labelId")
     void delinkTextMessageWithLabel(@Bind("textMessageId") final long textMessageId,

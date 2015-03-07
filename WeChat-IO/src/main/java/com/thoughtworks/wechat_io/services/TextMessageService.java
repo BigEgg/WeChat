@@ -106,7 +106,7 @@ public class TextMessageService {
         if (textMessageLabels.stream().anyMatch(l -> l.getId() == label.getId())) {
             LOGGER.info("[LinkTextMessageToLabel] Text message(id: {}) already linked to label(id: {}). Skip it.", textMessage.getId(), label.getId());
         } else {
-            textMessageDAO.linkTextMessageWithLabel(textMessage.getId(), label.getId());
+            textMessageDAO.linkTextMessageWithLabel(textMessage.getId(), label.getId(), toUnixTimestamp(DateTime.now()));
             LOGGER.info("[LinkTextMessageToLabel] Text message(id: {}) link to label(id: {}) success.", textMessage.getId(), label.getId());
         }
     }

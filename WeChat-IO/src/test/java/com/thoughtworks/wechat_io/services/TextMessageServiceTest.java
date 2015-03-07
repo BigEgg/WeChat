@@ -160,7 +160,7 @@ public class TextMessageServiceTest {
         textMessageService.linkTextMessageToLabel(textMessage, createLabel2());
 
         verify(labelService, times(1)).getTextMessageLabels(eq(textMessage));
-        verify(textMessageDAO, times(1)).linkTextMessageWithLabel(eq(textMessage.getId()), eq(2L));
+        verify(textMessageDAO, times(1)).linkTextMessageWithLabel(eq(textMessage.getId()), eq(2L), any(Timestamp.class));
     }
 
     @Test
@@ -171,7 +171,7 @@ public class TextMessageServiceTest {
         textMessageService.linkTextMessageToLabel(textMessage, createLabel2());
 
         verify(labelService, times(1)).getTextMessageLabels(eq(textMessage));
-        verify(textMessageDAO, never()).linkTextMessageWithLabel(anyLong(), anyLong());
+        verify(textMessageDAO, never()).linkTextMessageWithLabel(anyLong(), anyLong(), any(Timestamp.class));
     }
 
     @Test
