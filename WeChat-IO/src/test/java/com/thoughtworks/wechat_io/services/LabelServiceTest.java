@@ -39,7 +39,7 @@ public class LabelServiceTest {
     }
 
     @Test
-    public void testInject() {
+    public void testInject() throws Exception {
         Injector injector = Guice.createInjector(binder -> {
             binder.bind(LabelDAO.class).toInstance(labelDAO);
             binder.bind(CacheConfiguration.class).toInstance(configuration);
@@ -50,7 +50,7 @@ public class LabelServiceTest {
     }
 
     @Test
-    public void testInject_Singleton() {
+    public void testInject_Singleton() throws Exception {
         Injector injector = Guice.createInjector(binder -> {
             binder.bind(LabelDAO.class).toInstance(labelDAO);
             binder.bind(CacheConfiguration.class).toInstance(configuration);

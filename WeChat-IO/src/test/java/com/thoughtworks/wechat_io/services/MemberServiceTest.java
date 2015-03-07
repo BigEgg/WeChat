@@ -34,7 +34,7 @@ public class MemberServiceTest {
     }
 
     @Test
-    public void testInject() {
+    public void testInject() throws Exception {
         Injector injector = Guice.createInjector(binder -> {
             binder.bind(MemberDAO.class).toInstance(memberDAO);
             binder.bind(LabelService.class).toInstance(labelService);
@@ -45,7 +45,7 @@ public class MemberServiceTest {
     }
 
     @Test
-    public void testInject_Singleton() {
+    public void testInject_Singleton() throws Exception {
         Injector injector = Guice.createInjector(binder -> {
             binder.bind(MemberDAO.class).toInstance(memberDAO);
             binder.bind(LabelService.class).toInstance(labelService);

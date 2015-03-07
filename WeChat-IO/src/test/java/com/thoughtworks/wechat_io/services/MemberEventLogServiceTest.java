@@ -33,7 +33,7 @@ public class MemberEventLogServiceTest {
     }
 
     @Test
-    public void testInject() {
+    public void testInject() throws Exception {
         Injector injector = Guice.createInjector(binder -> {
             binder.bind(EventLogDAO.class).toInstance(eventLogDAO);
         });
@@ -43,7 +43,7 @@ public class MemberEventLogServiceTest {
     }
 
     @Test
-    public void testInject_Singleton() {
+    public void testInject_Singleton() throws Exception {
         Injector injector = Guice.createInjector(binder -> {
             binder.bind(EventLogDAO.class).toInstance(eventLogDAO);
         });

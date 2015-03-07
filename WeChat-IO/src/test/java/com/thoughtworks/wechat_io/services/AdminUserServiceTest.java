@@ -45,7 +45,7 @@ public class AdminUserServiceTest {
     }
 
     @Test
-    public void testInject_Singleton() {
+    public void testInject_Singleton() throws Exception {
         Injector injector = Guice.createInjector(binder -> {
             binder.bind(AdminUserDAO.class).toInstance(adminUserDAO);
             binder.bind(PasswordHelper.class).toInstance(passwordHelper);
