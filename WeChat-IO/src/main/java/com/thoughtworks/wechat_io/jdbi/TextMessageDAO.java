@@ -22,6 +22,14 @@ public interface TextMessageDAO extends DAO {
                                   @Bind("content") final String content,
                                   @Bind("createdTime") final Timestamp createdTime);
 
+    @SqlQuery("SELECT * FROM TextMessage WHERE Title = :title")
+    public TextMessage getTextMessageByTitle(@Bind("title") final String title);
+
+    @SqlUpdate("UPDATE TextMessage SET Content = :content, ModifiedTime = :modifiedTime WHERE :title = title")
+    public void updateContent(@Bind("title") final String title,
+                              @Bind("content") final String content,
+                              @Bind("modifiedTime") final Timestamp modifiedTime);
+
     @SqlQuery("SELECT * FROM TextMessage")
     public List<TextMessage> getAllMessages();
 

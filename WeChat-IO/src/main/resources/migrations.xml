@@ -132,6 +132,10 @@
             </column>
         </createTable>
 
+        <createIndex tableName="TextMessage" indexName="IX_TextMessage_Title">
+            <column name="Title"/>
+        </createIndex>
+
         <createTable tableName="TextMessageLabelRelation">
             <column name="TextMessageId" type="bigint">
                 <constraints nullable="false"/>

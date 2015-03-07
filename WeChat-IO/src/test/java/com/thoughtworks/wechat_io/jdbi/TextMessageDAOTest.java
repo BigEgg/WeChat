@@ -7,8 +7,7 @@ import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class TextMessageDAOTest extends AbstractDAOTest {
@@ -34,6 +33,44 @@ public class TextMessageDAOTest extends AbstractDAOTest {
     public void testCreateTextMessage_TitleShouldUnique() throws Exception {
         textMessageDAO.createTextMessage("SubscribeMessage", "Welcome1", getHappenedTime());
         textMessageDAO.createTextMessage("SubscribeMessage", "Welcome2", getHappenedTime());
+    }
+
+    @Test
+    public void testGetTextMessageByTitle() throws Exception {
+        final long id = textMessageDAO.createTextMessage("SubscribeMessage", "Welcome", getHappenedTime());
+        final TextMessage subscribeMessage = textMessageDAO.getTextMessageByTitle("SubscribeMessage");
+
+        assertThat(subscribeMessage, notNullValue());
+        assertThat(subscribeMessage.getId(), equalTo(id));
+        assertThat(subscribeMessage.getTitle(), equalTo("SubscribeMessage"));
+        assertThat(subscribeMessage.getContent(), equalTo("Welcome"));
+    }
+
+    @Test
+    public void testGetTextMessageByTitle_NotExist() throws Exception {
+        final TextMessage subscribeMessage = textMessageDAO.getTextMessageByTitle("SubscribeMessage");
+
+        assertThat(subscribeMessage, nullValue());
+    }
+
+    @Test
+    public void testUpdateContent() throws Exception {
+        final long id = textMessageDAO.createTextMessage("SubscribeMessage", "Welcome", getHappenedTime());
+        textMessageDAO.updateContent("SubscribeMessage", "Hey", getHappenedTime());
+
+        final TextMessage subscribeMessage = textMessageDAO.getTextMessageByTitle("SubscribeMessage");
+        assertThat(subscribeMessage, notNullValue());
+        assertThat(subscribeMessage.getId(), equalTo(id));
+        assertThat(subscribeMessage.getTitle(), equalTo("SubscribeMessage"));
+        assertThat(subscribeMessage.getContent(), equalTo("Hey"));
+    }
+
+    @Test
+    public void testUpdateContent_NotExist() throws Exception {
+        textMessageDAO.updateContent("SubscribeMessage", "Hey", getHappenedTime());
+
+        final TextMessage subscribeMessage = textMessageDAO.getTextMessageByTitle("SubscribeMessage");
+        assertThat(subscribeMessage, nullValue());
     }
 
     @Test
