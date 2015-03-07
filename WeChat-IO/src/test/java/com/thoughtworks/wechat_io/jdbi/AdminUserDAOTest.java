@@ -36,7 +36,7 @@ public class AdminUserDAOTest extends AbstractDAOTest {
     public void testGetAdminUserByUsername() throws Exception {
         final String username = "username";
         final String encryptPassword = "encryptPassword";
-        long id = adminUserDAO.createAdminUser(username, encryptPassword);
+        final long id = adminUserDAO.createAdminUser(username, encryptPassword);
         final AdminUser user = adminUserDAO.getAdminUserByUsername(username);
 
         assertThat(user, notNullValue());
@@ -83,16 +83,17 @@ public class AdminUserDAOTest extends AbstractDAOTest {
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
         adminUserDAO.setMember(adminUserId, memberId);
 
-        AdminUser adminUser = adminUserDAO.getAdminUserByMemberId(memberId);
+        final AdminUser adminUser = adminUserDAO.getAdminUserByMemberId(memberId);
         assertThat(adminUser, notNullValue());
         assertThat(adminUser.getId(), equalTo(1L));
-        assertThat(adminUser.getMemberId(), equalTo(1L));
+        assertThat(adminUser.getMemberId().isPresent(), equalTo(true));
+        assertThat(adminUser.getMemberId().get(), equalTo(1L));
         assertThat(adminUser.getUsername(), equalTo("username"));
     }
 
     @Test
     public void testGetAdminUserByMemberId_NotExist() throws Exception {
-        AdminUser adminUser = adminUserDAO.getAdminUserByMemberId(1L);
+        final AdminUser adminUser = adminUserDAO.getAdminUserByMemberId(1L);
         assertThat(adminUser, nullValue());
     }
 }

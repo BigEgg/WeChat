@@ -21,6 +21,6 @@ public interface AdminUserDAO extends DAO {
     @SqlUpdate("UPDATE AdminUser SET MemberId = :memberId WHERE Id = :adminUserId")
     void setMember(@Bind("adminUserId") final long adminUserId, @Bind("memberId") final long memberId);
 
-    @SqlQuery("SELECT * FORM AdminUser WHERE MemberId = :memberId")
+    @SqlQuery("SELECT * FROM AdminUser WHERE MemberId = :memberId")
     AdminUser getAdminUserByMemberId(@Bind("memberId") final long memberId);
 }
