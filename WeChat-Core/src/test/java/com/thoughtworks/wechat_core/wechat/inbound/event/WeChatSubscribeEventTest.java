@@ -3,7 +3,7 @@ package com.thoughtworks.wechat_core.wechat.inbound.event;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageType;
 import com.thoughtworks.wechat_core.messages.inbound.event.EventType;
-import com.thoughtworks.wechat_core.messages.inbound.event.SubscribeEvent;
+import com.thoughtworks.wechat_core.messages.inbound.event.InboundSubscribeEvent;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class WeChatSubscribeEventTest {
         assertThat(envelop.getToUser(), equalTo("toUser"));
         assertThat(envelop.getFromUser(), equalTo("FromUser"));
 
-        SubscribeEvent subscribeEvent = (SubscribeEvent) envelop.getMessage();
+        InboundSubscribeEvent subscribeEvent = (InboundSubscribeEvent) envelop.getMessage();
         assertThat(subscribeEvent, notNullValue());
         assertThat(subscribeEvent.getCreatedTime().toString("yyyy-MM-dd HH:mm:ss"), equalTo("2015-02-01 14:23:43"));
         assertThat(subscribeEvent.getMessageType(), equalTo(InboundMessageType.EVENT));

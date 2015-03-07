@@ -1,8 +1,7 @@
 package com.thoughtworks.wechat_core.wechat.inbound.event;
 
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
-import com.thoughtworks.wechat_core.messages.inbound.event.SubscribeEvent;
-import com.thoughtworks.wechat_core.wechat.inbound.WeChatInbound;
+import com.thoughtworks.wechat_core.messages.inbound.event.InboundSubscribeEvent;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("xml")
@@ -48,7 +47,7 @@ public class WeChatSubscribeEvent implements WeChatInboundEvent {
 
     @Override
     public InboundMessageEnvelop toEnvelop() {
-        SubscribeEvent subscribeEvent = new SubscribeEvent(this);
+        InboundSubscribeEvent subscribeEvent = new InboundSubscribeEvent(this);
         return new InboundMessageEnvelop(fromUser, toUser, subscribeEvent);
     }
 

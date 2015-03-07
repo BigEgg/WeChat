@@ -7,11 +7,11 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class SubscribeEventTest {
+public class InboundSubscribeEventTest {
     @Test
     public void testConstructor() throws Exception {
         WeChatSubscribeEvent event = new WeChatSubscribeEvent("toUser", "fromUser", 1422800623, "event", "subscribe");
-        SubscribeEvent subscribeEvent = new SubscribeEvent(event);
+        InboundSubscribeEvent subscribeEvent = new InboundSubscribeEvent(event);
 
         assertThat(subscribeEvent.getMessageType(), equalTo(InboundMessageType.EVENT));
         assertThat(subscribeEvent.getCreatedTime().toString("yyyy-MM-dd HH:mm:ss"), equalTo("2015-02-01 14:23:43"));
