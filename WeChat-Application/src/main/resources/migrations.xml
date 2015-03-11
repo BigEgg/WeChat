@@ -204,5 +204,32 @@
             <column name="Key"/>
             <column name="Type"/>
         </createIndex>
+
+        <createTable tableName="ConversationHistory">
+            <column name="Id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="MemberId" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WorkflowName" type="char(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="StartTime" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EndTime" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="Content" type="varchar(256)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="FK_ConversationHistory_MemberId_Member_Id"
+                                 baseTableName="ConversationHistory"
+                                 baseColumnNames="MemberId"
+                                 referencedTableName="Member"
+                                 referencedColumnNames="Id"/>
     </changeSet>
 </databaseChangeLog>
