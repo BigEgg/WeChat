@@ -1,6 +1,8 @@
 package com.thoughtworks.wechat_application.logic.workflow;
 
 import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNotSupportMessageException;
+import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.inbound.event.InboundSubscribeEvent;
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessage;
 import com.thoughtworks.wechat_core.wechat.inbound.event.WeChatSubscribeEvent;
@@ -30,64 +32,92 @@ public class AbstractWorkflowTest {
         workflow = new MockWorkflow(workflowStep);
     }
 
+    @Test(expected = WorkflowNotSupportMessageException.class)
+    public void testHandle_CannotHandle() throws Exception {
+        InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
+        WorkflowContext workflowContent = createWorkflowContent();
+
+        when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenReturn(WorkflowStepResult.NEXT_STEP);
+        MockWorkflow mockWorkflow = new MockWorkflow(workflowStep);
+        mockWorkflow.setCanHandle(false);
+        mockWorkflow.handle(subscribeEventEnvelop, workflowContent);
+    }
+
     @Test
     public void testHandle_NextStep() throws Exception {
-        InboundSubscribeEvent subscribeEvent = createSubscribeEvent();
-        Member subscribeMember = createSubscribeMember();
+        final InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
+        final WorkflowContext workflowContent = createWorkflowContent();
 
-        when(workflowStep.handle(eq(subscribeEvent), any(WorkflowStepContext.class))).thenReturn(WorkflowStepResult.NEXT_STEP);
+        when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenReturn(WorkflowStepResult.NEXT_STEP);
 
-        Optional<OutboundMessage> message = workflow.handle(subscribeEvent, subscribeMember);
+        final Optional<OutboundMessage> message = workflow.handle(subscribeEventEnvelop, workflowContent);
 
-        verify(workflowStep, times(1)).handle(eq(subscribeEvent), any(WorkflowStepContext.class));
+        verify(workflowStep, times(1)).handle(eq(subscribeEventEnvelop), eq(workflowContent));
         assertThat(message.isPresent(), equalTo(false));
     }
 
     @Test
     public void testHandle_Abort() throws Exception {
-        InboundSubscribeEvent subscribeEvent = createSubscribeEvent();
-        Member subscribeMember = createSubscribeMember();
+        final InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
+        final WorkflowContext workflowContent = createWorkflowContent();
 
-        when(workflowStep.handle(eq(subscribeEvent), any(WorkflowStepContext.class))).thenReturn(WorkflowStepResult.ABORT);
+        when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenReturn(WorkflowStepResult.ABORT);
 
-        Optional<OutboundMessage> message = workflow.handle(subscribeEvent, subscribeMember);
+        final Optional<OutboundMessage> message = workflow.handle(subscribeEventEnvelop, workflowContent);
 
-        verify(workflowStep, times(1)).handle(eq(subscribeEvent), any(WorkflowStepContext.class));
+        verify(workflowStep, times(1)).handle(eq(subscribeEventEnvelop), eq(workflowContent));
         assertThat(message.isPresent(), equalTo(false));
     }
 
     @Test
     public void testHandle_WorkflowComplete() throws Exception {
-        InboundSubscribeEvent subscribeEvent = createSubscribeEvent();
-        Member subscribeMember = createSubscribeMember();
+        final InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
+        final WorkflowContext workflowContent = createWorkflowContent();
 
-        when(workflowStep.handle(eq(subscribeEvent), any(WorkflowStepContext.class))).thenAnswer(answer -> {
-            BasicWorkflowStepContext context = answer.getArgumentAt(1, BasicWorkflowStepContext.class);
+        when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenAnswer(answer -> {
+            final BasicWorkflowContext context = answer.getArgumentAt(1, BasicWorkflowContext.class);
             context.setOutboundMessage(mock(OutboundMessage.class));
             return WorkflowStepResult.WORKFLOW_COMPLETE;
         });
 
-        Optional<OutboundMessage> message = workflow.handle(subscribeEvent, subscribeMember);
+        final Optional<OutboundMessage> message = workflow.handle(subscribeEventEnvelop, workflowContent);
 
         assertThat(message.isPresent(), equalTo(true));
     }
 
-    private InboundSubscribeEvent createSubscribeEvent() {
-        WeChatSubscribeEvent event = new WeChatSubscribeEvent("toUser", "fromUser", 1422800623, "event", "subscribe");
-        return new InboundSubscribeEvent(event);
+    private InboundMessageEnvelop createSubscribeEventEnvelop() {
+        final WeChatSubscribeEvent event = new WeChatSubscribeEvent("toUser", "fromUser", 1422800623, "event", "subscribe");
+        final InboundSubscribeEvent inboundSubscribeEvent = new InboundSubscribeEvent(event);
+
+        return new InboundMessageEnvelop("fromUser", "toUser", inboundSubscribeEvent);
     }
 
     private Member createSubscribeMember() {
         return new Member(1L, "openId", true);
     }
 
-    public class MockWorkflow extends AbstractWorkflow<InboundSubscribeEvent> {
+    private WorkflowContext createWorkflowContent() {
+        return new BasicWorkflowContext();
+    }
+
+    public class MockWorkflow extends AbstractWorkflow {
+        private boolean canHandle = true;
+
         {
             LOGGER = LoggerFactory.getLogger(MockWorkflow.class);
         }
 
         public MockWorkflow(WorkflowStep step) {
             super(Arrays.asList(step));
+        }
+
+        public void setCanHandle(boolean canHandle) {
+            this.canHandle = canHandle;
+        }
+
+        @Override
+        public boolean canHandle(InboundMessageEnvelop inboundMessageEnvelop, WorkflowContext workflowContext) {
+            return this.canHandle;
         }
     }
 }
