@@ -1,5 +1,8 @@
 package com.thoughtworks.wechat_application.services.passwordUtils;
 
+import com.google.inject.ImplementedBy;
+
+@ImplementedBy(PasswordHelper_V1.class)
 public interface PasswordHelper {
     String saltHash(final String password);
 

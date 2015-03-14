@@ -1,14 +1,34 @@
 package com.thoughtworks.wechat_application.services.passwordUtils;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.junit.Test;
 
 import static com.thoughtworks.wechat_core.util.HashHelper.hash;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class PasswordHelper_V1Test {
     private PasswordHelper passwordHelper = new PasswordHelper_V1();
+
+    @Test
+    public void testInject() throws Exception {
+        final Injector injector = Guice.createInjector(binder -> {
+        });
+
+        final PasswordHelper helper = injector.getInstance(PasswordHelper.class);
+        assertThat(helper, notNullValue());
+    }
+
+    @Test
+    public void testInject_Singleton() throws Exception {
+        final Injector injector = Guice.createInjector(binder -> {
+        });
+
+        final PasswordHelper helper = injector.getInstance(PasswordHelper.class);
+        final PasswordHelper anotherHelper = injector.getInstance(PasswordHelper.class);
+        assertThat(helper, equalTo(anotherHelper));
+    }
 
     @Test
     public void make_sure_sha256_hash_algorithm_exist() throws Exception {

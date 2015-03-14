@@ -1,5 +1,6 @@
 package com.thoughtworks.wechat_application.services.passwordUtils;
 
+import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.thoughtworks.wechat_core.util.HashHelper.hash;
 import static com.thoughtworks.wechat_core.util.precondition.ArgumentPrecondition.checkNotBlank;
 
+@Singleton
 public class PasswordHelper_V1 implements PasswordHelper {
     public final static String DEFAULT_ALGORITHM = "SHA-256";
     private final static Logger LOGGER = LoggerFactory.getLogger(PasswordHelper_V1.class);
