@@ -34,8 +34,8 @@ public class AbstractWorkflowTest {
 
     @Test(expected = WorkflowNotSupportMessageException.class)
     public void testHandle_CannotHandle() throws Exception {
-        InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
-        WorkflowContext workflowContent = createWorkflowContent();
+        final InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
+        final WorkflowContext workflowContent = createWorkflowContent();
 
         when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenReturn(WorkflowStepResult.NEXT_STEP);
         MockWorkflow mockWorkflow = new MockWorkflow(workflowStep);

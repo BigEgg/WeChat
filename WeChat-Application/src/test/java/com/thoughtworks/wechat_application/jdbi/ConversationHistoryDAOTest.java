@@ -40,7 +40,7 @@ public class ConversationHistoryDAOTest extends AbstractDAOTest {
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
         final long historyId = conversationHistoryDAO.createConversationHistory(memberId, WORKFLOW_NAME, getHappenedTime());
 
-        ConversationHistory history = conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(memberId);
+        final ConversationHistory history = conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(memberId);
         assertThat(history, notNullValue());
         assertThat(history.getId(), equalTo(historyId));
         assertThat(history.getMemberId(), equalTo(memberId));
@@ -55,7 +55,7 @@ public class ConversationHistoryDAOTest extends AbstractDAOTest {
 
         conversationHistoryDAO.createConversationHistory(memberId, WORKFLOW_NAME, getHappenedTime());
 
-        ConversationHistory history = conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(2L);
+        final ConversationHistory history = conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(2L);
         assertThat(history, nullValue());
     }
 
@@ -66,7 +66,7 @@ public class ConversationHistoryDAOTest extends AbstractDAOTest {
 
         conversationHistoryDAO.updateContentById(historyId, "Content");
 
-        ConversationHistory history = conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(memberId);
+        final ConversationHistory history = conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(memberId);
         assertThat(history, notNullValue());
         assertThat(history.getMemberId(), equalTo(memberId));
         assertThat(history.getStartTime(), notNullValue());
@@ -81,7 +81,7 @@ public class ConversationHistoryDAOTest extends AbstractDAOTest {
 
         conversationHistoryDAO.updateEndTimeById(historyId, getHappenedTime());
 
-        ConversationHistory history = conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(memberId);
+        final ConversationHistory history = conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(memberId);
         assertThat(history, nullValue());
     }
 

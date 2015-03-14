@@ -78,7 +78,7 @@ public class TextMessageDAOTest extends AbstractDAOTest {
         textMessageDAO.createTextMessage("SubscribeMessage", "Welcome", getHappenedTime());
         textMessageDAO.createTextMessage("Welcome", "Welcome", getHappenedTime());
 
-        List<TextMessage> messages = textMessageDAO.getAllMessages();
+        final List<TextMessage> messages = textMessageDAO.getAllMessages();
         assertThat(messages, notNullValue());
         assertThat(messages.size(), equalTo(2));
 
@@ -93,14 +93,14 @@ public class TextMessageDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetAllMessages_Empty() throws Exception {
-        List<TextMessage> messages = textMessageDAO.getAllMessages();
+        final List<TextMessage> messages = textMessageDAO.getAllMessages();
         assertThat(messages, notNullValue());
         assertThat(messages.size(), equalTo(0));
     }
 
     @Test
     public void testDeleteMessage() throws Exception {
-        long messageId = textMessageDAO.createTextMessage("SubscribeMessage", "Welcome", getHappenedTime());
+        final long messageId = textMessageDAO.createTextMessage("SubscribeMessage", "Welcome", getHappenedTime());
         textMessageDAO.createTextMessage("Welcome", "Welcome", getHappenedTime());
 
         List<TextMessage> messages = textMessageDAO.getAllMessages();

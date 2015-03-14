@@ -38,7 +38,7 @@ public class LabelDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetAllLabel_NoLabel() throws Exception {
-        List<Label> labels = labelDAO.getAllLabel();
+        final List<Label> labels = labelDAO.getAllLabel();
         assertThat(labels, notNullValue());
         assertThat(labels.isEmpty(), equalTo(true));
     }
@@ -48,7 +48,7 @@ public class LabelDAOTest extends AbstractDAOTest {
         labelDAO.createLabel("Label1", getHappenedTime());
         labelDAO.createLabel("Label2", getHappenedTime());
 
-        List<Label> labels = labelDAO.getAllLabel();
+        final List<Label> labels = labelDAO.getAllLabel();
         assertThat(labels, notNullValue());
         assertThat(labels.isEmpty(), equalTo(false));
         assertThat(labels.size(), equalTo(2));
@@ -75,7 +75,7 @@ public class LabelDAOTest extends AbstractDAOTest {
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
         memberDAO.linkMemberWithLabel(memberId, labelId, getHappenedTime());
 
-        Label label = labelDAO.getMemberLabel(memberId);
+        final Label label = labelDAO.getMemberLabel(memberId);
         assertThat(label, notNullValue());
         assertThat(label.getId(), equalTo(labelId));
         assertThat(label.getTitle(), equalTo("Label"));
@@ -85,13 +85,13 @@ public class LabelDAOTest extends AbstractDAOTest {
     public void testGetMemberLabels_NoLink() throws Exception {
         final long memberId = memberDAO.createMember("OpenId", getHappenedTime());
 
-        Label label = labelDAO.getMemberLabel(memberId);
+        final Label label = labelDAO.getMemberLabel(memberId);
         assertThat(label, nullValue());
     }
 
     @Test
     public void testGetMemberLabels_NoMember() throws Exception {
-        Label label = labelDAO.getMemberLabel(0);
+        final Label label = labelDAO.getMemberLabel(0);
         assertThat(label, nullValue());
     }
 
@@ -110,7 +110,7 @@ public class LabelDAOTest extends AbstractDAOTest {
         final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
         textMessageDAO.linkTextMessageWithLabel(messageId, labelId, getHappenedTime());
 
-        List<Label> labels = labelDAO.getTextMessageLabels(messageId);
+        final List<Label> labels = labelDAO.getTextMessageLabels(messageId);
         assertThat(labels, notNullValue());
         assertThat(labels.size(), equalTo(1));
         assertThat(labels.get(0).getId(), equalTo(labelId));
@@ -121,14 +121,14 @@ public class LabelDAOTest extends AbstractDAOTest {
     public void testGetTextMessageLabels_NoLink() throws Exception {
         final long messageId = textMessageDAO.createTextMessage("title", "content", getHappenedTime());
 
-        List<Label> labels = labelDAO.getTextMessageLabels(messageId);
+        final List<Label> labels = labelDAO.getTextMessageLabels(messageId);
         assertThat(labels, notNullValue());
         assertThat(labels.size(), equalTo(0));
     }
 
     @Test
     public void testGetTextMessageLabels_NoMember() throws Exception {
-        List<Label> labels = labelDAO.getTextMessageLabels(0);
+        final List<Label> labels = labelDAO.getTextMessageLabels(0);
         assertThat(labels, notNullValue());
         assertThat(labels.size(), equalTo(0));
     }

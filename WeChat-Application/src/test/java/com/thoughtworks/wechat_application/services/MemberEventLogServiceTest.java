@@ -34,22 +34,22 @@ public class MemberEventLogServiceTest {
 
     @Test
     public void testInject() throws Exception {
-        Injector injector = Guice.createInjector(binder -> {
+        final Injector injector = Guice.createInjector(binder -> {
             binder.bind(EventLogDAO.class).toInstance(eventLogDAO);
         });
 
-        EventLogService service = injector.getInstance(EventLogService.class);
+        final EventLogService service = injector.getInstance(EventLogService.class);
         assertThat(service, notNullValue());
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        Injector injector = Guice.createInjector(binder -> {
+        final Injector injector = Guice.createInjector(binder -> {
             binder.bind(EventLogDAO.class).toInstance(eventLogDAO);
         });
 
-        EventLogService service = injector.getInstance(EventLogService.class);
-        EventLogService anotherService = injector.getInstance(EventLogService.class);
+        final EventLogService service = injector.getInstance(EventLogService.class);
+        final EventLogService anotherService = injector.getInstance(EventLogService.class);
         assertThat(service, equalTo(anotherService));
     }
 

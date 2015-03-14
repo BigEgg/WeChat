@@ -35,31 +35,31 @@ public class ConversationHistoryServiceTest {
 
     @Test
     public void testInjection() throws Exception {
-        Injector injector = Guice.createInjector(binder -> {
+        final Injector injector = Guice.createInjector(binder -> {
             binder.bind(ConversationHistoryDAO.class).toInstance(conversationHistoryDAO);
         });
 
-        ConversationHistoryService conversationHistoryService = injector.getInstance(ConversationHistoryService.class);
+        final ConversationHistoryService conversationHistoryService = injector.getInstance(ConversationHistoryService.class);
         assertThat(conversationHistoryService, notNullValue());
     }
 
     @Test
     public void testInjection_Singleton() throws Exception {
-        Injector injector = Guice.createInjector(binder -> {
+        final Injector injector = Guice.createInjector(binder -> {
             binder.bind(ConversationHistoryDAO.class).toInstance(conversationHistoryDAO);
         });
 
-        ConversationHistoryService conversationHistoryService = injector.getInstance(ConversationHistoryService.class);
-        ConversationHistoryService anotherConversationHistoryService = injector.getInstance(ConversationHistoryService.class);
+        final ConversationHistoryService conversationHistoryService = injector.getInstance(ConversationHistoryService.class);
+        final ConversationHistoryService anotherConversationHistoryService = injector.getInstance(ConversationHistoryService.class);
         assertThat(conversationHistoryService, equalTo(anotherConversationHistoryService));
     }
 
     @Test
     public void testStartNewConversation_NoActiveConversation() throws Exception {
-        Member member = createSubscribeMember();
+        final Member member = createSubscribeMember();
         when(conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(member.getId())).thenReturn(null, createConversationHistory1());
 
-        ConversationHistory conversation = service.startNewConversation(member, "Subscribe");
+        final ConversationHistory conversation = service.startNewConversation(member, "Subscribe");
 
         verify(conversationHistoryDAO, times(2)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
         verify(conversationHistoryDAO, never()).updateEndTimeById(anyLong(), any(Timestamp.class));
@@ -76,10 +76,10 @@ public class ConversationHistoryServiceTest {
 
     @Test
     public void testStartNewConversation_HaveActiveConversation() throws Exception {
-        Member member = createSubscribeMember();
+        final Member member = createSubscribeMember();
         when(conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(member.getId())).thenReturn(createConversationHistory1(), createConversationHistory2());
 
-        ConversationHistory conversation = service.startNewConversation(member, "Subscribe");
+        final ConversationHistory conversation = service.startNewConversation(member, "Subscribe");
 
         verify(conversationHistoryDAO, times(2)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
         verify(conversationHistoryDAO, times(1)).updateEndTimeById(eq(1L), any(Timestamp.class));
@@ -96,10 +96,10 @@ public class ConversationHistoryServiceTest {
 
     @Test
     public void testGetMemberConversation_NoActiveConversation() throws Exception {
-        Member member = createSubscribeMember();
+        final Member member = createSubscribeMember();
         when(conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(member.getId())).thenReturn(null);
 
-        Optional<ConversationHistory> conversation = service.getMemberConversation(member);
+        final Optional<ConversationHistory> conversation = service.getMemberConversation(member);
 
         verify(conversationHistoryDAO, times(1)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
         assertThat(conversation.isPresent(), equalTo(false));
@@ -107,10 +107,10 @@ public class ConversationHistoryServiceTest {
 
     @Test
     public void testGetMemberConversation_HaveActiveConversation() throws Exception {
-        Member member = createSubscribeMember();
+        final Member member = createSubscribeMember();
         when(conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(member.getId())).thenReturn(createConversationHistory1());
 
-        Optional<ConversationHistory> conversation = service.getMemberConversation(member);
+        final Optional<ConversationHistory> conversation = service.getMemberConversation(member);
 
         verify(conversationHistoryDAO, times(1)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
         assertThat(conversation.isPresent(), equalTo(true));
@@ -118,7 +118,7 @@ public class ConversationHistoryServiceTest {
 
     @Test
     public void testEndConversation_NoActiveConversation() throws Exception {
-        Member member = createSubscribeMember();
+        final Member member = createSubscribeMember();
         when(conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(member.getId())).thenReturn(null);
 
         service.endConversation(member);
@@ -129,7 +129,7 @@ public class ConversationHistoryServiceTest {
 
     @Test
     public void testEndConversation_HaveActiveConversation() throws Exception {
-        Member member = createSubscribeMember();
+        final Member member = createSubscribeMember();
         when(conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(member.getId())).thenReturn(createConversationHistory1());
 
         service.endConversation(member);
@@ -140,7 +140,7 @@ public class ConversationHistoryServiceTest {
 
     @Test
     public void testUpdateConversationContent_NoActiveConversation() throws Exception {
-        Member member = createSubscribeMember();
+        final Member member = createSubscribeMember();
         when(conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(member.getId())).thenReturn(null);
 
         service.updateConversationContent(member, "NewContent");
@@ -151,7 +151,7 @@ public class ConversationHistoryServiceTest {
 
     @Test
     public void testUpdateConversationContent_HaveActiveConversation() throws Exception {
-        Member member = createSubscribeMember();
+        final Member member = createSubscribeMember();
         when(conversationHistoryDAO.getNotCompleteConversationHistoryByMemberId(member.getId())).thenReturn(createConversationHistory1());
 
         service.updateConversationContent(member, "NewContent");

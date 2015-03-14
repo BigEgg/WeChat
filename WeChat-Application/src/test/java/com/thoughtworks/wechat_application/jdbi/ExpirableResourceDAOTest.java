@@ -59,7 +59,7 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetResource_Expire() throws Exception {
-        long resourceId = expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime(), getHappenedTime());
+        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime(), getHappenedTime());
         assertThat(resourceId, equalTo(1L));
 
         Thread.sleep(5000);

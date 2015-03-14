@@ -158,7 +158,7 @@ public class MemberDAOTest extends AbstractDAOTest {
         final long labelId = labelDAO.createLabel("Label", getHappenedTime());
         memberDAO.updateMemberLabel(1, labelId, getHappenedTime());
 
-        List<Member> members = memberDAO.getMembersByLabelIds(Arrays.asList(labelId));
+        final List<Member> members = memberDAO.getMembersByLabelIds(Arrays.asList(labelId));
         assertThat(members.size(), equalTo(0));
     }
 

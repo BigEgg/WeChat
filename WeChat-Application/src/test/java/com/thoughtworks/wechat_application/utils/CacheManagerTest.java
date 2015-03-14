@@ -7,17 +7,26 @@ import org.junit.Test;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class CacheManagerTest {
     @Test
-    public void testInject_Singleton() {
-        Injector injector = Guice.createInjector(binder -> {
+    public void testInject() {
+        final Injector injector = Guice.createInjector(binder -> {
         });
 
-        CacheManager cacheManager = injector.getInstance(CacheManager.class);
-        CacheManager anotherCacheManager = injector.getInstance(CacheManager.class);
+        final CacheManager cacheManager = injector.getInstance(CacheManager.class);
+        assertThat(cacheManager, notNullValue());
+    }
 
+    @Test
+    public void testInject_Singleton() {
+        final Injector injector = Guice.createInjector(binder -> {
+        });
+
+        final CacheManager cacheManager = injector.getInstance(CacheManager.class);
+        final CacheManager anotherCacheManager = injector.getInstance(CacheManager.class);
         assertThat(cacheManager, equalTo(anotherCacheManager));
     }
 

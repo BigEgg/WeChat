@@ -35,24 +35,24 @@ public class AdminUserServiceTest {
 
     @Test
     public void testInject() throws Exception {
-        Injector injector = Guice.createInjector(binder -> {
+        final Injector injector = Guice.createInjector(binder -> {
             binder.bind(AdminUserDAO.class).toInstance(adminUserDAO);
             binder.bind(PasswordHelper.class).toInstance(passwordHelper);
         });
 
-        AdminUserService service = injector.getInstance(AdminUserService.class);
+        final AdminUserService service = injector.getInstance(AdminUserService.class);
         assertThat(service, notNullValue());
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        Injector injector = Guice.createInjector(binder -> {
+        final Injector injector = Guice.createInjector(binder -> {
             binder.bind(AdminUserDAO.class).toInstance(adminUserDAO);
             binder.bind(PasswordHelper.class).toInstance(passwordHelper);
         });
 
-        AdminUserService service = injector.getInstance(AdminUserService.class);
-        AdminUserService anotherService = injector.getInstance(AdminUserService.class);
+        final AdminUserService service = injector.getInstance(AdminUserService.class);
+        final AdminUserService anotherService = injector.getInstance(AdminUserService.class);
         assertThat(service, equalTo(anotherService));
     }
 
@@ -62,7 +62,7 @@ public class AdminUserServiceTest {
         when(passwordHelper.getSaltFromHashedPassword("hashedPassword")).thenReturn("salt");
         when(passwordHelper.saltHash("password", "salt")).thenReturn("hashedPassword");
 
-        Optional<AdminUser> adminUser = adminUserService.logIn("username", "password");
+        final Optional<AdminUser> adminUser = adminUserService.logIn("username", "password");
 
         verify(adminUserDAO, times(1)).getAdminUserByUsername(eq("username"));
         verify(passwordHelper, times(1)).getSaltFromHashedPassword(eq("hashedPassword"));
@@ -78,7 +78,7 @@ public class AdminUserServiceTest {
     public void testLogIn_UserNotExist() throws Exception {
         when(adminUserDAO.getAdminUserByUsername("username")).thenReturn(null);
 
-        Optional<AdminUser> adminUser = adminUserService.logIn("username", "password");
+        final Optional<AdminUser> adminUser = adminUserService.logIn("username", "password");
 
         verify(adminUserDAO, times(1)).getAdminUserByUsername(eq("username"));
         verify(passwordHelper, never()).getSaltFromHashedPassword(anyString());
@@ -92,7 +92,7 @@ public class AdminUserServiceTest {
         when(passwordHelper.getSaltFromHashedPassword("hashedPassword")).thenReturn("salt");
         when(passwordHelper.saltHash("password", "salt")).thenReturn("hashedPassword123");
 
-        Optional<AdminUser> adminUser = adminUserService.logIn("username", "password");
+        final Optional<AdminUser> adminUser = adminUserService.logIn("username", "password");
 
         verify(adminUserDAO, times(1)).getAdminUserByUsername(eq("username"));
         verify(passwordHelper, times(1)).getSaltFromHashedPassword(eq("hashedPassword"));
@@ -105,7 +105,7 @@ public class AdminUserServiceTest {
         when(adminUserDAO.getAdminUserByUsername("username")).thenReturn(null, createAdmin());
         when(passwordHelper.saltHash("password")).thenReturn("hashedPassword");
 
-        Optional<AdminUser> adminUser = adminUserService.createAdmin("username", "password");
+        final Optional<AdminUser> adminUser = adminUserService.createAdmin("username", "password");
 
         verify(adminUserDAO, times(1)).createAdminUser(eq("username"), eq("hashedPassword"));
         verify(adminUserDAO, times(2)).getAdminUserByUsername(eq("username"));
@@ -121,7 +121,7 @@ public class AdminUserServiceTest {
         when(adminUserDAO.getAdminUserByUsername("username")).thenReturn(createAdmin());
         when(passwordHelper.saltHash("password")).thenReturn("hashedPassword");
 
-        Optional<AdminUser> adminUser = adminUserService.createAdmin("username", "password1");
+        final Optional<AdminUser> adminUser = adminUserService.createAdmin("username", "password1");
 
         verify(adminUserDAO, never()).createAdminUser(anyString(), anyString());
         verify(adminUserDAO, times(1)).getAdminUserByUsername(eq("username"));
@@ -130,10 +130,10 @@ public class AdminUserServiceTest {
 
     @Test
     public void testSetMember() throws Exception {
-        AdminUser adminUser = createAdmin();
+        final AdminUser adminUser = createAdmin();
         when(adminUserDAO.getAdminUserByMemberId(1L)).thenReturn(null);
 
-        boolean isSuccess = adminUserService.setMember(adminUser, createSubscribeMember());
+        final boolean isSuccess = adminUserService.setMember(adminUser, createSubscribeMember());
 
         verify(adminUserDAO, times(1)).getAdminUserByMemberId(eq(1L));
         verify(adminUserDAO, times(1)).setMember(eq(1L), eq(1L));
@@ -142,10 +142,10 @@ public class AdminUserServiceTest {
 
     @Test
     public void testSetMember_AlreadyExist() throws Exception {
-        AdminUser adminUser = createAdmin();
+        final AdminUser adminUser = createAdmin();
         when(adminUserDAO.getAdminUserByMemberId(1L)).thenReturn(adminUser);
 
-        boolean isSuccess = adminUserService.setMember(adminUser, createSubscribeMember());
+        final boolean isSuccess = adminUserService.setMember(adminUser, createSubscribeMember());
 
         verify(adminUserDAO, times(1)).getAdminUserByMemberId(eq(1L));
         verify(adminUserDAO, never()).setMember(anyLong(), anyLong());

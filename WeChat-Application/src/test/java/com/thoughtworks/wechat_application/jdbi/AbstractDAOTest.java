@@ -21,8 +21,8 @@ public abstract class AbstractDAOTest {
     @Before
     public void setUp() throws Exception {
         pool = JdbcConnectionPool.create("jdbc:h2:mem:test", "username", "password");
-        Connection connection = pool.getConnection();
-        Liquibase liquibase = new Liquibase("migrations.xml", new ClassLoaderResourceAccessor(), new HsqlConnection(connection));
+        final Connection connection = pool.getConnection();
+        final Liquibase liquibase = new Liquibase("migrations.xml", new ClassLoaderResourceAccessor(), new HsqlConnection(connection));
         liquibase.update("");
         connection.close();
 
@@ -32,7 +32,7 @@ public abstract class AbstractDAOTest {
     @After
     public void tearDown() throws Exception {
         Connection connection = pool.getConnection();
-        Liquibase liquibase = new Liquibase("migrations.xml", new ClassLoaderResourceAccessor(), new HsqlConnection(connection));
+        final Liquibase liquibase = new Liquibase("migrations.xml", new ClassLoaderResourceAccessor(), new HsqlConnection(connection));
         liquibase.dropAll();
         connection.close();
 
