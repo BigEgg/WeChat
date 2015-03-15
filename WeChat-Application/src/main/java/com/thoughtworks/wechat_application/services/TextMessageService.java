@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -61,12 +62,6 @@ public class TextMessageService {
         }
     }
 
-    public List<TextMessage> getAllMessages() {
-        List<TextMessage> messages = textMessageDAO.getAllMessages();
-        LOGGER.info("[GetAllMessage] Get {} messages.", messages.size());
-        return messages;
-    }
-
     public boolean deleteMessage(final String title) {
         checkNotBlank(title);
 
@@ -80,6 +75,21 @@ public class TextMessageService {
             LOGGER.info("[DeleteMessage] Cannot delete text message(title '{}'), there have no such message..", title);
             return false;
         }
+    }
+
+    public List<TextMessage> getAllMessages() {
+        List<TextMessage> messages = textMessageDAO.getAllMessages();
+        LOGGER.info("[GetAllMessage] Get {} messages.", messages.size());
+        return messages;
+    }
+
+    public Optional<TextMessage> getTextMessageByTitle(final String title) {
+        checkNotBlank(title);
+
+        LOGGER.info("[GetTextMessageByTitle] Try get text message with title: {}.", title);
+        final Optional<TextMessage> textMessage = Optional.ofNullable(textMessageDAO.getTextMessageByTitle(title));
+        LOGGER.info("[GetTextMessageByTitle] Get text message with title: {}. Status {}.", title, textMessage.isPresent());
+        return textMessage;
     }
 
     public List<TextMessage> getTextMessageByLabel(final Label label) {

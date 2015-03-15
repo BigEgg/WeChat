@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -101,15 +102,6 @@ public class TextMessageServiceTest {
     }
 
     @Test
-    public void testGetAllMessages() throws Exception {
-        when(textMessageDAO.getAllMessages()).thenReturn(Arrays.asList());
-
-        final List<TextMessage> messages = textMessageService.getAllMessages();
-
-        verify(textMessageDAO, times(1)).getAllMessages();
-    }
-
-    @Test
     public void testDeleteMessage() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage());
 
@@ -132,6 +124,36 @@ public class TextMessageServiceTest {
     }
 
     @Test
+    public void testGetAllMessages() throws Exception {
+        when(textMessageDAO.getAllMessages()).thenReturn(Arrays.asList());
+
+        final List<TextMessage> messages = textMessageService.getAllMessages();
+
+        verify(textMessageDAO, times(1)).getAllMessages();
+        assertThat(messages, notNullValue());
+    }
+
+    @Test
+    public void testGetTextMessageByTitle_NotExist() throws Exception {
+        when(textMessageDAO.getTextMessageByTitle("title")).thenReturn(null);
+
+        final Optional<TextMessage> textMessage = textMessageService.getTextMessageByTitle("title");
+
+        verify(textMessageDAO, times(1)).getTextMessageByTitle(eq("title"));
+        assertThat(textMessage.isPresent(), equalTo(false));
+    }
+
+    @Test
+    public void testGetTextMessageByTitle_Exist() throws Exception {
+        when(textMessageDAO.getTextMessageByTitle("title")).thenReturn(createTextMessage());
+
+        final Optional<TextMessage> textMessage = textMessageService.getTextMessageByTitle("title");
+
+        verify(textMessageDAO, times(1)).getTextMessageByTitle(eq("title"));
+        assertThat(textMessage.isPresent(), equalTo(true));
+    }
+
+    @Test
     public void testGetTextMessageByLabel() throws Exception {
         when(textMessageDAO.getTextMessageByLabelIds(Arrays.asList(1L))).thenReturn(Arrays.asList(createTextMessage()));
 
@@ -140,7 +162,6 @@ public class TextMessageServiceTest {
         verify(textMessageDAO, times(1)).getTextMessageByLabelIds(eq(Arrays.asList(1L)));
         assertThat(messages.size(), equalTo(1));
     }
-
 
     @Test
     public void testGetTextMessageByLabels() throws Exception {
