@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_application.services.passwordUtils;
+package com.thoughtworks.wechat_application.services.admin.passwordUtils;
 
 import com.google.inject.ImplementedBy;
 

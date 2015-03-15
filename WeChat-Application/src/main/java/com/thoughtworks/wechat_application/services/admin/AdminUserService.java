@@ -1,11 +1,11 @@
-package com.thoughtworks.wechat_application.services;
+package com.thoughtworks.wechat_application.services.admin;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.wechat_application.core.AdminUser;
 import com.thoughtworks.wechat_application.core.Member;
 import com.thoughtworks.wechat_application.jdbi.AdminUserDAO;
-import com.thoughtworks.wechat_application.services.passwordUtils.PasswordHelper;
+import com.thoughtworks.wechat_application.services.admin.passwordUtils.PasswordHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
