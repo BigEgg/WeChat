@@ -15,5 +15,5 @@ public interface WorkflowContext {
 
     Optional<OutboundMessage> getOutboundMessage();
 
-    void setOutboundMessage(final OutboundMessage outboundMessage);
+    void setOutboundMessage(final Optional<OutboundMessage> outboundMessage);
 }

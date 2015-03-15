@@ -4,8 +4,6 @@ import com.thoughtworks.wechat_core.messages.outbound.OutboundMessage;
 
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 public class BasicWorkflowContext implements WorkflowContext {
     private Optional<OutboundMessage> outboundMessage;
     private String conversationContent;
@@ -43,9 +41,7 @@ public class BasicWorkflowContext implements WorkflowContext {
     }
 
     @Override
-    public void setOutboundMessage(OutboundMessage outboundMessage) {
-        checkNotNull(outboundMessage);
-
-        this.outboundMessage = Optional.of(outboundMessage);
+    public void setOutboundMessage(Optional<OutboundMessage> outboundMessage) {
+        this.outboundMessage = outboundMessage;
     }
 }

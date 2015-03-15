@@ -76,7 +76,7 @@ public class AbstractWorkflowTest {
 
         when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenAnswer(answer -> {
             final BasicWorkflowContext context = answer.getArgumentAt(1, BasicWorkflowContext.class);
-            context.setOutboundMessage(mock(OutboundMessage.class));
+            context.setOutboundMessage(Optional.of(mock(OutboundMessage.class)));
             return WorkflowStepResult.WORKFLOW_COMPLETE;
         });
 
