@@ -18,22 +18,22 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
     @Test
     public void testCreateResource() throws Exception {
-        long resourceId = expirableResourceDAO.createResource("key1", "type1", "value", 1, getHappenedTime(), getHappenedTime());
+        long resourceId = expirableResourceDAO.createResource("key1", "type1", "value", 1, getHappenedTime());
         assertThat(resourceId, equalTo(1L));
 
-        resourceId = expirableResourceDAO.createResource("key2", "type2", "value", 1, getHappenedTime(), getHappenedTime());
+        resourceId = expirableResourceDAO.createResource("key2", "type2", "value", 1, getHappenedTime());
         assertThat(resourceId, equalTo(2L));
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
     public void testCreateResource_SameKeyAndValue() throws Exception {
-        expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime(), getHappenedTime());
-        expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime(), getHappenedTime());
+        expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime());
+        expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime());
     }
 
     @Test
     public void testUpdateResource() throws Exception {
-        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime(), getHappenedTime());
+        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime());
         assertThat(resourceId, equalTo(1L));
 
         expirableResourceDAO.updateResource("key", "type", "newValue", 60, getHappenedTime());
@@ -57,7 +57,7 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetResource_Expire() throws Exception {
-        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime(), getHappenedTime());
+        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime());
         assertThat(resourceId, equalTo(1L));
 
         Thread.sleep(5000);
@@ -71,7 +71,7 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetResource_NeverExpire() throws Exception {
-        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 0, getHappenedTime(), getHappenedTime());
+        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 0, getHappenedTime());
         assertThat(resourceId, equalTo(1L));
 
         Thread.sleep(5000);
@@ -86,7 +86,7 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetResource_NotExpire() throws Exception {
-        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 60, getHappenedTime(), getHappenedTime());
+        final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 60, getHappenedTime());
         assertThat(resourceId, equalTo(1L));
 
         final ExpirableResource resource = expirableResourceDAO.getResource("key", "type");
@@ -106,7 +106,7 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
     @Test
     public void testDeleteResources() throws Exception {
-        expirableResourceDAO.createResource("key", "type", "value", 60, getHappenedTime(), getHappenedTime());
+        expirableResourceDAO.createResource("key", "type", "value", 60, getHappenedTime());
 
         expirableResourceDAO.deleteResources("key", "type");
         final ExpirableResource resource = expirableResourceDAO.getResource("key", "type");

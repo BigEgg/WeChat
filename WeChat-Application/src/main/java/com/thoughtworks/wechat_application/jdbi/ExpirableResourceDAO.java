@@ -12,24 +12,23 @@ import java.sql.Timestamp;
 
 @RegisterMapper(ExpirableResourceMapper.class)
 public interface ExpirableResourceDAO extends DAO {
-    @SqlUpdate("INSERT INTO ExpirableResources (Key, Type, Value, ExpiresInSecond, CreatedTime, ModifiedTime)" +
-            "   VALUES (:key, :type, :value, :expiresInSecond, :createTime, :modifiedTime)")
+    @SqlUpdate("INSERT INTO ExpirableResources (Key, Type, Value, ExpiresInSecond, CreatedTime)" +
+            "   VALUES (:key, :type, :value, :expiresInSecond, :createTime)")
     @GetGeneratedKeys
     long createResource(@Bind("key") final String key,
                         @Bind("type") final String type,
                         @Bind("value") final String value,
                         @Bind("expiresInSecond") final int expiresInSecond,
-                        @Bind("createTime") final Timestamp createdTime,
-                        @Bind("modifiedTime") final Timestamp modifiedTime);
+                        @Bind("createTime") final Timestamp createdTime);
 
     @SqlUpdate("UPDATE ExpirableResources " +
-            "   SET Value = :value, ExpiresInSecond = :expiresInSecond, ModifiedTime = :modifiedTime" +
+            "   SET Value = :value, ExpiresInSecond = :expiresInSecond, CreatedTime = :createTime" +
             "   WHERE Key = :key AND Type = :type")
     void updateResource(@Bind("key") final String key,
                         @Bind("type") final String type,
                         @Bind("value") final String value,
                         @Bind("expiresInSecond") final int expiresInSecond,
-                        @Bind("modifiedTime") final Timestamp modifiedTime);
+                        @Bind("createTime") final Timestamp createdTime);
 
     @SqlQuery("SELECT * FROM ExpirableResources WHERE Key = :key AND Type = :type")
     ExpirableResource getResource(@Bind("key") final String key,

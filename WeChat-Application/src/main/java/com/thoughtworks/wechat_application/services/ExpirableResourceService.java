@@ -34,7 +34,7 @@ public class ExpirableResourceService {
         final ExpirableResource resource = expirableResourceDAO.getResource(key, type);
         if (resource == null) {
             LOGGER.info("[SetResource] No expirable resource(key: {}, type: {}) found. Create a new one with value: {}, expires in '{}' second(s).", key, type, value, expiresInSecond);
-            expirableResourceDAO.createResource(key, type, value, expiresInSecond, toUnixTimestamp(DateTime.now()), toUnixTimestamp(DateTime.now()));
+            expirableResourceDAO.createResource(key, type, value, expiresInSecond, toUnixTimestamp(DateTime.now()));
         } else {
             LOGGER.info("[SetResource] Found one expirable resource(key: {}, type: {}). Update the value from '{}' to '{}', expires in '{}' second(s).", key, type, resource.getValue(), value, expiresInSecond);
             expirableResourceDAO.updateResource(key, type, value, expiresInSecond, toUnixTimestamp(DateTime.now()));

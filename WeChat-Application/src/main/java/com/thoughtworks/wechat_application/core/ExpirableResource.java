@@ -39,4 +39,8 @@ public class ExpirableResource {
                 ? Optional.<String>empty()
                 : Optional.of(value);
     }
+
+    public String getOldValue() {
+        return value;
+    }
 }
