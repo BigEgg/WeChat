@@ -5,8 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
-import java.util.Arrays;
-
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -38,7 +36,7 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
         final long resourceId = expirableResourceDAO.createResource("key", "type", "value", 1, getHappenedTime(), getHappenedTime());
         assertThat(resourceId, equalTo(1L));
 
-        expirableResourceDAO.updateResource("key", "type", "newValue", 60, getHappenedTime(), getHappenedTime());
+        expirableResourceDAO.updateResource("key", "type", "newValue", 60, getHappenedTime());
 
         final ExpirableResource resource = expirableResourceDAO.getResource("key", "type");
         assertThat(resource, notNullValue());
@@ -51,7 +49,7 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
 
     @Test
     public void testUpdateResource_NotExist() throws Exception {
-        expirableResourceDAO.updateResource("key", "type", "newValue", 60, getHappenedTime(), getHappenedTime());
+        expirableResourceDAO.updateResource("key", "type", "newValue", 60, getHappenedTime());
 
         final ExpirableResource resource = expirableResourceDAO.getResource("key", "type");
         assertThat(resource, nullValue());
@@ -110,8 +108,13 @@ public class ExpirableResourceDAOTest extends AbstractDAOTest {
     public void testDeleteResources() throws Exception {
         expirableResourceDAO.createResource("key", "type", "value", 60, getHappenedTime(), getHappenedTime());
 
-        expirableResourceDAO.deleteResources(Arrays.asList(1L));
+        expirableResourceDAO.deleteResources("key", "type");
         final ExpirableResource resource = expirableResourceDAO.getResource("key", "type");
         assertThat(resource, nullValue());
+    }
+
+    @Test
+    public void testDeleteResources_NotExist() throws Exception {
+        expirableResourceDAO.deleteResources("key", "type");
     }
 }
