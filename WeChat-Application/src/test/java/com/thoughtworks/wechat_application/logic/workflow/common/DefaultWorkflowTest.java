@@ -2,6 +2,8 @@ package com.thoughtworks.wechat_application.logic.workflow.common;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.thoughtworks.wechat_application.logic.workflow.WorkflowLevel;
+import com.thoughtworks.wechat_application.logic.workflow.WorkflowLevelAnnotation;
 import com.thoughtworks.wechat_application.logic.workflow.common.steps.DefaultWorkflowStep;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import org.junit.Before;
@@ -24,6 +26,12 @@ public class DefaultWorkflowTest {
     @Before
     public void setUp() throws Exception {
         workflow = new DefaultWorkflow(step);
+    }
+
+    @Test
+    public void testWorkflowLevel() throws Exception {
+        assertThat(workflow.getClass().isAnnotationPresent(WorkflowLevelAnnotation.class), equalTo(true));
+        assertThat(workflow.getClass().getAnnotation(WorkflowLevelAnnotation.class).level(), equalTo(WorkflowLevel.DEFAULT));
     }
 
     @Test

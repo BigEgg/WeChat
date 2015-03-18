@@ -3,6 +3,8 @@ package com.thoughtworks.wechat_application.logic.workflow.subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.logic.workflow.Workflow;
+import com.thoughtworks.wechat_application.logic.workflow.WorkflowLevel;
+import com.thoughtworks.wechat_application.logic.workflow.WorkflowLevelAnnotation;
 import com.thoughtworks.wechat_application.logic.workflow.subscribe.steps.SubscribeWorkflowStep;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessage;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
@@ -28,6 +30,12 @@ public class SubscribeWorkflowTest {
     @Before
     public void setUp() throws Exception {
         subscribeWorkflow = new SubscribeWorkflow(subscribeWorkflowStep);
+    }
+
+    @Test
+    public void testWorkflowLevel() throws Exception {
+        assertThat(subscribeWorkflow.getClass().isAnnotationPresent(WorkflowLevelAnnotation.class), equalTo(true));
+        assertThat(subscribeWorkflow.getClass().getAnnotation(WorkflowLevelAnnotation.class).level(), equalTo(WorkflowLevel.SPECIFIC));
     }
 
     @Test
