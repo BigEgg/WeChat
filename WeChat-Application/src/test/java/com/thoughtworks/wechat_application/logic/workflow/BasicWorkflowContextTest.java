@@ -11,7 +11,7 @@ public class BasicWorkflowContextTest {
         final BasicWorkflowContext context = new BasicWorkflowContext();
 
         assertThat(context.getOutboundMessage().isPresent(), equalTo(false));
-        assertThat(context.getConversationContent(), equalTo(""));
+        assertThat(context.getConversationContent().isPresent(), equalTo(false));
         assertThat(context.getSaveConversationContent(), equalTo(false));
     }
 }

@@ -80,8 +80,9 @@ public class SubscribeWorkflowStepTest {
         verify(memberService, times(1)).subscribeMember("fromUser");
         verify(eventLogService, times(1)).member();
         verify(eventLogService.member(), times(1)).subscribe(any(Member.class), any(DateTime.class));
+        verify(adminResourceService, times(1)).getMessageResource(eq(AdminResourceKeys.SUBSCRIBE_RESPONSE));
         assertThat(result, equalTo(WorkflowStepResult.WORKFLOW_COMPLETE));
-        assertThat(context.getConversationContent(), equalTo(""));
+        assertThat(context.getConversationContent().isPresent(), equalTo(false));
         assertThat(context.getSaveConversationContent(), equalTo(false));
         assertThat(context.getOutboundMessage().isPresent(), equalTo(true));
         assertThat(context.getOutboundMessage().get().getClass(), equalTo(OutboundTextMessage.class));

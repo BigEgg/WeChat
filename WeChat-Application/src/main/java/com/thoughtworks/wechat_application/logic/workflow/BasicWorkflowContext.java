@@ -6,12 +6,12 @@ import java.util.Optional;
 
 public class BasicWorkflowContext implements WorkflowContext {
     private Optional<OutboundMessage> outboundMessage;
-    private String conversationContent;
+    private Optional<String> conversationContent;
     private boolean saveConversationContent;
 
     public BasicWorkflowContext() {
         this.outboundMessage = Optional.empty();
-        this.conversationContent = "";
+        this.conversationContent = Optional.empty();
         this.saveConversationContent = false;
     }
 
@@ -26,12 +26,12 @@ public class BasicWorkflowContext implements WorkflowContext {
     }
 
     @Override
-    public String getConversationContent() {
+    public Optional<String> getConversationContent() {
         return conversationContent;
     }
 
     @Override
-    public void setConversationContent(String conversationContent) {
+    public void setConversationContent(Optional<String> conversationContent) {
         this.conversationContent = conversationContent;
     }
 

@@ -2,7 +2,6 @@ package com.thoughtworks.wechat_application.logic.workflow.subscribe;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.thoughtworks.wechat_application.logic.workflow.BasicWorkflowContext;
 import com.thoughtworks.wechat_application.logic.workflow.Workflow;
 import com.thoughtworks.wechat_application.logic.workflow.subscribe.steps.SubscribeWorkflowStep;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessage;
@@ -53,15 +52,15 @@ public class SubscribeWorkflowTest {
     }
 
     @Test
-    public void testCanHandle_SubscribeEvent() throws Exception {
-        final boolean canHandle = subscribeWorkflow.canHandle(createSubscribeEventEnvelop(), new BasicWorkflowContext());
+    public void testCanStartHandle_SubscribeEvent() throws Exception {
+        final boolean canHandle = subscribeWorkflow.canStartHandle(createSubscribeEventEnvelop());
 
         assertThat(canHandle, equalTo(true));
     }
 
     @Test
-    public void testCanHandle_Not_SubscribeEvent() throws Exception {
-        final boolean canHandle = subscribeWorkflow.canHandle(new InboundMessageEnvelop("fromUser", "toUser", mock(InboundMessage.class)), new BasicWorkflowContext());
+    public void testCanStartHandle_Not_SubscribeEvent() throws Exception {
+        final boolean canHandle = subscribeWorkflow.canStartHandle(new InboundMessageEnvelop("fromUser", "toUser", mock(InboundMessage.class)));
 
         assertThat(canHandle, equalTo(false));
     }

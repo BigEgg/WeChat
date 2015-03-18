@@ -1,6 +1,7 @@
 package com.thoughtworks.wechat_application.logic.workflow;
 
 import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNeverCompleteException;
 import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNotSupportMessageException;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.inbound.event.InboundSubscribeEvent;
@@ -33,27 +34,24 @@ public class AbstractWorkflowTest {
     }
 
     @Test(expected = WorkflowNotSupportMessageException.class)
-    public void testHandle_CannotHandle() throws Exception {
+    public void testHandle_CannotStartHandle() throws Exception {
         final InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
         final WorkflowContext workflowContent = createWorkflowContent();
 
         when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenReturn(WorkflowStepResult.NEXT_STEP);
         MockWorkflow mockWorkflow = new MockWorkflow(workflowStep);
-        mockWorkflow.setCanHandle(false);
+        mockWorkflow.setCanStartHandle(false);
         mockWorkflow.handle(subscribeEventEnvelop, workflowContent);
     }
 
-    @Test
-    public void testHandle_NextStep() throws Exception {
+    @Test(expected = WorkflowNeverCompleteException.class)
+    public void testHandle_NoEnd() throws Exception {
         final InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
         final WorkflowContext workflowContent = createWorkflowContent();
 
         when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenReturn(WorkflowStepResult.NEXT_STEP);
 
-        final Optional<OutboundMessage> message = workflow.handle(subscribeEventEnvelop, workflowContent);
-
-        verify(workflowStep, times(1)).handle(eq(subscribeEventEnvelop), eq(workflowContent));
-        assertThat(message.isPresent(), equalTo(false));
+        workflow.handle(subscribeEventEnvelop, workflowContent);
     }
 
     @Test
@@ -63,14 +61,33 @@ public class AbstractWorkflowTest {
 
         when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenReturn(WorkflowStepResult.ABORT);
 
-        final Optional<OutboundMessage> message = workflow.handle(subscribeEventEnvelop, workflowContent);
+        final WorkflowResult result = workflow.handle(subscribeEventEnvelop, workflowContent);
 
         verify(workflowStep, times(1)).handle(eq(subscribeEventEnvelop), eq(workflowContent));
-        assertThat(message.isPresent(), equalTo(false));
+        assertThat(result, equalTo(WorkflowResult.ABORT));
+        assertThat(workflowContent.getOutboundMessage().isPresent(), equalTo(false));
     }
 
     @Test
-    public void testHandle_WorkflowComplete() throws Exception {
+    public void testHandle_WorkflowCompleteNotFinished() throws Exception {
+        final InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
+        final WorkflowContext workflowContent = createWorkflowContent();
+
+        when(workflowStep.handle(subscribeEventEnvelop, workflowContent)).thenAnswer(answer -> {
+            final BasicWorkflowContext context = answer.getArgumentAt(1, BasicWorkflowContext.class);
+            context.setOutboundMessage(Optional.of(mock(OutboundMessage.class)));
+            return WorkflowStepResult.STEP_COMPLETE;
+        });
+
+        final WorkflowResult result = workflow.handle(subscribeEventEnvelop, workflowContent);
+
+        verify(workflowStep, times(1)).handle(eq(subscribeEventEnvelop), eq(workflowContent));
+        assertThat(result, equalTo(WorkflowResult.COMPLETE_NOT_FINISHED));
+        assertThat(workflowContent.getOutboundMessage().isPresent(), equalTo(true));
+    }
+
+    @Test
+    public void testHandle_WorkflowFinished() throws Exception {
         final InboundMessageEnvelop subscribeEventEnvelop = createSubscribeEventEnvelop();
         final WorkflowContext workflowContent = createWorkflowContent();
 
@@ -80,9 +97,11 @@ public class AbstractWorkflowTest {
             return WorkflowStepResult.WORKFLOW_COMPLETE;
         });
 
-        final Optional<OutboundMessage> message = workflow.handle(subscribeEventEnvelop, workflowContent);
+        final WorkflowResult result = workflow.handle(subscribeEventEnvelop, workflowContent);
 
-        assertThat(message.isPresent(), equalTo(true));
+        verify(workflowStep, times(1)).handle(eq(subscribeEventEnvelop), eq(workflowContent));
+        assertThat(result, equalTo(WorkflowResult.FINISHED));
+        assertThat(workflowContent.getOutboundMessage().isPresent(), equalTo(true));
     }
 
     private InboundMessageEnvelop createSubscribeEventEnvelop() {
@@ -101,7 +120,7 @@ public class AbstractWorkflowTest {
     }
 
     public class MockWorkflow extends AbstractWorkflow {
-        private boolean canHandle = true;
+        private boolean canStartHandle = true;
 
         {
             LOGGER = LoggerFactory.getLogger(MockWorkflow.class);
@@ -111,13 +130,13 @@ public class AbstractWorkflowTest {
             super(Arrays.asList(step));
         }
 
-        public void setCanHandle(boolean canHandle) {
-            this.canHandle = canHandle;
+        public void setCanStartHandle(boolean canHandle) {
+            this.canStartHandle = canHandle;
         }
 
         @Override
-        public boolean canHandle(InboundMessageEnvelop inboundMessageEnvelop, WorkflowContext workflowContext) {
-            return this.canHandle;
+        public boolean canStartHandle(InboundMessageEnvelop inboundMessageEnvelop) {
+            return this.canStartHandle;
         }
     }
 }

@@ -9,9 +9,9 @@ public interface WorkflowContext {
 
     void setSaveConversationContent(final boolean saveConversationContent);
 
-    String getConversationContent();
+    Optional<String> getConversationContent();
 
-    void setConversationContent(final String conversationContent);
+    void setConversationContent(final Optional<String> conversationContent);
 
     Optional<OutboundMessage> getOutboundMessage();
 

@@ -7,5 +7,4 @@ public class WorkflowNotSupportMessageException extends RuntimeException {
     public WorkflowNotSupportMessageException(String message) {
         super(message);
     }
-
 }

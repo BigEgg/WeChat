@@ -23,7 +23,7 @@ public class SubscribeWorkflow extends AbstractWorkflow {
     }
 
     @Override
-    public boolean canHandle(InboundMessageEnvelop inboundMessageEnvelop, WorkflowContext workflowContext) {
+    public boolean canStartHandle(InboundMessageEnvelop inboundMessageEnvelop) {
         return inboundMessageEnvelop.getMessage() instanceof InboundSubscribeEvent;
     }
 }
