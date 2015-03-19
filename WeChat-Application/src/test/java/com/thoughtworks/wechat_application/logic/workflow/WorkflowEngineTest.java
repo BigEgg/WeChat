@@ -211,6 +211,26 @@ public class WorkflowEngineTest {
         assertThat(outboundMessageOpt.isPresent(), equalTo(true));
     }
 
+    @Test
+    public void testHandle_DefaultWorkflowHandled() {
+        final InboundMessageEnvelop textEventEnvelop = createTextEventEnvelop();
+        final Member subscribeMember = createSubscribedMember();
+
+        when(memberService.getMemberByOpenId("fromUser")).thenReturn(Optional.of(subscribeMember));
+        when(conversationHistoryService.getMemberConversation(subscribeMember)).thenReturn(Optional.<ConversationHistory>empty());
+        when(conversationHistoryService.startNewConversation(eq(subscribeMember), anyString())).thenReturn(createConversationHistory(getWorkflowName(mockWorkflow.getClass()), ""));
+
+        final Optional<OutboundMessage> outboundMessageOpt = engine.handle(textEventEnvelop);
+
+        verify(mockWorkflow).canStartHandle(any(InboundMessageEnvelop.class));
+        verify(memberService).getMemberByOpenId(eq("fromUser"));
+        verify(conversationHistoryService).getMemberConversation(eq(subscribeMember));
+        verify(conversationHistoryService).startNewConversation(eq(subscribeMember), anyString());
+        verify(conversationHistoryService, never()).updateConversationContent(any(Member.class), anyString());
+        verify(conversationHistoryService).endConversation(eq(subscribeMember));
+        assertThat(outboundMessageOpt.isPresent(), equalTo(true));
+    }
+
     private InboundMessageEnvelop createSubscribeEventEnvelop() {
         final WeChatSubscribeEvent event = new WeChatSubscribeEvent("toUser", "fromUser", 1422800623, "event", "subscribe");
         final InboundSubscribeEvent inboundSubscribeEvent = new InboundSubscribeEvent(event);
