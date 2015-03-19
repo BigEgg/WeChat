@@ -2,32 +2,30 @@ package com.thoughtworks.wechat_application.services.admin.passwordUtils;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.junit.Before;
 import org.junit.Test;
 
 import static com.thoughtworks.wechat_core.util.HashHelper.hash;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 public class PasswordHelper_V1Test {
-    private PasswordHelper passwordHelper = new PasswordHelper_V1();
+    private PasswordHelper passwordHelper;
+    private Injector injector;
 
-    @Test
-    public void testInject() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
+    @Before
+    public void setUp() throws Exception {
+        injector = Guice.createInjector(binder -> {
         });
 
-        final PasswordHelper helper = injector.getInstance(PasswordHelper.class);
-        assertThat(helper, notNullValue());
+        passwordHelper = injector.getInstance(PasswordHelper.class);
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-        });
-
-        final PasswordHelper helper = injector.getInstance(PasswordHelper.class);
         final PasswordHelper anotherHelper = injector.getInstance(PasswordHelper.class);
-        assertThat(helper, equalTo(anotherHelper));
+        assertThat(passwordHelper, equalTo(anotherHelper));
     }
 
     @Test

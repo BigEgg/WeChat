@@ -26,32 +26,21 @@ public class MemberServiceTest {
     private MemberDAO memberDAO;
     @Mock
     private LabelService labelService;
-    private MemberService memberService;
+    private MemberService service;
+    private Injector injector;
 
     @Before
     public void setUp() throws Exception {
-        memberService = new MemberService(memberDAO, labelService);
-    }
-
-    @Test
-    public void testInject() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
+        injector = Guice.createInjector(binder -> {
             binder.bind(MemberDAO.class).toInstance(memberDAO);
             binder.bind(LabelService.class).toInstance(labelService);
         });
 
-        final MemberService service = injector.getInstance(MemberService.class);
-        assertThat(service, notNullValue());
+        service = injector.getInstance(MemberService.class);
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-            binder.bind(MemberDAO.class).toInstance(memberDAO);
-            binder.bind(LabelService.class).toInstance(labelService);
-        });
-
-        final MemberService service = injector.getInstance(MemberService.class);
         final MemberService anotherService = injector.getInstance(MemberService.class);
         assertThat(service, equalTo(anotherService));
     }
@@ -60,7 +49,7 @@ public class MemberServiceTest {
     public void testGetMemberByOpenId_Exist() throws Exception {
         when(memberDAO.getMemberByOpenId("openId")).thenReturn(createUnsubscribeMember());
 
-        final Optional<Member> member = memberService.getMemberByOpenId("openId");
+        final Optional<Member> member = service.getMemberByOpenId("openId");
 
         verify(memberDAO).getMemberByOpenId(eq("openId"));
         assertThat(member.isPresent(), equalTo(true));
@@ -73,7 +62,7 @@ public class MemberServiceTest {
     public void testGetMemberByOpenId_NotExist() throws Exception {
         when(memberDAO.getMemberByOpenId("openId")).thenReturn(null);
 
-        final Optional<Member> member = memberService.getMemberByOpenId("openId");
+        final Optional<Member> member = service.getMemberByOpenId("openId");
 
         verify(memberDAO).getMemberByOpenId(eq("openId"));
         assertThat(member.isPresent(), equalTo(false));
@@ -85,7 +74,7 @@ public class MemberServiceTest {
         when(memberDAO.getMemberByOpenId("openId")).thenReturn(null, mockMember);
         when(memberDAO.createMember(eq("openId"), any(Timestamp.class))).thenReturn(mockMember.getId());
 
-        final Member member = memberService.subscribeMember("openId");
+        final Member member = service.subscribeMember("openId");
 
         verify(memberDAO, times(2)).getMemberByOpenId(eq("openId"));
         verify(memberDAO).createMember(eq("openId"), any(Timestamp.class));
@@ -100,7 +89,7 @@ public class MemberServiceTest {
     public void testSubscribeMember_Exist() throws Exception {
         when(memberDAO.getMemberByOpenId("openId")).thenReturn(createUnsubscribeMember(), createSubscribeMember());
 
-        final Member member = memberService.subscribeMember("openId");
+        final Member member = service.subscribeMember("openId");
 
         verify(memberDAO, times(2)).getMemberByOpenId(eq("openId"));
         verify(memberDAO).updateSubscribed(eq(1L), eq(true), any(Timestamp.class));
@@ -115,7 +104,7 @@ public class MemberServiceTest {
     public void testUnsubscribeMember_Exist() throws Exception {
         when(memberDAO.getMemberByOpenId("openId")).thenReturn(createSubscribeMember());
 
-        memberService.unsubscribeMember("openId");
+        service.unsubscribeMember("openId");
 
         verify(memberDAO).getMemberByOpenId(eq("openId"));
         verify(memberDAO).updateSubscribed(eq(1L), eq(false), any(Timestamp.class));
@@ -125,7 +114,7 @@ public class MemberServiceTest {
     public void testUnsubscribeMember_NotExist() throws Exception {
         when(memberDAO.getMemberByOpenId("openId")).thenReturn(null);
 
-        memberService.unsubscribeMember("openId");
+        service.unsubscribeMember("openId");
 
         verify(memberDAO).getMemberByOpenId(eq("openId"));
         verify(memberDAO, never()).updateSubscribed(anyLong(), anyBoolean(), any(Timestamp.class));
@@ -137,7 +126,7 @@ public class MemberServiceTest {
         final Label label = createLabel1();
         when(labelService.getMemberLabels(member)).thenReturn(Optional.empty());
 
-        memberService.linkMemberToLabel(member, label);
+        service.linkMemberToLabel(member, label);
 
         verify(labelService).getMemberLabels(eq(member));
         verify(memberDAO).linkMemberWithLabel(eq(member.getId()), eq(label.getId()), any(Timestamp.class));
@@ -149,7 +138,7 @@ public class MemberServiceTest {
         final Member member = createSubscribeMember();
         when(labelService.getMemberLabels(member)).thenReturn(Optional.of(createLabel1()));
 
-        memberService.linkMemberToLabel(member, createLabel2());
+        service.linkMemberToLabel(member, createLabel2());
 
         verify(labelService).getMemberLabels(eq(member));
         verify(memberDAO).updateMemberLabel(eq(member.getId()), eq(2L), any(Timestamp.class));
@@ -161,7 +150,7 @@ public class MemberServiceTest {
         final Member member = createSubscribeMember();
         when(labelService.getMemberLabels(member)).thenReturn(Optional.of(createLabel1()));
 
-        memberService.delinkMemberLabel(member);
+        service.delinkMemberLabel(member);
 
         verify(labelService).getMemberLabels(eq(member));
         verify(memberDAO).delinkMemberWithLabel(eq(member.getId()), eq(1L));
@@ -172,7 +161,7 @@ public class MemberServiceTest {
         final Member member = createSubscribeMember();
         when(labelService.getMemberLabels(member)).thenReturn(Optional.empty());
 
-        memberService.delinkMemberLabel(member);
+        service.delinkMemberLabel(member);
 
         verify(labelService).getMemberLabels(eq(member));
         verify(memberDAO, never()).delinkMemberWithLabel(anyLong(), anyLong());

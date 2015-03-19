@@ -27,31 +27,21 @@ public class ConversationHistoryServiceTest {
     @Mock
     private ConversationHistoryDAO conversationHistoryDAO;
     private ConversationHistoryService service;
+    private Injector injector;
 
     @Before
     public void setUp() throws Exception {
-        service = new ConversationHistoryService(conversationHistoryDAO);
-    }
-
-    @Test
-    public void testInjection() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
+        injector = Guice.createInjector(binder -> {
             binder.bind(ConversationHistoryDAO.class).toInstance(conversationHistoryDAO);
         });
 
-        final ConversationHistoryService conversationHistoryService = injector.getInstance(ConversationHistoryService.class);
-        assertThat(conversationHistoryService, notNullValue());
+        service = injector.getInstance(ConversationHistoryService.class);
     }
 
     @Test
     public void testInjection_Singleton() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-            binder.bind(ConversationHistoryDAO.class).toInstance(conversationHistoryDAO);
-        });
-
-        final ConversationHistoryService conversationHistoryService = injector.getInstance(ConversationHistoryService.class);
         final ConversationHistoryService anotherConversationHistoryService = injector.getInstance(ConversationHistoryService.class);
-        assertThat(conversationHistoryService, equalTo(anotherConversationHistoryService));
+        assertThat(service, equalTo(anotherConversationHistoryService));
     }
 
     @Test

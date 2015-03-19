@@ -27,32 +27,21 @@ public class TextMessageServiceTest {
     private TextMessageDAO textMessageDAO;
     @Mock
     private LabelService labelService;
-    private TextMessageService textMessageService;
+    private TextMessageService service;
+    private Injector injector;
 
     @Before
     public void setUp() throws Exception {
-        textMessageService = new TextMessageService(textMessageDAO, labelService);
-    }
-
-    @Test
-    public void testInject() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
+        injector = Guice.createInjector(binder -> {
             binder.bind(TextMessageDAO.class).toInstance(textMessageDAO);
             binder.bind(LabelService.class).toInstance(labelService);
         });
 
-        final TextMessageService service = injector.getInstance(TextMessageService.class);
-        assertThat(service, notNullValue());
+        service = injector.getInstance(TextMessageService.class);
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-            binder.bind(TextMessageDAO.class).toInstance(textMessageDAO);
-            binder.bind(LabelService.class).toInstance(labelService);
-        });
-
-        final TextMessageService service = injector.getInstance(TextMessageService.class);
         final TextMessageService anotherService = injector.getInstance(TextMessageService.class);
         assertThat(service, equalTo(anotherService));
     }
@@ -61,7 +50,7 @@ public class TextMessageServiceTest {
     public void testNewTextMessage() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(null);
 
-        final boolean result = textMessageService.newTextMessage("Title", "Content");
+        final boolean result = service.newTextMessage("Title", "Content");
 
         verify(textMessageDAO).getTextMessageByTitle(eq("Title"));
         verify(textMessageDAO).createTextMessage(eq("Title"), eq("Content"), any(Timestamp.class));
@@ -72,7 +61,7 @@ public class TextMessageServiceTest {
     public void testNewTextMessage_Exist() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage());
 
-        final boolean result = textMessageService.newTextMessage("Title", "Content");
+        final boolean result = service.newTextMessage("Title", "Content");
 
         verify(textMessageDAO).getTextMessageByTitle(eq("Title"));
         verify(textMessageDAO, never()).createTextMessage(anyString(), anyString(), any(Timestamp.class));
@@ -83,7 +72,7 @@ public class TextMessageServiceTest {
     public void testUpdateContent() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage());
 
-        final boolean result = textMessageService.updateContent("Title", "Something different");
+        final boolean result = service.updateContent("Title", "Something different");
 
         verify(textMessageDAO).getTextMessageByTitle("Title");
         verify(textMessageDAO).updateContent(eq("Title"), eq("Something different"), any(Timestamp.class));
@@ -94,7 +83,7 @@ public class TextMessageServiceTest {
     public void testUpdateContent_NotExist() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(null);
 
-        final boolean result = textMessageService.updateContent("Title", "Something different");
+        final boolean result = service.updateContent("Title", "Something different");
 
         verify(textMessageDAO).getTextMessageByTitle("Title");
         verify(textMessageDAO, never()).updateContent(anyString(), anyString(), any(Timestamp.class));
@@ -105,7 +94,7 @@ public class TextMessageServiceTest {
     public void testDeleteMessage() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(createTextMessage());
 
-        final boolean result = textMessageService.deleteMessage("Title");
+        final boolean result = service.deleteMessage("Title");
 
         verify(textMessageDAO).getTextMessageByTitle(eq("Title"));
         verify(textMessageDAO).deleteMessage(eq(1L));
@@ -116,7 +105,7 @@ public class TextMessageServiceTest {
     public void testDeleteMessage_NotExist() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(null);
 
-        final boolean result = textMessageService.deleteMessage("Title");
+        final boolean result = service.deleteMessage("Title");
 
         verify(textMessageDAO).getTextMessageByTitle(eq("Title"));
         verify(textMessageDAO, never()).deleteMessage(anyLong());
@@ -127,7 +116,7 @@ public class TextMessageServiceTest {
     public void testGetAllMessages() throws Exception {
         when(textMessageDAO.getAllMessages()).thenReturn(Arrays.asList());
 
-        final List<TextMessage> messages = textMessageService.getAllMessages();
+        final List<TextMessage> messages = service.getAllMessages();
 
         verify(textMessageDAO).getAllMessages();
         assertThat(messages, notNullValue());
@@ -137,7 +126,7 @@ public class TextMessageServiceTest {
     public void testGetTextMessageByTitle_NotExist() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("title")).thenReturn(null);
 
-        final Optional<TextMessage> textMessage = textMessageService.getTextMessageByTitle("title");
+        final Optional<TextMessage> textMessage = service.getTextMessageByTitle("title");
 
         verify(textMessageDAO).getTextMessageByTitle(eq("title"));
         assertThat(textMessage.isPresent(), equalTo(false));
@@ -147,7 +136,7 @@ public class TextMessageServiceTest {
     public void testGetTextMessageByTitle_Exist() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("title")).thenReturn(createTextMessage());
 
-        final Optional<TextMessage> textMessage = textMessageService.getTextMessageByTitle("title");
+        final Optional<TextMessage> textMessage = service.getTextMessageByTitle("title");
 
         verify(textMessageDAO).getTextMessageByTitle(eq("title"));
         assertThat(textMessage.isPresent(), equalTo(true));
@@ -157,7 +146,7 @@ public class TextMessageServiceTest {
     public void testGetTextMessageByLabel() throws Exception {
         when(textMessageDAO.getTextMessageByLabelIds(Arrays.asList(1L))).thenReturn(Arrays.asList(createTextMessage()));
 
-        final List<TextMessage> messages = textMessageService.getTextMessageByLabel(createLabel1());
+        final List<TextMessage> messages = service.getTextMessageByLabel(createLabel1());
 
         verify(textMessageDAO).getTextMessageByLabelIds(eq(Arrays.asList(1L)));
         assertThat(messages.size(), equalTo(1));
@@ -167,7 +156,7 @@ public class TextMessageServiceTest {
     public void testGetTextMessageByLabels() throws Exception {
         when(textMessageDAO.getTextMessageByLabelIds(Arrays.asList(1L, 2L))).thenReturn(Arrays.asList(createTextMessage()));
 
-        final List<TextMessage> messages = textMessageService.getTextMessageByLabels(Arrays.asList(createLabel1(), createLabel2()));
+        final List<TextMessage> messages = service.getTextMessageByLabels(Arrays.asList(createLabel1(), createLabel2()));
 
         verify(textMessageDAO).getTextMessageByLabelIds(eq(Arrays.asList(1L, 2L)));
         assertThat(messages.size(), equalTo(1));
@@ -178,7 +167,7 @@ public class TextMessageServiceTest {
         final TextMessage textMessage = createTextMessage();
         when(labelService.getTextMessageLabels(textMessage)).thenReturn(Arrays.asList(createLabel1()));
 
-        textMessageService.linkTextMessageToLabel(textMessage, createLabel2());
+        service.linkTextMessageToLabel(textMessage, createLabel2());
 
         verify(labelService).getTextMessageLabels(eq(textMessage));
         verify(textMessageDAO).linkTextMessageWithLabel(eq(textMessage.getId()), eq(2L), any(Timestamp.class));
@@ -189,7 +178,7 @@ public class TextMessageServiceTest {
         final TextMessage textMessage = createTextMessage();
         when(labelService.getTextMessageLabels(textMessage)).thenReturn(Arrays.asList(createLabel1(), createLabel2()));
 
-        textMessageService.linkTextMessageToLabel(textMessage, createLabel2());
+        service.linkTextMessageToLabel(textMessage, createLabel2());
 
         verify(labelService).getTextMessageLabels(eq(textMessage));
         verify(textMessageDAO, never()).linkTextMessageWithLabel(anyLong(), anyLong(), any(Timestamp.class));
@@ -200,7 +189,7 @@ public class TextMessageServiceTest {
         final TextMessage textMessage = createTextMessage();
         when(labelService.getTextMessageLabels(textMessage)).thenReturn(Arrays.asList(createLabel1(), createLabel2()));
 
-        textMessageService.delinkTextMessageWithLabel(textMessage, createLabel2());
+        service.delinkTextMessageWithLabel(textMessage, createLabel2());
 
         verify(labelService).getTextMessageLabels(eq(textMessage));
         verify(textMessageDAO).delinkTextMessageWithLabel(eq(textMessage.getId()), eq(2L));
@@ -211,7 +200,7 @@ public class TextMessageServiceTest {
         final TextMessage textMessage = createTextMessage();
         when(labelService.getTextMessageLabels(textMessage)).thenReturn(Arrays.asList(createLabel1()));
 
-        textMessageService.delinkTextMessageWithLabel(textMessage, createLabel2());
+        service.delinkTextMessageWithLabel(textMessage, createLabel2());
 
         verify(labelService).getTextMessageLabels(eq(textMessage));
         verify(textMessageDAO, never()).delinkTextMessageWithLabel(anyLong(), anyLong());

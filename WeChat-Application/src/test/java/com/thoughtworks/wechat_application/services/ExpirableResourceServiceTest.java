@@ -26,31 +26,21 @@ public class ExpirableResourceServiceTest {
     @Mock
     private ExpirableResourceDAO expirableResourceDAO;
     private ExpirableResourceService service;
+    private Injector injector;
 
     @Before
     public void setUp() throws Exception {
-        service = new ExpirableResourceService(expirableResourceDAO);
-    }
-
-    @Test
-    public void testInject() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
+        injector = Guice.createInjector(binder -> {
             binder.bind(ExpirableResourceDAO.class).toInstance(expirableResourceDAO);
         });
 
-        final ExpirableResourceService expirableResourceService = injector.getInstance(ExpirableResourceService.class);
-        assertThat(expirableResourceService, notNullValue());
+        service = injector.getInstance(ExpirableResourceService.class);
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-            binder.bind(ExpirableResourceDAO.class).toInstance(expirableResourceDAO);
-        });
-
-        final ExpirableResourceService expirableResourceService = injector.getInstance(ExpirableResourceService.class);
         final ExpirableResourceService anotherExpirableResourceService = injector.getInstance(ExpirableResourceService.class);
-        assertThat(expirableResourceService, equalTo(anotherExpirableResourceService));
+        assertThat(service, equalTo(anotherExpirableResourceService));
     }
 
     @Test

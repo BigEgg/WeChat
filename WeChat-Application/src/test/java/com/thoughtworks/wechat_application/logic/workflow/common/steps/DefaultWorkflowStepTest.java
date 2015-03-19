@@ -17,7 +17,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -27,31 +26,21 @@ public class DefaultWorkflowStepTest {
     @Mock
     private AdminResourceService adminResourceService;
     private DefaultWorkflowStep step;
+    private Injector injector;
 
     @Before
     public void setUp() throws Exception {
-        step = new DefaultWorkflowStep(adminResourceService);
-    }
-
-    @Test
-    public void testInject() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
+        injector = Guice.createInjector(binder -> {
             binder.bind(AdminResourceService.class).toInstance(adminResourceService);
         });
 
-        final DefaultWorkflowStep defaultWorkflowStep = injector.getInstance(DefaultWorkflowStep.class);
-        assertThat(defaultWorkflowStep, notNullValue());
+        step = injector.getInstance(DefaultWorkflowStep.class);
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-            binder.bind(AdminResourceService.class).toInstance(adminResourceService);
-        });
-
-        final DefaultWorkflowStep defaultWorkflowStep = injector.getInstance(DefaultWorkflowStep.class);
         final DefaultWorkflowStep anotherDefaultWorkflowStep = injector.getInstance(DefaultWorkflowStep.class);
-        assertThat(defaultWorkflowStep, equalTo(anotherDefaultWorkflowStep));
+        assertThat(step, equalTo(anotherDefaultWorkflowStep));
     }
 
     @Test

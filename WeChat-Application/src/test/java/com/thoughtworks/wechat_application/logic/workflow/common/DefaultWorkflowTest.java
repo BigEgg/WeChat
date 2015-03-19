@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -22,10 +21,15 @@ public class DefaultWorkflowTest {
     @Mock
     private DefaultWorkflowStep step;
     private DefaultWorkflow workflow;
+    private Injector injector;
 
     @Before
     public void setUp() throws Exception {
-        workflow = new DefaultWorkflow(step);
+        injector = Guice.createInjector(binder -> {
+            binder.bind(DefaultWorkflowStep.class).toInstance(step);
+        });
+
+        workflow = injector.getInstance(DefaultWorkflow.class);
     }
 
     @Test
@@ -35,24 +39,9 @@ public class DefaultWorkflowTest {
     }
 
     @Test
-    public void testInject() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-            binder.bind(DefaultWorkflowStep.class).toInstance(step);
-        });
-
-        final DefaultWorkflow defaultWorkflow = injector.getInstance(DefaultWorkflow.class);
-        assertThat(defaultWorkflow, notNullValue());
-    }
-
-    @Test
     public void testInject_Singleton() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-            binder.bind(DefaultWorkflowStep.class).toInstance(step);
-        });
-
-        final DefaultWorkflow defaultWorkflow = injector.getInstance(DefaultWorkflow.class);
         final DefaultWorkflow anotherDefaultWorkflow = injector.getInstance(DefaultWorkflow.class);
-        assertThat(defaultWorkflow, equalTo(anotherDefaultWorkflow));
+        assertThat(workflow, equalTo(anotherDefaultWorkflow));
     }
 
     @Test

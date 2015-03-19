@@ -25,7 +25,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -38,35 +37,23 @@ public class SubscribeWorkflowStepTest {
     @Mock
     private AdminResourceService adminResourceService;
     private SubscribeWorkflowStep step;
+    private Injector injector;
 
     @Before
     public void setUp() throws Exception {
-        step = new SubscribeWorkflowStep(memberService, eventLogService, adminResourceService);
-    }
-
-    @Test
-    public void testInject() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
+        injector = Guice.createInjector(binder -> {
             binder.bind(EventLogService.class).toInstance(eventLogService);
             binder.bind(MemberService.class).toInstance(memberService);
             binder.bind(AdminResourceService.class).toInstance(adminResourceService);
         });
 
-        final SubscribeWorkflowStep subscribeWorkflowStep = injector.getInstance(SubscribeWorkflowStep.class);
-        assertThat(subscribeWorkflowStep, notNullValue());
+        step = injector.getInstance(SubscribeWorkflowStep.class);
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-            binder.bind(EventLogService.class).toInstance(eventLogService);
-            binder.bind(MemberService.class).toInstance(memberService);
-            binder.bind(AdminResourceService.class).toInstance(adminResourceService);
-        });
-
-        final SubscribeWorkflowStep subscribeWorkflowStep = injector.getInstance(SubscribeWorkflowStep.class);
         final SubscribeWorkflowStep anotherSubscribeWorkflowStep = injector.getInstance(SubscribeWorkflowStep.class);
-        assertThat(subscribeWorkflowStep, equalTo(anotherSubscribeWorkflowStep));
+        assertThat(step, equalTo(anotherSubscribeWorkflowStep));
     }
 
     @Test

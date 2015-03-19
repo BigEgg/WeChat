@@ -18,7 +18,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -30,33 +29,22 @@ public class AdminResourceServiceTest {
     @Mock
     private TextMessageService textMessageService;
     private AdminResourceService service;
+    private Injector injector;
 
     @Before
     public void setUp() throws Exception {
-        service = new AdminResourceService(expirableResourceService, textMessageService);
-    }
-
-    @Test
-    public void testInject() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
+        injector = Guice.createInjector(binder -> {
             binder.bind(ExpirableResourceService.class).toInstance(expirableResourceService);
             binder.bind(TextMessageService.class).toInstance(textMessageService);
         });
 
-        final AdminResourceService adminResourceService = injector.getInstance(AdminResourceService.class);
-        assertThat(adminResourceService, notNullValue());
+        service = injector.getInstance(AdminResourceService.class);
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        final Injector injector = Guice.createInjector(binder -> {
-            binder.bind(ExpirableResourceService.class).toInstance(expirableResourceService);
-            binder.bind(TextMessageService.class).toInstance(textMessageService);
-        });
-
-        final AdminResourceService adminResourceService = injector.getInstance(AdminResourceService.class);
         final AdminResourceService anotherAdminResourceService = injector.getInstance(AdminResourceService.class);
-        assertThat(adminResourceService, equalTo(anotherAdminResourceService));
+        assertThat(service, equalTo(anotherAdminResourceService));
     }
 
     @Test
