@@ -19,7 +19,11 @@ public class WeChatInboundTextMessage implements WeChatInboundMessage {
     @XStreamAlias("MsgId")
     private long messageId;
 
-    public WeChatInboundTextMessage(String toUser, String fromUser, int createdTime, String messageType, String content, long messageId) {
+    public WeChatInboundTextMessage(final String toUser,
+                                    final String fromUser,
+                                    final int createdTime,
+                                    final String messageType,
+                                    final String content, long messageId) {
         this.toUser = toUser;
         this.fromUser = fromUser;
         this.createdTime = createdTime;
@@ -50,7 +54,7 @@ public class WeChatInboundTextMessage implements WeChatInboundMessage {
 
     @Override
     public InboundMessageEnvelop toEnvelop() {
-        InboundTextMessage textMessage = new InboundTextMessage(this);
+        final InboundTextMessage textMessage = new InboundTextMessage(this);
         return new InboundMessageEnvelop(fromUser, toUser, textMessage);
     }
 

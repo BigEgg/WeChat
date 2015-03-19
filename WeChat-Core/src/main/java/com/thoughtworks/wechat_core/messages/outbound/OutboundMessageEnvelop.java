@@ -1,7 +1,7 @@
 package com.thoughtworks.wechat_core.messages.outbound;
 
-import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutboundEmptyMessage;
 import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutbound;
+import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutboundEmptyMessage;
 
 import java.util.Optional;
 
@@ -10,7 +10,9 @@ public class OutboundMessageEnvelop {
     private String toUser;
     private Optional<OutboundMessage> message;
 
-    public OutboundMessageEnvelop(String fromUser, String toUser, Optional<OutboundMessage> message) {
+    public OutboundMessageEnvelop(final String fromUser,
+                                  final String toUser,
+                                  final Optional<OutboundMessage> message) {
         this.fromUser = fromUser;
         this.toUser = toUser;
         this.message = message;

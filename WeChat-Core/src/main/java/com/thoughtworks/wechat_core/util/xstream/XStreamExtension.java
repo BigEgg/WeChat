@@ -43,11 +43,11 @@ public class XStreamExtension {
         });
     }
 
-    private static String wrapCData(String text) {
+    private static String wrapCData(final String text) {
         return String.format("<![CDATA[%s]]>", text);
     }
 
-    private static boolean needCDATA(Class<?> targetClass, String fieldAlias) {
+    private static boolean needCDATA(final Class<?> targetClass, final String fieldAlias) {
         if (existsCDATA(targetClass, fieldAlias)) return true;
 
         Class<?> superClass = targetClass.getSuperclass();
@@ -58,11 +58,11 @@ public class XStreamExtension {
         return false;
     }
 
-    private static boolean existsCDATA(Class<?> clazz, String fieldAlias) {
-        Field[] fields = clazz.getDeclaredFields();
+    private static boolean existsCDATA(final Class<?> clazz, final String fieldAlias) {
+        final Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if (field.getAnnotation(XStreamCData.class) != null) {
-                XStreamAlias xStreamAlias = field.getAnnotation(XStreamAlias.class);
+                final XStreamAlias xStreamAlias = field.getAnnotation(XStreamAlias.class);
                 if (null != xStreamAlias) {
                     if (fieldAlias.equals(xStreamAlias.value())) {
                         return true;

@@ -17,18 +17,18 @@ import static org.mockito.Mockito.when;
 public class OutboundMessageEnvelopTest {
     @Test
     public void testConstructor() throws Exception {
-        OutboundMessage message = mock(OutboundMessage.class);
-        OutboundMessageEnvelop envelop = new OutboundMessageEnvelop("fromUser", "toUser", Optional.of(message));
+        final OutboundMessage message = mock(OutboundMessage.class);
+        final OutboundMessageEnvelop envelop = new OutboundMessageEnvelop("fromUser", "toUser", Optional.of(message));
         assertThat(envelop.getFromUser(), equalTo("fromUser"));
         assertThat(envelop.getToUser(), equalTo("toUser"));
         assertThat(envelop.getMessage().isPresent(), equalTo(true));
         assertThat(envelop.getMessage().get(), equalTo(message));
 
         when(message.toWeChat(eq(envelop))).thenReturn(new WeChatOutboundTextMessage("toUser", "fromUser", 12345678, "text", "hello"));
-        WeChatOutboundTextMessage weChatOutboundTextMessage = (WeChatOutboundTextMessage) envelop.toWeChat();
-        XStream xStream = createXStreamWithCData();
+        final WeChatOutboundTextMessage weChatOutboundTextMessage = (WeChatOutboundTextMessage) envelop.toWeChat();
+        final XStream xStream = createXStreamWithCData();
         xStream.processAnnotations(WeChatOutboundTextMessage.class);
-        String xmlMessage = xStream.toXML(weChatOutboundTextMessage);
+        final String xmlMessage = xStream.toXML(weChatOutboundTextMessage);
 
         assertThat(xmlMessage.contains("<xml>"), is(true));
         assertThat(xmlMessage.contains("<ToUserName><![CDATA[toUser]]></ToUserName>"), is(true));

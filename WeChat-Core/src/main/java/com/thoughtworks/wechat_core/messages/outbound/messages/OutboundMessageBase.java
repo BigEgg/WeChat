@@ -8,7 +8,7 @@ public abstract class OutboundMessageBase implements OutboundMessage {
     private OutboundMessageType messageType;
     private DateTime createdTime;
 
-    public OutboundMessageBase(OutboundMessageType messageType, DateTime createdTime) {
+    public OutboundMessageBase(final OutboundMessageType messageType, final DateTime createdTime) {
         this.messageType = messageType;
         this.createdTime = createdTime;
     }

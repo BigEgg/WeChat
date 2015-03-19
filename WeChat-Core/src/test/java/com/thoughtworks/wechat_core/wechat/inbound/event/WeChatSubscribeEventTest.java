@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 public class WeChatSubscribeEventTest {
     @Test
     public void deserializeTest() throws Exception {
-        String message = "<xml>\n" +
+        final String message = "<xml>\n" +
                 "<ToUserName><![CDATA[toUser]]></ToUserName>\n" +
                 "<FromUserName><![CDATA[FromUser]]></FromUserName>\n" +
                 "<CreateTime>123456789</CreateTime>\n" +
@@ -23,9 +23,9 @@ public class WeChatSubscribeEventTest {
                 "<Event><![CDATA[subscribe]]></Event>\n" +
                 "</xml>";
 
-        XStream xstream = new XStream(new DomDriver());
+        final XStream xstream = new XStream(new DomDriver());
         xstream.processAnnotations(WeChatSubscribeEvent.class);
-        WeChatSubscribeEvent event = (WeChatSubscribeEvent) xstream.fromXML(message);
+        final WeChatSubscribeEvent event = (WeChatSubscribeEvent) xstream.fromXML(message);
 
         assertThat(event, notNullValue());
         assertThat(event.getToUser(), equalTo("toUser"));
@@ -37,7 +37,7 @@ public class WeChatSubscribeEventTest {
 
     @Test
     public void testToEnvelop() throws Exception {
-        String message = "<xml>\n" +
+        final String message = "<xml>\n" +
                 "<ToUserName><![CDATA[toUser]]></ToUserName>\n" +
                 "<FromUserName><![CDATA[FromUser]]></FromUserName>\n" +
                 "<CreateTime>1422800623</CreateTime>\n" +
@@ -45,16 +45,16 @@ public class WeChatSubscribeEventTest {
                 "<Event><![CDATA[subscribe]]></Event>\n" +
                 "</xml>";
 
-        XStream xstream = new XStream(new DomDriver());
+        final XStream xstream = new XStream(new DomDriver());
         xstream.processAnnotations(WeChatSubscribeEvent.class);
-        WeChatSubscribeEvent event = (WeChatSubscribeEvent) xstream.fromXML(message);
+        final WeChatSubscribeEvent event = (WeChatSubscribeEvent) xstream.fromXML(message);
 
-        InboundMessageEnvelop envelop = event.toEnvelop();
+        final InboundMessageEnvelop envelop = event.toEnvelop();
         assertThat(envelop, notNullValue());
         assertThat(envelop.getToUser(), equalTo("toUser"));
         assertThat(envelop.getFromUser(), equalTo("FromUser"));
 
-        InboundSubscribeEvent subscribeEvent = (InboundSubscribeEvent) envelop.getMessage();
+        final InboundSubscribeEvent subscribeEvent = (InboundSubscribeEvent) envelop.getMessage();
         assertThat(subscribeEvent, notNullValue());
         assertThat(subscribeEvent.getCreatedTime().toString("yyyy-MM-dd HH:mm:ss"), equalTo("2015-02-01 14:23:43"));
         assertThat(subscribeEvent.getMessageType(), equalTo(InboundMessageType.EVENT));

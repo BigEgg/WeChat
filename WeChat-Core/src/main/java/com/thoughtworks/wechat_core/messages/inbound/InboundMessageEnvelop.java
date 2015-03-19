@@ -10,7 +10,9 @@ public class InboundMessageEnvelop {
     private String toUser;
     private InboundMessage message;
 
-    public InboundMessageEnvelop(String fromUser, String toUser, InboundMessage message) {
+    public InboundMessageEnvelop(final String fromUser,
+                                 final String toUser,
+                                 final InboundMessage message) {
         this.fromUser = fromUser;
         this.toUser = toUser;
         this.message = message;
@@ -28,7 +30,7 @@ public class InboundMessageEnvelop {
         return message;
     }
 
-    public OutboundMessageEnvelop reply(Optional<OutboundMessage> message) {
+    public OutboundMessageEnvelop reply(final Optional<OutboundMessage> message) {
         return new OutboundMessageEnvelop(toUser, fromUser, message);
     }
 }

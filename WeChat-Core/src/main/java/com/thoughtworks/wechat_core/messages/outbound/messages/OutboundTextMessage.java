@@ -11,7 +11,7 @@ import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimestam
 public class OutboundTextMessage extends OutboundMessageBase {
     private String content;
 
-    public OutboundTextMessage(String content) {
+    public OutboundTextMessage(final String content) {
         super(OutboundMessageType.TEXT, DateTime.now());
         this.content = content;
     }
@@ -21,7 +21,7 @@ public class OutboundTextMessage extends OutboundMessageBase {
     }
 
     @Override
-    public WeChatOutbound toWeChat(OutboundMessageEnvelop envelop) {
+    public WeChatOutbound toWeChat(final OutboundMessageEnvelop envelop) {
         return new WeChatOutboundTextMessage(envelop.getToUser(), envelop.getFromUser(), toUnixTimestampInt(this.getCreatedTime()), this.getMessageType().toString().toLowerCase(), this.getContent());
     }
 }

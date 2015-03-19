@@ -9,7 +9,7 @@ public abstract class InboundEventMessage implements InboundMessage {
     private DateTime createdTime;
     private EventType eventType;
 
-    public InboundEventMessage(DateTime createdTime, EventType eventType) {
+    public InboundEventMessage(final DateTime createdTime, final EventType eventType) {
         this.createdTime = createdTime;
         this.eventType = eventType;
     }

@@ -10,8 +10,8 @@ import static org.junit.Assert.assertThat;
 public class InboundSubscribeEventTest {
     @Test
     public void testConstructor() throws Exception {
-        WeChatSubscribeEvent event = new WeChatSubscribeEvent("toUser", "fromUser", 1422800623, "event", "subscribe");
-        InboundSubscribeEvent subscribeEvent = new InboundSubscribeEvent(event);
+        final WeChatSubscribeEvent event = new WeChatSubscribeEvent("toUser", "fromUser", 1422800623, "event", "subscribe");
+        final InboundSubscribeEvent subscribeEvent = new InboundSubscribeEvent(event);
 
         assertThat(subscribeEvent.getMessageType(), equalTo(InboundMessageType.EVENT));
         assertThat(subscribeEvent.getCreatedTime().toString("yyyy-MM-dd HH:mm:ss"), equalTo("2015-02-01 14:23:43"));

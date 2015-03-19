@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 public class WeChatOutboundEmptyMessageTest {
     @Test
     public void testToString() throws Exception {
-        String result = new WeChatOutboundEmptyMessage().toString();
+        final String result = new WeChatOutboundEmptyMessage().toString();
         assertThat(result, equalTo(""));
     }
 }

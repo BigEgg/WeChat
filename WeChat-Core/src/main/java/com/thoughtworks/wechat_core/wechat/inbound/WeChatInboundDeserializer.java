@@ -20,10 +20,10 @@ public class WeChatInboundDeserializer {
         canDeserialize.put(WeChatInboundDeserializer::canHandelTextMessage, WeChatInboundTextMessage.class);
     }
 
-    public static Optional<WeChatInbound> tryDeserialize(String inputString) {
-        for (Map.Entry<Function<String, Boolean>, Class> deserializerEntry : canDeserialize.entrySet()) {
+    public static Optional<WeChatInbound> tryDeserialize(final String inputString) {
+        for (final Map.Entry<Function<String, Boolean>, Class> deserializerEntry : canDeserialize.entrySet()) {
             if (deserializerEntry.getKey().apply(inputString)) {
-                XStream xstream = new XStream(new DomDriver());
+                final XStream xstream = new XStream(new DomDriver());
                 xstream.processAnnotations(deserializerEntry.getValue());
                 return Optional.ofNullable((WeChatInbound) xstream.fromXML(inputString));
             }
@@ -31,12 +31,12 @@ public class WeChatInboundDeserializer {
         return Optional.empty();
     }
 
-    private static boolean canHandleSubscribeEvent(String inputString) {
+    private static boolean canHandleSubscribeEvent(final String inputString) {
         final String subscribeEventKeyPoint = "<Event><![CDATA[subscribe]]></Event>";
         return inputString.toLowerCase().contains(subscribeEventKeyPoint.toLowerCase());
     }
 
-    private static boolean canHandelTextMessage(String inputString) {
+    private static boolean canHandelTextMessage(final String inputString) {
         final String textMessageKeyPoint = "<MsgType><![CDATA[text]]></MsgType>";
         return inputString.toLowerCase().contains(textMessageKeyPoint.toLowerCase());
     }

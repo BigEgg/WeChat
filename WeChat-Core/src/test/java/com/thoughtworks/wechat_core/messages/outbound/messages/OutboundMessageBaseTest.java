@@ -13,18 +13,18 @@ import static org.junit.Assert.assertThat;
 public class OutboundMessageBaseTest {
     @Test
     public void testConstructor() throws Exception {
-        MockOutboundMessage message = new MockOutboundMessage(OutboundMessageType.TEXT, DateTime.now());
+        final MockOutboundMessage message = new MockOutboundMessage(OutboundMessageType.TEXT, DateTime.now());
         assertThat(message.getMessageType(), equalTo(OutboundMessageType.TEXT));
         assertThat(message.getCreatedTime(), notNullValue());
     }
 
     public class MockOutboundMessage extends OutboundMessageBase {
-        public MockOutboundMessage(OutboundMessageType messageType, DateTime createdTime) {
+        public MockOutboundMessage(final OutboundMessageType messageType, final DateTime createdTime) {
             super(messageType, createdTime);
         }
 
         @Override
-        public WeChatOutbound toWeChat(OutboundMessageEnvelop envelop) {
+        public WeChatOutbound toWeChat(final OutboundMessageEnvelop envelop) {
             return null;
         }
     }

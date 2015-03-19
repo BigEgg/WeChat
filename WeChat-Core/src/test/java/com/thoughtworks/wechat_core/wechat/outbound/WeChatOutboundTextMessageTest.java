@@ -10,11 +10,11 @@ import static org.junit.Assert.assertThat;
 public class WeChatOutboundTextMessageTest {
     @Test
     public void testSerialize() {
-        WeChatOutboundTextMessage message = new WeChatOutboundTextMessage("toUser", "fromUser", 12345678, "text", "hello");
+        final WeChatOutboundTextMessage message = new WeChatOutboundTextMessage("toUser", "fromUser", 12345678, "text", "hello");
 
-        XStream xStream = createXStreamWithCData();
+        final XStream xStream = createXStreamWithCData();
         xStream.processAnnotations(WeChatOutboundTextMessage.class);
-        String xmlMessage = xStream.toXML(message);
+        final String xmlMessage = xStream.toXML(message);
 
         assertThat(xmlMessage.contains("<xml>"), is(true));
         assertThat(xmlMessage.contains("<ToUserName><![CDATA[toUser]]></ToUserName>"), is(true));
@@ -27,9 +27,9 @@ public class WeChatOutboundTextMessageTest {
 
     @Test
     public void testToString() {
-        WeChatOutboundTextMessage message = new WeChatOutboundTextMessage("toUser", "fromUser", 12345678, "text", "hello");
+        final WeChatOutboundTextMessage message = new WeChatOutboundTextMessage("toUser", "fromUser", 12345678, "text", "hello");
 
-        String xmlMessage = message.toString();
+        final String xmlMessage = message.toString();
         assertThat(xmlMessage.contains("<xml>"), is(true));
         assertThat(xmlMessage.contains("<ToUserName><![CDATA[toUser]]></ToUserName>"), is(true));
         assertThat(xmlMessage.contains("<FromUserName><![CDATA[fromUser]]></FromUserName>"), is(true));

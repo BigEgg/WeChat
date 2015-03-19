@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 public class OutboundTextMessageTest {
     @Test
     public void testConstructor() throws Exception {
-        OutboundTextMessage textMessage = new OutboundTextMessage("content");
+        final OutboundTextMessage textMessage = new OutboundTextMessage("content");
         assertThat(textMessage.getMessageType(), equalTo(OutboundMessageType.TEXT));
         assertThat(textMessage.getCreatedTime(), notNullValue());
         assertThat(textMessage.getContent(), equalTo("content"));
@@ -23,13 +23,13 @@ public class OutboundTextMessageTest {
 
     @Test
     public void testToWeChat() throws Exception {
-        OutboundTextMessage textMessage = new OutboundTextMessage("content");
-        OutboundMessageEnvelop envelop = new OutboundMessageEnvelop("fromUser", "toUser", Optional.of(textMessage));
+        final OutboundTextMessage textMessage = new OutboundTextMessage("content");
+        final OutboundMessageEnvelop envelop = new OutboundMessageEnvelop("fromUser", "toUser", Optional.of(textMessage));
 
-        WeChatOutboundTextMessage weChatOutboundTextMessage = (WeChatOutboundTextMessage) textMessage.toWeChat(envelop);
-        XStream xStream = createXStreamWithCData();
+        final WeChatOutboundTextMessage weChatOutboundTextMessage = (WeChatOutboundTextMessage) textMessage.toWeChat(envelop);
+        final XStream xStream = createXStreamWithCData();
         xStream.processAnnotations(WeChatOutboundTextMessage.class);
-        String xmlMessage = xStream.toXML(weChatOutboundTextMessage);
+        final String xmlMessage = xStream.toXML(weChatOutboundTextMessage);
 
         assertThat(xmlMessage.contains("<xml>"), is(true));
         assertThat(xmlMessage.contains("<ToUserName><![CDATA[toUser]]></ToUserName>"), is(true));

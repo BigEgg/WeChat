@@ -23,7 +23,11 @@ public class WeChatOutboundTextMessage implements WeChatOutbound {
     @XStreamCData
     private String content;
 
-    public WeChatOutboundTextMessage(String toUser, String fromUser, int createdTime, String messageType, String content) {
+    public WeChatOutboundTextMessage(final String toUser,
+                                     final String fromUser,
+                                     final int createdTime,
+                                     final String messageType,
+                                     final String content) {
         this.toUser = toUser;
         this.fromUser = fromUser;
         this.createdTime = createdTime;
@@ -33,7 +37,7 @@ public class WeChatOutboundTextMessage implements WeChatOutbound {
 
     @Override
     public String toString() {
-        XStream xStream = createXStreamWithCData();
+        final XStream xStream = createXStreamWithCData();
         xStream.processAnnotations(WeChatOutboundTextMessage.class);
         return xStream.toXML(this);
     }

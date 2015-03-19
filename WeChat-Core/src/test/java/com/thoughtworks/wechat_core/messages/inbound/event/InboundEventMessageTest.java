@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 public class InboundEventMessageTest {
     @Test
     public void testConstructor() throws Exception {
-        MockInboundEventMessage eventMessage = new MockInboundEventMessage(DateTime.now(), EventType.SUBSCRIBE);
+        final MockInboundEventMessage eventMessage = new MockInboundEventMessage(DateTime.now(), EventType.SUBSCRIBE);
 
         assertThat(eventMessage.getMessageType(), equalTo(InboundMessageType.EVENT));
         assertThat(eventMessage.getCreatedTime(), notNullValue());

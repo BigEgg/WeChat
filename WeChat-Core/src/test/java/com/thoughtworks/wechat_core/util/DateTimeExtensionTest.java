@@ -13,25 +13,25 @@ import static org.junit.Assert.assertThat;
 public class DateTimeExtensionTest {
     @Test
     public void testToUnixTimeStampInt() throws Exception {
-        int millis = toUnixTimestampInt(new DateTime(2015, 2, 1, 14, 23, 43, DateTimeZone.UTC));
+        final int millis = toUnixTimestampInt(new DateTime(2015, 2, 1, 14, 23, 43, DateTimeZone.UTC));
         assertThat(millis, equalTo(1422800623));
     }
 
     @Test
     public void testToUnixTimeStamp() throws Exception {
-        Timestamp timeStamp = toUnixTimestamp(new DateTime(2015, 2, 1, 14, 23, 43, DateTimeZone.UTC));
+        final Timestamp timeStamp = toUnixTimestamp(new DateTime(2015, 2, 1, 14, 23, 43, DateTimeZone.UTC));
         assertThat(timeStamp.getTime(), equalTo(1422800623000L));
     }
 
     @Test
     public void testToDateTime_Int() throws Exception {
-        DateTime dateTime = toUTCDateTime(1422800623);
+        final DateTime dateTime = toUTCDateTime(1422800623);
         assertThat(dateTime.toString("yyyy-MM-dd HH:mm:ss"), equalTo("2015-02-01 14:23:43"));
     }
 
     @Test
     public void testToDateTime_Long() throws Exception {
-        DateTime dateTime = toUTCDateTime(1422800623000L);
+        final DateTime dateTime = toUTCDateTime(1422800623000L);
         assertThat(dateTime.toString("yyyy-MM-dd HH:mm:ss"), equalTo("2015-02-01 14:23:43"));
     }
 }

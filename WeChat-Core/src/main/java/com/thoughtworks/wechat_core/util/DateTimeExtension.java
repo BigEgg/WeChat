@@ -6,19 +6,19 @@ import org.joda.time.DateTimeZone;
 import java.sql.Timestamp;
 
 public final class DateTimeExtension {
-    public static int toUnixTimestampInt(DateTime dateTime) {
+    public static int toUnixTimestampInt(final DateTime dateTime) {
         return (int) (dateTime.toDateTime(DateTimeZone.UTC).getMillis() / 1000);
     }
 
-    public static Timestamp toUnixTimestamp(DateTime dateTime) {
+    public static Timestamp toUnixTimestamp(final DateTime dateTime) {
         return new Timestamp(dateTime.toDateTime(DateTimeZone.UTC).getMillis());
     }
 
-    public static DateTime toUTCDateTime(int timeStamp) {
+    public static DateTime toUTCDateTime(final int timeStamp) {
         return new DateTime(timeStamp * 1000L).toDateTime(DateTimeZone.UTC);
     }
 
-    public static DateTime toUTCDateTime(long timeStamp) {
+    public static DateTime toUTCDateTime(final long timeStamp) {
         return new DateTime(timeStamp).toDateTime(DateTimeZone.UTC);
     }
 }

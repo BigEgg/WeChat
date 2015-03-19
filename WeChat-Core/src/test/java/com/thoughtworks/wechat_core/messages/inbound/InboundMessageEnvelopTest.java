@@ -14,8 +14,8 @@ import static org.mockito.Mockito.mock;
 public class InboundMessageEnvelopTest {
     @Test
     public void testConstructor() throws Exception {
-        InboundMessage message = mock(InboundMessage.class);
-        InboundMessageEnvelop envelop = new InboundMessageEnvelop("fromUser", "toUser", message);
+        final InboundMessage message = mock(InboundMessage.class);
+        final InboundMessageEnvelop envelop = new InboundMessageEnvelop("fromUser", "toUser", message);
 
         assertThat(envelop.getFromUser(), equalTo("fromUser"));
         assertThat(envelop.getToUser(), equalTo("toUser"));
@@ -24,11 +24,11 @@ public class InboundMessageEnvelopTest {
 
     @Test
     public void testReply() throws Exception {
-        InboundMessage message = mock(InboundMessage.class);
-        InboundMessageEnvelop envelop = new InboundMessageEnvelop("user1", "user2", message);
-        OutboundMessage outboundMessage = mock(OutboundMessage.class);
+        final InboundMessage message = mock(InboundMessage.class);
+        final InboundMessageEnvelop envelop = new InboundMessageEnvelop("user1", "user2", message);
+        final OutboundMessage outboundMessage = mock(OutboundMessage.class);
 
-        OutboundMessageEnvelop outboundEnvelop = envelop.reply(Optional.of(outboundMessage));
+        final OutboundMessageEnvelop outboundEnvelop = envelop.reply(Optional.of(outboundMessage));
         assertThat(outboundEnvelop, notNullValue());
         assertThat(outboundEnvelop.getFromUser(), equalTo("user2"));
         assertThat(outboundEnvelop.getToUser(), equalTo("user1"));

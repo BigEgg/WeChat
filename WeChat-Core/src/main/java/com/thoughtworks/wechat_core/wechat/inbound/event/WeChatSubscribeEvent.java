@@ -17,7 +17,11 @@ public class WeChatSubscribeEvent implements WeChatInboundEvent {
     @XStreamAlias("Event")
     private String eventType;
 
-    public WeChatSubscribeEvent(String toUser, String fromUser, int createdTime, String messageType, String eventType) {
+    public WeChatSubscribeEvent(final String toUser,
+                                final String fromUser,
+                                final int createdTime,
+                                final String messageType,
+                                final String eventType) {
         this.toUser = toUser;
         this.fromUser = fromUser;
         this.createdTime = createdTime;
@@ -46,13 +50,13 @@ public class WeChatSubscribeEvent implements WeChatInboundEvent {
     }
 
     @Override
-    public String getEventType() {
-        return eventType;
+    public InboundMessageEnvelop toEnvelop() {
+        final InboundSubscribeEvent subscribeEvent = new InboundSubscribeEvent(this);
+        return new InboundMessageEnvelop(fromUser, toUser, subscribeEvent);
     }
 
     @Override
-    public InboundMessageEnvelop toEnvelop() {
-        InboundSubscribeEvent subscribeEvent = new InboundSubscribeEvent(this);
-        return new InboundMessageEnvelop(fromUser, toUser, subscribeEvent);
+    public String getEventType() {
+        return eventType;
     }
 }

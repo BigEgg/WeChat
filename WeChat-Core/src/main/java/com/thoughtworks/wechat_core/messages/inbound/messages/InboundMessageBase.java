@@ -9,7 +9,9 @@ public abstract class InboundMessageBase implements InboundMessage {
     private DateTime createdTime;
     private long messageId;
 
-    public InboundMessageBase(InboundMessageType messageType, DateTime createdTime, long messageId) {
+    public InboundMessageBase(final InboundMessageType messageType,
+                              final DateTime createdTime,
+                              final long messageId) {
         this.messageType = messageType;
         this.createdTime = createdTime;
         this.messageId = messageId;

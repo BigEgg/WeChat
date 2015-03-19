@@ -16,8 +16,8 @@ public class HashHelperTest {
 
     @Test
     public void testSHA1Hash() throws Exception {
-        String plainText = "Some data should be hash.";
-        String cipherText = sha1Hash(plainText);
+        final String plainText = "Some data should be hash.";
+        final String cipherText = sha1Hash(plainText);
         assertThat(cipherText, notNullValue());
         assertThat(cipherText, equalTo("41CB0DC8C787767E06F189112C2CF97FE3CC71CB"));
     }

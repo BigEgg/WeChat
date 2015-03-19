@@ -7,7 +7,10 @@ import static com.thoughtworks.wechat_core.util.HashHelper.sha1Hash;
 import static com.thoughtworks.wechat_core.util.precondition.ArgumentPrecondition.checkNotBlank;
 
 public final class MessageAuthentication {
-    public static boolean validation(String signature, String token, String timestamp, String nonce) throws NoSuchAlgorithmException {
+    public static boolean validation(final String signature,
+                                     final String token,
+                                     final String timestamp,
+                                     final String nonce) throws NoSuchAlgorithmException {
         checkNotBlank(signature);
         checkNotBlank(token);
         checkNotBlank(timestamp);
