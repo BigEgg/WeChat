@@ -1,6 +1,7 @@
 package com.thoughtworks.wechat_core.wechat.inbound;
 
 import com.thoughtworks.wechat_core.wechat.inbound.event.WeChatSubscribeEvent;
+import com.thoughtworks.wechat_core.wechat.inbound.message.WeChatInboundTextMessage;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -15,7 +16,8 @@ public class WeChatInboundDeserializer {
     static {
         canDeserialize = new HashMap<>();
 
-        canDeserialize.put(WeChatInboundDeserializer::canHandleSubscribeEvnet, WeChatSubscribeEvent.class);
+        canDeserialize.put(WeChatInboundDeserializer::canHandleSubscribeEvent, WeChatSubscribeEvent.class);
+        canDeserialize.put(WeChatInboundDeserializer::canHandelTextMessage, WeChatInboundTextMessage.class);
     }
 
     public static Optional<WeChatInbound> tryDeserialize(String inputString) {
@@ -29,8 +31,13 @@ public class WeChatInboundDeserializer {
         return Optional.empty();
     }
 
-    private static boolean canHandleSubscribeEvnet(String inputString) {
-        String subscribeEventKeyPoint = "<Event><![CDATA[subscribe]]></Event>";
+    private static boolean canHandleSubscribeEvent(String inputString) {
+        final String subscribeEventKeyPoint = "<Event><![CDATA[subscribe]]></Event>";
         return inputString.toLowerCase().contains(subscribeEventKeyPoint.toLowerCase());
+    }
+
+    private static boolean canHandelTextMessage(String inputString) {
+        final String textMessageKeyPoint = "<MsgType><![CDATA[text]]></MsgType>";
+        return inputString.toLowerCase().contains(textMessageKeyPoint.toLowerCase());
     }
 }
