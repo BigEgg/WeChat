@@ -63,8 +63,8 @@ public class TextMessageServiceTest {
 
         final boolean result = textMessageService.newTextMessage("Title", "Content");
 
-        verify(textMessageDAO, times(1)).getTextMessageByTitle(eq("Title"));
-        verify(textMessageDAO, times(1)).createTextMessage(eq("Title"), eq("Content"), any(Timestamp.class));
+        verify(textMessageDAO).getTextMessageByTitle(eq("Title"));
+        verify(textMessageDAO).createTextMessage(eq("Title"), eq("Content"), any(Timestamp.class));
         assertThat(result, equalTo(true));
     }
 
@@ -74,7 +74,7 @@ public class TextMessageServiceTest {
 
         final boolean result = textMessageService.newTextMessage("Title", "Content");
 
-        verify(textMessageDAO, times(1)).getTextMessageByTitle(eq("Title"));
+        verify(textMessageDAO).getTextMessageByTitle(eq("Title"));
         verify(textMessageDAO, never()).createTextMessage(anyString(), anyString(), any(Timestamp.class));
         assertThat(result, equalTo(false));
     }
@@ -85,8 +85,8 @@ public class TextMessageServiceTest {
 
         final boolean result = textMessageService.updateContent("Title", "Something different");
 
-        verify(textMessageDAO, times(1)).getTextMessageByTitle("Title");
-        verify(textMessageDAO, times(1)).updateContent(eq("Title"), eq("Something different"), any(Timestamp.class));
+        verify(textMessageDAO).getTextMessageByTitle("Title");
+        verify(textMessageDAO).updateContent(eq("Title"), eq("Something different"), any(Timestamp.class));
         assertThat(result, equalTo(true));
     }
 
@@ -96,7 +96,7 @@ public class TextMessageServiceTest {
 
         final boolean result = textMessageService.updateContent("Title", "Something different");
 
-        verify(textMessageDAO, times(1)).getTextMessageByTitle("Title");
+        verify(textMessageDAO).getTextMessageByTitle("Title");
         verify(textMessageDAO, never()).updateContent(anyString(), anyString(), any(Timestamp.class));
         assertThat(result, equalTo(false));
     }
@@ -107,8 +107,8 @@ public class TextMessageServiceTest {
 
         final boolean result = textMessageService.deleteMessage("Title");
 
-        verify(textMessageDAO, times(1)).getTextMessageByTitle(eq("Title"));
-        verify(textMessageDAO, times(1)).deleteMessage(eq(1L));
+        verify(textMessageDAO).getTextMessageByTitle(eq("Title"));
+        verify(textMessageDAO).deleteMessage(eq(1L));
         assertThat(result, equalTo(true));
     }
 
@@ -118,7 +118,7 @@ public class TextMessageServiceTest {
 
         final boolean result = textMessageService.deleteMessage("Title");
 
-        verify(textMessageDAO, times(1)).getTextMessageByTitle(eq("Title"));
+        verify(textMessageDAO).getTextMessageByTitle(eq("Title"));
         verify(textMessageDAO, never()).deleteMessage(anyLong());
         assertThat(result, equalTo(false));
     }
@@ -129,7 +129,7 @@ public class TextMessageServiceTest {
 
         final List<TextMessage> messages = textMessageService.getAllMessages();
 
-        verify(textMessageDAO, times(1)).getAllMessages();
+        verify(textMessageDAO).getAllMessages();
         assertThat(messages, notNullValue());
     }
 
@@ -139,7 +139,7 @@ public class TextMessageServiceTest {
 
         final Optional<TextMessage> textMessage = textMessageService.getTextMessageByTitle("title");
 
-        verify(textMessageDAO, times(1)).getTextMessageByTitle(eq("title"));
+        verify(textMessageDAO).getTextMessageByTitle(eq("title"));
         assertThat(textMessage.isPresent(), equalTo(false));
     }
 
@@ -149,7 +149,7 @@ public class TextMessageServiceTest {
 
         final Optional<TextMessage> textMessage = textMessageService.getTextMessageByTitle("title");
 
-        verify(textMessageDAO, times(1)).getTextMessageByTitle(eq("title"));
+        verify(textMessageDAO).getTextMessageByTitle(eq("title"));
         assertThat(textMessage.isPresent(), equalTo(true));
     }
 
@@ -159,7 +159,7 @@ public class TextMessageServiceTest {
 
         final List<TextMessage> messages = textMessageService.getTextMessageByLabel(createLabel1());
 
-        verify(textMessageDAO, times(1)).getTextMessageByLabelIds(eq(Arrays.asList(1L)));
+        verify(textMessageDAO).getTextMessageByLabelIds(eq(Arrays.asList(1L)));
         assertThat(messages.size(), equalTo(1));
     }
 
@@ -169,7 +169,7 @@ public class TextMessageServiceTest {
 
         final List<TextMessage> messages = textMessageService.getTextMessageByLabels(Arrays.asList(createLabel1(), createLabel2()));
 
-        verify(textMessageDAO, times(1)).getTextMessageByLabelIds(eq(Arrays.asList(1L, 2L)));
+        verify(textMessageDAO).getTextMessageByLabelIds(eq(Arrays.asList(1L, 2L)));
         assertThat(messages.size(), equalTo(1));
     }
 
@@ -180,8 +180,8 @@ public class TextMessageServiceTest {
 
         textMessageService.linkTextMessageToLabel(textMessage, createLabel2());
 
-        verify(labelService, times(1)).getTextMessageLabels(eq(textMessage));
-        verify(textMessageDAO, times(1)).linkTextMessageWithLabel(eq(textMessage.getId()), eq(2L), any(Timestamp.class));
+        verify(labelService).getTextMessageLabels(eq(textMessage));
+        verify(textMessageDAO).linkTextMessageWithLabel(eq(textMessage.getId()), eq(2L), any(Timestamp.class));
     }
 
     @Test
@@ -191,7 +191,7 @@ public class TextMessageServiceTest {
 
         textMessageService.linkTextMessageToLabel(textMessage, createLabel2());
 
-        verify(labelService, times(1)).getTextMessageLabels(eq(textMessage));
+        verify(labelService).getTextMessageLabels(eq(textMessage));
         verify(textMessageDAO, never()).linkTextMessageWithLabel(anyLong(), anyLong(), any(Timestamp.class));
     }
 
@@ -202,8 +202,8 @@ public class TextMessageServiceTest {
 
         textMessageService.delinkTextMessageWithLabel(textMessage, createLabel2());
 
-        verify(labelService, times(1)).getTextMessageLabels(eq(textMessage));
-        verify(textMessageDAO, times(1)).delinkTextMessageWithLabel(eq(textMessage.getId()), eq(2L));
+        verify(labelService).getTextMessageLabels(eq(textMessage));
+        verify(textMessageDAO).delinkTextMessageWithLabel(eq(textMessage.getId()), eq(2L));
     }
 
     @Test
@@ -213,7 +213,7 @@ public class TextMessageServiceTest {
 
         textMessageService.delinkTextMessageWithLabel(textMessage, createLabel2());
 
-        verify(labelService, times(1)).getTextMessageLabels(eq(textMessage));
+        verify(labelService).getTextMessageLabels(eq(textMessage));
         verify(textMessageDAO, never()).delinkTextMessageWithLabel(anyLong(), anyLong());
     }
 

@@ -100,8 +100,8 @@ public class WorkflowEngineTest {
 
         verify(mockWorkflow, never()).canStartHandle(any(InboundMessageEnvelop.class));
         verify(memberService, times(2)).getMemberByOpenId(eq("fromUser"));
-        verify(conversationHistoryService, times(1)).startNewConversation(eq(subscribeMember), eq("Subscribe"));
-        verify(conversationHistoryService, times(1)).endConversation(eq(subscribeMember));
+        verify(conversationHistoryService).startNewConversation(eq(subscribeMember), eq("Subscribe"));
+        verify(conversationHistoryService).endConversation(eq(subscribeMember));
         assertThat(outboundMessageOpt.isPresent(), equalTo(true));
     }
 
@@ -122,12 +122,12 @@ public class WorkflowEngineTest {
 
         final Optional<OutboundMessage> outboundMessageOpt = engine.handle(textEventEnvelop);
 
-        verify(mockWorkflow, times(1)).canStartHandle(any(InboundMessageEnvelop.class));
-        verify(memberService, times(1)).getMemberByOpenId(eq("fromUser"));
-        verify(conversationHistoryService, times(1)).getMemberConversation(eq(subscribeMember));
-        verify(conversationHistoryService, times(1)).startNewConversation(eq(subscribeMember), anyString());
+        verify(mockWorkflow).canStartHandle(any(InboundMessageEnvelop.class));
+        verify(memberService).getMemberByOpenId(eq("fromUser"));
+        verify(conversationHistoryService).getMemberConversation(eq(subscribeMember));
+        verify(conversationHistoryService).startNewConversation(eq(subscribeMember), anyString());
         verify(conversationHistoryService, never()).updateConversationContent(any(Member.class), anyString());
-        verify(conversationHistoryService, times(1)).endConversation(eq(subscribeMember));
+        verify(conversationHistoryService).endConversation(eq(subscribeMember));
         assertThat(outboundMessageOpt.isPresent(), equalTo(true));
     }
 
@@ -150,11 +150,11 @@ public class WorkflowEngineTest {
 
         final Optional<OutboundMessage> outboundMessageOpt = engine.handle(textEventEnvelop);
 
-        verify(mockWorkflow, times(1)).canStartHandle(any(InboundMessageEnvelop.class));
-        verify(memberService, times(1)).getMemberByOpenId(eq("fromUser"));
-        verify(conversationHistoryService, times(1)).getMemberConversation(eq(subscribeMember));
-        verify(conversationHistoryService, times(1)).startNewConversation(eq(subscribeMember), anyString());
-        verify(conversationHistoryService, times(1)).updateConversationContent(eq(subscribeMember), eq("NewContent"));
+        verify(mockWorkflow).canStartHandle(any(InboundMessageEnvelop.class));
+        verify(memberService).getMemberByOpenId(eq("fromUser"));
+        verify(conversationHistoryService).getMemberConversation(eq(subscribeMember));
+        verify(conversationHistoryService).startNewConversation(eq(subscribeMember), anyString());
+        verify(conversationHistoryService).updateConversationContent(eq(subscribeMember), eq("NewContent"));
         verify(conversationHistoryService, never()).endConversation(any(Member.class));
         assertThat(outboundMessageOpt.isPresent(), equalTo(true));
     }
@@ -176,11 +176,11 @@ public class WorkflowEngineTest {
         final Optional<OutboundMessage> outboundMessageOpt = engine.handle(textEventEnvelop);
 
         verify(mockWorkflow, never()).canStartHandle(any(InboundMessageEnvelop.class));
-        verify(memberService, times(1)).getMemberByOpenId(eq("fromUser"));
-        verify(conversationHistoryService, times(1)).getMemberConversation(eq(subscribeMember));
+        verify(memberService).getMemberByOpenId(eq("fromUser"));
+        verify(conversationHistoryService).getMemberConversation(eq(subscribeMember));
         verify(conversationHistoryService, never()).startNewConversation(eq(subscribeMember), anyString());
         verify(conversationHistoryService, never()).updateConversationContent(any(Member.class), anyString());
-        verify(conversationHistoryService, times(1)).endConversation(eq(subscribeMember));
+        verify(conversationHistoryService).endConversation(eq(subscribeMember));
         assertThat(outboundMessageOpt.isPresent(), equalTo(true));
     }
 
@@ -203,10 +203,10 @@ public class WorkflowEngineTest {
         final Optional<OutboundMessage> outboundMessageOpt = engine.handle(textEventEnvelop);
 
         verify(mockWorkflow, never()).canStartHandle(any(InboundMessageEnvelop.class));
-        verify(memberService, times(1)).getMemberByOpenId(eq("fromUser"));
-        verify(conversationHistoryService, times(1)).getMemberConversation(eq(subscribeMember));
+        verify(memberService).getMemberByOpenId(eq("fromUser"));
+        verify(conversationHistoryService).getMemberConversation(eq(subscribeMember));
         verify(conversationHistoryService, never()).startNewConversation(eq(subscribeMember), anyString());
-        verify(conversationHistoryService, times(1)).updateConversationContent(eq(subscribeMember), eq("NewContent"));
+        verify(conversationHistoryService).updateConversationContent(eq(subscribeMember), eq("NewContent"));
         verify(conversationHistoryService, never()).endConversation(any(Member.class));
         assertThat(outboundMessageOpt.isPresent(), equalTo(true));
     }
@@ -236,7 +236,7 @@ public class WorkflowEngineTest {
     private ConversationHistory createConversationHistory(final String workflowName, final String content) {
         return new ConversationHistory(1L, 1L, workflowName, DateTime.now(), Optional.<DateTime>empty(), Optional.of(content));
     }
-    
+
     private <T extends Workflow> String getWorkflowName(final Class<T> clazz) {
         return clazz.getSimpleName().replace("Workflow", "");
     }

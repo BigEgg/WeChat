@@ -61,7 +61,7 @@ public class DefaultWorkflowStepTest {
         final BasicWorkflowContext context = new BasicWorkflowContext();
         final WorkflowStepResult result = step.handle(mock(InboundMessageEnvelop.class), context);
 
-        verify(adminResourceService, times(1)).getMessageResource(eq(AdminResourceKeys.DEFAULT_RESPONSE));
+        verify(adminResourceService).getMessageResource(eq(AdminResourceKeys.DEFAULT_RESPONSE));
         assertThat(result, equalTo(WorkflowStepResult.WORKFLOW_COMPLETE));
         assertThat(context.getOutboundMessage().isPresent(), equalTo(true));
     }

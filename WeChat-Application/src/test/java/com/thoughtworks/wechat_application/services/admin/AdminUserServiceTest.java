@@ -64,9 +64,9 @@ public class AdminUserServiceTest {
 
         final Optional<AdminUser> adminUser = adminUserService.logIn("username", "password");
 
-        verify(adminUserDAO, times(1)).getAdminUserByUsername(eq("username"));
-        verify(passwordHelper, times(1)).getSaltFromHashedPassword(eq("hashedPassword"));
-        verify(passwordHelper, times(1)).saltHash(eq("password"), eq("salt"));
+        verify(adminUserDAO).getAdminUserByUsername(eq("username"));
+        verify(passwordHelper).getSaltFromHashedPassword(eq("hashedPassword"));
+        verify(passwordHelper).saltHash(eq("password"), eq("salt"));
         assertThat(adminUser.isPresent(), equalTo(true));
         assertThat(adminUser.get().getId(), equalTo(1L));
         assertThat(adminUser.get().getUsername(), equalTo("username"));
@@ -80,7 +80,7 @@ public class AdminUserServiceTest {
 
         final Optional<AdminUser> adminUser = adminUserService.logIn("username", "password");
 
-        verify(adminUserDAO, times(1)).getAdminUserByUsername(eq("username"));
+        verify(adminUserDAO).getAdminUserByUsername(eq("username"));
         verify(passwordHelper, never()).getSaltFromHashedPassword(anyString());
         verify(passwordHelper, never()).saltHash(anyString(), anyString());
         assertThat(adminUser.isPresent(), equalTo(false));
@@ -94,9 +94,9 @@ public class AdminUserServiceTest {
 
         final Optional<AdminUser> adminUser = adminUserService.logIn("username", "password");
 
-        verify(adminUserDAO, times(1)).getAdminUserByUsername(eq("username"));
-        verify(passwordHelper, times(1)).getSaltFromHashedPassword(eq("hashedPassword"));
-        verify(passwordHelper, times(1)).saltHash(eq("password"), eq("salt"));
+        verify(adminUserDAO).getAdminUserByUsername(eq("username"));
+        verify(passwordHelper).getSaltFromHashedPassword(eq("hashedPassword"));
+        verify(passwordHelper).saltHash(eq("password"), eq("salt"));
         assertThat(adminUser.isPresent(), equalTo(false));
     }
 
@@ -107,7 +107,7 @@ public class AdminUserServiceTest {
 
         final Optional<AdminUser> adminUser = adminUserService.createAdmin("username", "password");
 
-        verify(adminUserDAO, times(1)).createAdminUser(eq("username"), eq("hashedPassword"));
+        verify(adminUserDAO).createAdminUser(eq("username"), eq("hashedPassword"));
         verify(adminUserDAO, times(2)).getAdminUserByUsername(eq("username"));
         assertThat(adminUser.isPresent(), equalTo(true));
         assertThat(adminUser.get().getId(), equalTo(1L));
@@ -124,7 +124,7 @@ public class AdminUserServiceTest {
         final Optional<AdminUser> adminUser = adminUserService.createAdmin("username", "password1");
 
         verify(adminUserDAO, never()).createAdminUser(anyString(), anyString());
-        verify(adminUserDAO, times(1)).getAdminUserByUsername(eq("username"));
+        verify(adminUserDAO).getAdminUserByUsername(eq("username"));
         assertThat(adminUser.isPresent(), equalTo(false));
     }
 
@@ -135,8 +135,8 @@ public class AdminUserServiceTest {
 
         final boolean isSuccess = adminUserService.setMember(adminUser, createSubscribeMember());
 
-        verify(adminUserDAO, times(1)).getAdminUserByMemberId(eq(1L));
-        verify(adminUserDAO, times(1)).setMember(eq(1L), eq(1L));
+        verify(adminUserDAO).getAdminUserByMemberId(eq(1L));
+        verify(adminUserDAO).setMember(eq(1L), eq(1L));
         assertThat(isSuccess, equalTo(true));
     }
 
@@ -147,7 +147,7 @@ public class AdminUserServiceTest {
 
         final boolean isSuccess = adminUserService.setMember(adminUser, createSubscribeMember());
 
-        verify(adminUserDAO, times(1)).getAdminUserByMemberId(eq(1L));
+        verify(adminUserDAO).getAdminUserByMemberId(eq(1L));
         verify(adminUserDAO, never()).setMember(anyLong(), anyLong());
         assertThat(isSuccess, equalTo(false));
     }

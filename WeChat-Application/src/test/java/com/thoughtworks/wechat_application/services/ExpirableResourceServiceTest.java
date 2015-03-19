@@ -60,7 +60,7 @@ public class ExpirableResourceServiceTest {
         final ExpirableResource expirableResource = service.setResource("key", "type", "value", 10);
 
         verify(expirableResourceDAO, times(2)).getResource(eq("key"), eq("type"));
-        verify(expirableResourceDAO, times(1)).createResource(eq("key"), eq("type"), eq("value"), eq(10), any(Timestamp.class));
+        verify(expirableResourceDAO).createResource(eq("key"), eq("type"), eq("value"), eq(10), any(Timestamp.class));
         verify(expirableResourceDAO, never()).updateResource(anyString(), anyString(), anyString(), anyInt(), any(Timestamp.class));
         assertThat(expirableResource, notNullValue());
         assertThat(expirableResource.getKey(), equalTo("key"));
@@ -77,7 +77,7 @@ public class ExpirableResourceServiceTest {
         final ExpirableResource expirableResource = service.setResource("key", "type", "value2", 10);
 
         verify(expirableResourceDAO, times(2)).getResource(eq("key"), eq("type"));
-        verify(expirableResourceDAO, times(1)).updateResource(eq("key"), eq("type"), eq("value2"), eq(10), any(Timestamp.class));
+        verify(expirableResourceDAO).updateResource(eq("key"), eq("type"), eq("value2"), eq(10), any(Timestamp.class));
         verify(expirableResourceDAO, never()).createResource(anyString(), anyString(), anyString(), anyInt(), any(Timestamp.class));
         assertThat(expirableResource, notNullValue());
         assertThat(expirableResource.getKey(), equalTo("key"));
@@ -94,7 +94,7 @@ public class ExpirableResourceServiceTest {
 
         final Optional<ExpirableResource> resource = service.getResource("key", "type");
 
-        verify(expirableResourceDAO, times(1)).getResource("key", "type");
+        verify(expirableResourceDAO).getResource("key", "type");
         assertThat(resource.isPresent(), equalTo(true));
         assertThat(resource.get(), equalTo(newExpirableResource));
     }
@@ -105,7 +105,7 @@ public class ExpirableResourceServiceTest {
 
         final Optional<ExpirableResource> resource = service.getResource("key", "type");
 
-        verify(expirableResourceDAO, times(1)).getResource("key", "type");
+        verify(expirableResourceDAO).getResource("key", "type");
         assertThat(resource.isPresent(), equalTo(false));
     }
 
@@ -115,8 +115,8 @@ public class ExpirableResourceServiceTest {
 
         service.deleteResources("key", "type");
 
-        verify(expirableResourceDAO, times(1)).getResource(eq("key"), eq("type"));
-        verify(expirableResourceDAO, times(1)).deleteResources(eq("key"), eq("type"));
+        verify(expirableResourceDAO).getResource(eq("key"), eq("type"));
+        verify(expirableResourceDAO).deleteResources(eq("key"), eq("type"));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class ExpirableResourceServiceTest {
 
         service.deleteResources("key", "type");
 
-        verify(expirableResourceDAO, times(1)).getResource(eq("key"), eq("type"));
+        verify(expirableResourceDAO).getResource(eq("key"), eq("type"));
         verify(expirableResourceDAO, never()).deleteResources(anyString(), anyString());
     }
 

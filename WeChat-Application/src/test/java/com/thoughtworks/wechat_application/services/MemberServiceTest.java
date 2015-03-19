@@ -62,7 +62,7 @@ public class MemberServiceTest {
 
         final Optional<Member> member = memberService.getMemberByOpenId("openId");
 
-        verify(memberDAO, times(1)).getMemberByOpenId(eq("openId"));
+        verify(memberDAO).getMemberByOpenId(eq("openId"));
         assertThat(member.isPresent(), equalTo(true));
         assertThat(member.get().getId(), equalTo(1L));
         assertThat(member.get().getWeChatOpenId(), equalTo("openId"));
@@ -75,7 +75,7 @@ public class MemberServiceTest {
 
         final Optional<Member> member = memberService.getMemberByOpenId("openId");
 
-        verify(memberDAO, times(1)).getMemberByOpenId(eq("openId"));
+        verify(memberDAO).getMemberByOpenId(eq("openId"));
         assertThat(member.isPresent(), equalTo(false));
     }
 
@@ -88,7 +88,7 @@ public class MemberServiceTest {
         final Member member = memberService.subscribeMember("openId");
 
         verify(memberDAO, times(2)).getMemberByOpenId(eq("openId"));
-        verify(memberDAO, times(1)).createMember(eq("openId"), any(Timestamp.class));
+        verify(memberDAO).createMember(eq("openId"), any(Timestamp.class));
         verify(memberDAO, never()).updateSubscribed(anyLong(), anyBoolean(), any(Timestamp.class));
         assertThat(member, notNullValue());
         assertThat(member.getId(), equalTo(1L));
@@ -103,7 +103,7 @@ public class MemberServiceTest {
         final Member member = memberService.subscribeMember("openId");
 
         verify(memberDAO, times(2)).getMemberByOpenId(eq("openId"));
-        verify(memberDAO, times(1)).updateSubscribed(eq(1L), eq(true), any(Timestamp.class));
+        verify(memberDAO).updateSubscribed(eq(1L), eq(true), any(Timestamp.class));
         verify(memberDAO, never()).createMember(anyString(), any(Timestamp.class));
         assertThat(member, notNullValue());
         assertThat(member.getId(), equalTo(1L));
@@ -117,8 +117,8 @@ public class MemberServiceTest {
 
         memberService.unsubscribeMember("openId");
 
-        verify(memberDAO, times(1)).getMemberByOpenId(eq("openId"));
-        verify(memberDAO, times(1)).updateSubscribed(eq(1L), eq(false), any(Timestamp.class));
+        verify(memberDAO).getMemberByOpenId(eq("openId"));
+        verify(memberDAO).updateSubscribed(eq(1L), eq(false), any(Timestamp.class));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class MemberServiceTest {
 
         memberService.unsubscribeMember("openId");
 
-        verify(memberDAO, times(1)).getMemberByOpenId(eq("openId"));
+        verify(memberDAO).getMemberByOpenId(eq("openId"));
         verify(memberDAO, never()).updateSubscribed(anyLong(), anyBoolean(), any(Timestamp.class));
     }
 
@@ -139,8 +139,8 @@ public class MemberServiceTest {
 
         memberService.linkMemberToLabel(member, label);
 
-        verify(labelService, times(1)).getMemberLabels(eq(member));
-        verify(memberDAO, times(1)).linkMemberWithLabel(eq(member.getId()), eq(label.getId()), any(Timestamp.class));
+        verify(labelService).getMemberLabels(eq(member));
+        verify(memberDAO).linkMemberWithLabel(eq(member.getId()), eq(label.getId()), any(Timestamp.class));
         verify(memberDAO, never()).updateMemberLabel(anyLong(), anyLong(), any(Timestamp.class));
     }
 
@@ -151,8 +151,8 @@ public class MemberServiceTest {
 
         memberService.linkMemberToLabel(member, createLabel2());
 
-        verify(labelService, times(1)).getMemberLabels(eq(member));
-        verify(memberDAO, times(1)).updateMemberLabel(eq(member.getId()), eq(2L), any(Timestamp.class));
+        verify(labelService).getMemberLabels(eq(member));
+        verify(memberDAO).updateMemberLabel(eq(member.getId()), eq(2L), any(Timestamp.class));
         verify(memberDAO, never()).linkMemberWithLabel(anyLong(), anyLong(), any(Timestamp.class));
     }
 
@@ -163,8 +163,8 @@ public class MemberServiceTest {
 
         memberService.delinkMemberLabel(member);
 
-        verify(labelService, times(1)).getMemberLabels(eq(member));
-        verify(memberDAO, times(1)).delinkMemberWithLabel(eq(member.getId()), eq(1L));
+        verify(labelService).getMemberLabels(eq(member));
+        verify(memberDAO).delinkMemberWithLabel(eq(member.getId()), eq(1L));
     }
 
     @Test
@@ -174,7 +174,7 @@ public class MemberServiceTest {
 
         memberService.delinkMemberLabel(member);
 
-        verify(labelService, times(1)).getMemberLabels(eq(member));
+        verify(labelService).getMemberLabels(eq(member));
         verify(memberDAO, never()).delinkMemberWithLabel(anyLong(), anyLong());
     }
 

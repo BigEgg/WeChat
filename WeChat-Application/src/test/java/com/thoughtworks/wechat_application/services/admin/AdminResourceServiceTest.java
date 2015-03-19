@@ -66,8 +66,8 @@ public class AdminResourceServiceTest {
 
         final String resource = service.getResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
 
-        verify(expirableResourceService, times(1)).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
-        verify(expirableResourceService, times(1)).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq(""), eq(0));
+        verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
+        verify(expirableResourceService).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq(""), eq(0));
         assertThat(resource, equalTo(""));
     }
 
@@ -78,8 +78,8 @@ public class AdminResourceServiceTest {
 
         final String resource = service.getResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
 
-        verify(expirableResourceService, times(1)).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
-        verify(expirableResourceService, times(1)).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq("content"), eq(0));
+        verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
+        verify(expirableResourceService).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq("content"), eq(0));
         assertThat(resource, equalTo("content"));
     }
 
@@ -89,7 +89,7 @@ public class AdminResourceServiceTest {
 
         final String resource = service.getResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
 
-        verify(expirableResourceService, times(1)).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
+        verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService, never()).setResource(anyString(), anyString(), anyString(), anyInt());
         assertThat(resource, equalTo("content"));
     }
@@ -101,8 +101,8 @@ public class AdminResourceServiceTest {
 
         final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
 
-        verify(expirableResourceService, times(1)).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
-        verify(expirableResourceService, times(1)).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq(""), eq(0));
+        verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
+        verify(expirableResourceService).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq(""), eq(0));
         verify(textMessageService, never()).getTextMessageByTitle(anyString());
         assertThat(message.isPresent(), equalTo(false));
     }
@@ -114,8 +114,8 @@ public class AdminResourceServiceTest {
 
         final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
 
-        verify(expirableResourceService, times(1)).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
-        verify(expirableResourceService, times(1)).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq("content"), eq(0));
+        verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
+        verify(expirableResourceService).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq("content"), eq(0));
         verify(textMessageService, never()).getTextMessageByTitle(anyString());
         assertThat(message.isPresent(), equalTo(false));
     }
@@ -126,7 +126,7 @@ public class AdminResourceServiceTest {
 
         final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
 
-        verify(expirableResourceService, times(1)).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
+        verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService, never()).setResource(anyString(), anyString(), anyString(), anyInt());
         verify(textMessageService, never()).getTextMessageByTitle(anyString());
         assertThat(message.isPresent(), equalTo(false));
@@ -139,9 +139,9 @@ public class AdminResourceServiceTest {
 
         final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
 
-        verify(expirableResourceService, times(1)).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
+        verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService, never()).setResource(anyString(), anyString(), anyString(), anyInt());
-        verify(textMessageService, times(1)).getTextMessageByTitle("title");
+        verify(textMessageService).getTextMessageByTitle("title");
         assertThat(message.isPresent(), equalTo(true));
         assertThat(message.get() instanceof OutboundTextMessage, equalTo(true));
     }

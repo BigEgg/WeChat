@@ -63,7 +63,7 @@ public class ConversationHistoryServiceTest {
 
         verify(conversationHistoryDAO, times(2)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
         verify(conversationHistoryDAO, never()).updateEndTimeById(anyLong(), any(Timestamp.class));
-        verify(conversationHistoryDAO, times(1)).createConversationHistory(eq(member.getId()), eq("Subscribe"), any(Timestamp.class));
+        verify(conversationHistoryDAO).createConversationHistory(eq(member.getId()), eq("Subscribe"), any(Timestamp.class));
 
         assertThat(conversation, notNullValue());
         assertThat(conversation.getId(), equalTo(1L));
@@ -82,8 +82,8 @@ public class ConversationHistoryServiceTest {
         final ConversationHistory conversation = service.startNewConversation(member, "Subscribe");
 
         verify(conversationHistoryDAO, times(2)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
-        verify(conversationHistoryDAO, times(1)).updateEndTimeById(eq(1L), any(Timestamp.class));
-        verify(conversationHistoryDAO, times(1)).createConversationHistory(eq(member.getId()), eq("Subscribe"), any(Timestamp.class));
+        verify(conversationHistoryDAO).updateEndTimeById(eq(1L), any(Timestamp.class));
+        verify(conversationHistoryDAO).createConversationHistory(eq(member.getId()), eq("Subscribe"), any(Timestamp.class));
 
         assertThat(conversation, notNullValue());
         assertThat(conversation.getId(), equalTo(2L));
@@ -101,7 +101,7 @@ public class ConversationHistoryServiceTest {
 
         final Optional<ConversationHistory> conversation = service.getMemberConversation(member);
 
-        verify(conversationHistoryDAO, times(1)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
+        verify(conversationHistoryDAO).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
         assertThat(conversation.isPresent(), equalTo(false));
     }
 
@@ -112,7 +112,7 @@ public class ConversationHistoryServiceTest {
 
         final Optional<ConversationHistory> conversation = service.getMemberConversation(member);
 
-        verify(conversationHistoryDAO, times(1)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
+        verify(conversationHistoryDAO).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
         assertThat(conversation.isPresent(), equalTo(true));
     }
 
@@ -123,7 +123,7 @@ public class ConversationHistoryServiceTest {
 
         service.endConversation(member);
 
-        verify(conversationHistoryDAO, times(1)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
+        verify(conversationHistoryDAO).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
         verify(conversationHistoryDAO, never()).updateEndTimeById(anyLong(), any(Timestamp.class));
     }
 
@@ -134,8 +134,8 @@ public class ConversationHistoryServiceTest {
 
         service.endConversation(member);
 
-        verify(conversationHistoryDAO, times(1)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
-        verify(conversationHistoryDAO, times(1)).updateEndTimeById(eq(1L), any(Timestamp.class));
+        verify(conversationHistoryDAO).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
+        verify(conversationHistoryDAO).updateEndTimeById(eq(1L), any(Timestamp.class));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class ConversationHistoryServiceTest {
 
         service.updateConversationContent(member, "NewContent");
 
-        verify(conversationHistoryDAO, times(1)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
+        verify(conversationHistoryDAO).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
         verify(conversationHistoryDAO, never()).updateContentById(anyLong(), anyString());
     }
 
@@ -156,8 +156,8 @@ public class ConversationHistoryServiceTest {
 
         service.updateConversationContent(member, "NewContent");
 
-        verify(conversationHistoryDAO, times(1)).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
-        verify(conversationHistoryDAO, times(1)).updateContentById(eq(1L), eq("NewContent"));
+        verify(conversationHistoryDAO).getNotCompleteConversationHistoryByMemberId(eq(member.getId()));
+        verify(conversationHistoryDAO).updateContentById(eq(1L), eq("NewContent"));
     }
 
     private Member createSubscribeMember() {

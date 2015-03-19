@@ -63,7 +63,7 @@ public class AbstractWorkflowTest {
 
         final WorkflowResult result = workflow.handle(subscribeEventEnvelop, workflowContent);
 
-        verify(workflowStep, times(1)).handle(eq(subscribeEventEnvelop), eq(workflowContent));
+        verify(workflowStep).handle(eq(subscribeEventEnvelop), eq(workflowContent));
         assertThat(result, equalTo(WorkflowResult.ABORT));
         assertThat(workflowContent.getOutboundMessage().isPresent(), equalTo(false));
     }
@@ -81,7 +81,7 @@ public class AbstractWorkflowTest {
 
         final WorkflowResult result = workflow.handle(subscribeEventEnvelop, workflowContent);
 
-        verify(workflowStep, times(1)).handle(eq(subscribeEventEnvelop), eq(workflowContent));
+        verify(workflowStep).handle(eq(subscribeEventEnvelop), eq(workflowContent));
         assertThat(result, equalTo(WorkflowResult.COMPLETE_NOT_FINISHED));
         assertThat(workflowContent.getOutboundMessage().isPresent(), equalTo(true));
     }
@@ -99,7 +99,7 @@ public class AbstractWorkflowTest {
 
         final WorkflowResult result = workflow.handle(subscribeEventEnvelop, workflowContent);
 
-        verify(workflowStep, times(1)).handle(eq(subscribeEventEnvelop), eq(workflowContent));
+        verify(workflowStep).handle(eq(subscribeEventEnvelop), eq(workflowContent));
         assertThat(result, equalTo(WorkflowResult.FINISHED));
         assertThat(workflowContent.getOutboundMessage().isPresent(), equalTo(true));
     }

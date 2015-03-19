@@ -57,14 +57,14 @@ public class MemberEventLogServiceTest {
     public void testLogSubscribe() throws Exception {
         eventLogService.member().subscribe(createSubscribeMember(), DateTime.now());
 
-        verify(eventLogDAO, times(1)).insertEventLog(eq(1L), eq("Member"), eq("Subscribe"), any(Timestamp.class));
+        verify(eventLogDAO).insertEventLog(eq(1L), eq("Member"), eq("Subscribe"), any(Timestamp.class));
     }
 
     @Test
     public void testLogUnsubscribe() throws Exception {
         eventLogService.member().unsubscribe(createUnsubscribeMember(), DateTime.now());
 
-        verify(eventLogDAO, times(1)).insertEventLog(eq(1L), eq("Member"), eq("Unsubscribe"), any(Timestamp.class));
+        verify(eventLogDAO).insertEventLog(eq(1L), eq("Member"), eq("Unsubscribe"), any(Timestamp.class));
     }
 
     private Member createUnsubscribeMember() {
