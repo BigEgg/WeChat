@@ -1,11 +1,11 @@
-package com.thoughtworks.wechat_core.wechat.inbound.event;
+package com.thoughtworks.wechat_core.wechat.inbound.message;
 
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
-import com.thoughtworks.wechat_core.messages.inbound.event.InboundSubscribeEvent;
+import com.thoughtworks.wechat_core.messages.inbound.messages.InboundTextMessage;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("xml")
-public class WeChatSubscribeEvent implements WeChatInboundEvent {
+public class WeChatInboundTextMessage implements WeChatInboundMessage {
     @XStreamAlias("ToUserName")
     private String toUser;
     @XStreamAlias("FromUserName")
@@ -14,15 +14,18 @@ public class WeChatSubscribeEvent implements WeChatInboundEvent {
     private int createdTime;
     @XStreamAlias("MsgType")
     private String messageType;
-    @XStreamAlias("Event")
-    private String eventType;
+    @XStreamAlias("Content")
+    private String content;
+    @XStreamAlias("MsgId")
+    private long messageId;
 
-    public WeChatSubscribeEvent(String toUser, String fromUser, int createdTime, String messageType, String eventType) {
+    public WeChatInboundTextMessage(String toUser, String fromUser, int createdTime, String messageType, String content, long messageId) {
         this.toUser = toUser;
         this.fromUser = fromUser;
         this.createdTime = createdTime;
         this.messageType = messageType;
-        this.eventType = eventType;
+        this.content = content;
+        this.messageId = messageId;
     }
 
     @Override
@@ -46,13 +49,17 @@ public class WeChatSubscribeEvent implements WeChatInboundEvent {
     }
 
     @Override
-    public String getEventType() {
-        return eventType;
+    public InboundMessageEnvelop toEnvelop() {
+        InboundTextMessage textMessage = new InboundTextMessage(this);
+        return new InboundMessageEnvelop(fromUser, toUser, textMessage);
+    }
+
+    public String getContent() {
+        return content;
     }
 
     @Override
-    public InboundMessageEnvelop toEnvelop() {
-        InboundSubscribeEvent subscribeEvent = new InboundSubscribeEvent(this);
-        return new InboundMessageEnvelop(fromUser, toUser, subscribeEvent);
+    public long getMessageId() {
+        return messageId;
     }
 }

@@ -7,13 +7,13 @@ import static com.thoughtworks.wechat_core.util.xstream.XStreamExtension.createX
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-public class WeChatTextMessageTest {
+public class WeChatOutboundTextMessageTest {
     @Test
     public void testSerialize() {
-        WeChatTextMessage message = new WeChatTextMessage("toUser", "fromUser", 12345678, "text", "hello");
+        WeChatOutboundTextMessage message = new WeChatOutboundTextMessage("toUser", "fromUser", 12345678, "text", "hello");
 
         XStream xStream = createXStreamWithCData();
-        xStream.processAnnotations(WeChatTextMessage.class);
+        xStream.processAnnotations(WeChatOutboundTextMessage.class);
         String xmlMessage = xStream.toXML(message);
 
         assertThat(xmlMessage.contains("<xml>"), is(true));
@@ -27,7 +27,7 @@ public class WeChatTextMessageTest {
 
     @Test
     public void testToString() {
-        WeChatTextMessage message = new WeChatTextMessage("toUser", "fromUser", 12345678, "text", "hello");
+        WeChatOutboundTextMessage message = new WeChatOutboundTextMessage("toUser", "fromUser", 12345678, "text", "hello");
 
         String xmlMessage = message.toString();
         assertThat(xmlMessage.contains("<xml>"), is(true));

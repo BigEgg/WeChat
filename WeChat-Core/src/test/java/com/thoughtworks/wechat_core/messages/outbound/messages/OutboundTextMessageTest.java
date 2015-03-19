@@ -2,7 +2,7 @@ package com.thoughtworks.wechat_core.messages.outbound.messages;
 
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessageType;
-import com.thoughtworks.wechat_core.wechat.outbound.WeChatTextMessage;
+import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutboundTextMessage;
 import com.thoughtworks.xstream.XStream;
 import org.junit.Test;
 
@@ -26,10 +26,10 @@ public class OutboundTextMessageTest {
         OutboundTextMessage textMessage = new OutboundTextMessage("content");
         OutboundMessageEnvelop envelop = new OutboundMessageEnvelop("fromUser", "toUser", Optional.of(textMessage));
 
-        WeChatTextMessage weChatTextMessage = (WeChatTextMessage) textMessage.toWeChat(envelop);
+        WeChatOutboundTextMessage weChatOutboundTextMessage = (WeChatOutboundTextMessage) textMessage.toWeChat(envelop);
         XStream xStream = createXStreamWithCData();
-        xStream.processAnnotations(WeChatTextMessage.class);
-        String xmlMessage = xStream.toXML(weChatTextMessage);
+        xStream.processAnnotations(WeChatOutboundTextMessage.class);
+        String xmlMessage = xStream.toXML(weChatOutboundTextMessage);
 
         assertThat(xmlMessage.contains("<xml>"), is(true));
         assertThat(xmlMessage.contains("<ToUserName><![CDATA[toUser]]></ToUserName>"), is(true));

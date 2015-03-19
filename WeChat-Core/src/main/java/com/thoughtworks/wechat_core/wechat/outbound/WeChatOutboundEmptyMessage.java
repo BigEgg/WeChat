@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_core.wechat.outbound;
 
-public class WeChatEmptyMessage implements WeChatOutbound {
+public class WeChatOutboundEmptyMessage implements WeChatOutbound {
     @Override
     public String toString() {
         return "";

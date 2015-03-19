@@ -5,10 +5,10 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class WeChatEmptyMessageTest {
+public class WeChatOutboundEmptyMessageTest {
     @Test
     public void testToString() throws Exception {
-        String result = new WeChatEmptyMessage().toString();
+        String result = new WeChatOutboundEmptyMessage().toString();
         assertThat(result, equalTo(""));
     }
 }

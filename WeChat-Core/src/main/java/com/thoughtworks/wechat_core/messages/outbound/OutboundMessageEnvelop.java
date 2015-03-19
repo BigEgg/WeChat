@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_core.messages.outbound;
 
-import com.thoughtworks.wechat_core.wechat.outbound.WeChatEmptyMessage;
+import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutboundEmptyMessage;
 import com.thoughtworks.wechat_core.wechat.outbound.WeChatOutbound;
 
 import java.util.Optional;
@@ -31,6 +31,6 @@ public class OutboundMessageEnvelop {
     public WeChatOutbound toWeChat() {
         return message.isPresent()
                 ? message.get().toWeChat(this)
-                : new WeChatEmptyMessage();
+                : new WeChatOutboundEmptyMessage();
     }
 }

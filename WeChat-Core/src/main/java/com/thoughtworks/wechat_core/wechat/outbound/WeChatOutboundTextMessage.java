@@ -7,7 +7,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import static com.thoughtworks.wechat_core.util.xstream.XStreamExtension.createXStreamWithCData;
 
 @XStreamAlias("xml")
-public class WeChatTextMessage implements WeChatOutbound {
+public class WeChatOutboundTextMessage implements WeChatOutbound {
     @XStreamAlias("ToUserName")
     @XStreamCData
     private String toUser;
@@ -23,7 +23,7 @@ public class WeChatTextMessage implements WeChatOutbound {
     @XStreamCData
     private String content;
 
-    public WeChatTextMessage(String toUser, String fromUser, int createdTime, String messageType, String content) {
+    public WeChatOutboundTextMessage(String toUser, String fromUser, int createdTime, String messageType, String content) {
         this.toUser = toUser;
         this.fromUser = fromUser;
         this.createdTime = createdTime;
@@ -34,7 +34,7 @@ public class WeChatTextMessage implements WeChatOutbound {
     @Override
     public String toString() {
         XStream xStream = createXStreamWithCData();
-        xStream.processAnnotations(WeChatTextMessage.class);
+        xStream.processAnnotations(WeChatOutboundTextMessage.class);
         return xStream.toXML(this);
     }
 }
