@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimestamp;
 import static com.thoughtworks.wechat_core.util.precondition.ArgumentPrecondition.checkNotBlank;
-import static org.apache.commons.lang.Validate.notNull;
 
 @Singleton
 public class MemberService {
@@ -66,8 +66,8 @@ public class MemberService {
     }
 
     public void linkMemberToLabel(final Member member, final Label label) {
-        notNull(member);
-        notNull(label);
+        checkNotNull(member);
+        checkNotNull(label);
 
         LOGGER.info("[LinkMemberToLabel] Try link member(id: {}) to label(id: {}).", member.getId(), label.getId());
         Optional<Label> currentLabel = labelService.getMemberLabels(member);
@@ -81,7 +81,7 @@ public class MemberService {
     }
 
     public void delinkMemberLabel(final Member member) {
-        notNull(member);
+        checkNotNull(member);
 
         LOGGER.info("[DelinkMemberLabel] Try delink member(id: {})'s label.", member.getId());
         Optional<Label> currentLabel = labelService.getMemberLabels(member);
