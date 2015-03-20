@@ -11,7 +11,7 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import java.sql.Timestamp;
 
 @RegisterMapper(ExpirableResourceMapper.class)
-public interface ExpirableResourceDAO extends DAO {
+public interface ExpirableResourceDAO {
     @SqlUpdate("INSERT INTO ExpirableResources (Key, Type, Value, ExpiresInSecond, CreatedTime)" +
             "   VALUES (:key, :type, :value, :expiresInSecond, :createTime)")
     @GetGeneratedKeys

@@ -6,7 +6,7 @@ import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 
 import java.sql.Timestamp;
 
-public interface EventLogDAO extends DAO {
+public interface EventLogDAO {
     @SqlUpdate("INSERT INTO EventLog (MemberId, EventType, EventName, EventValue, HappenedTime)" +
             "   VALUES (:memberId, :eventType, :eventName, :eventValue, :happenedTime)")
     @GetGeneratedKeys

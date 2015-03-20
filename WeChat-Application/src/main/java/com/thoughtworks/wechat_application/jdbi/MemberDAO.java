@@ -15,7 +15,7 @@ import java.util.List;
 
 @RegisterMapper(MemberMapper.class)
 @UseStringTemplate3StatementLocator
-public interface MemberDAO extends DAO {
+public interface MemberDAO {
     @SqlQuery("SELECT * FROM Member WHERE WeChatOpenId = :openId")
     Member getMemberByOpenId(@Bind("openId") final String openId);
 

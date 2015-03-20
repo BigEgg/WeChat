@@ -15,7 +15,7 @@ import java.util.List;
 
 @RegisterMapper(TextMessageMapper.class)
 @UseStringTemplate3StatementLocator
-public interface TextMessageDAO extends DAO {
+public interface TextMessageDAO {
     @SqlUpdate("INSERT INTO TextMessage (Title, Content, CreatedTime, ModifiedTime) VALUES (:title, :content, :createdTime, :createdTime)")
     @GetGeneratedKeys
     public long createTextMessage(@Bind("title") final String title,

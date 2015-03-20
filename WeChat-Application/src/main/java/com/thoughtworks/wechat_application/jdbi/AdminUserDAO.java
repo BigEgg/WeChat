@@ -9,7 +9,7 @@ import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 @RegisterMapper(AdminUserMapper.class)
-public interface AdminUserDAO extends DAO {
+public interface AdminUserDAO {
     @SqlQuery("SELECT * FROM AdminUser WHERE Username = :username")
     AdminUser getAdminUserByUsername(@Bind("username") final String username);
 

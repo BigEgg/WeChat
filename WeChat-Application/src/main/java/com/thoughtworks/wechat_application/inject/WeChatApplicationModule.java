@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_application;
+package com.thoughtworks.wechat_application.inject;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;

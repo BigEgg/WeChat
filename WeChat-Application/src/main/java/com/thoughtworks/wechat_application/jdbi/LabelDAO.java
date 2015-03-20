@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @RegisterMapper(LabelMapper.class)
-public interface LabelDAO extends DAO {
+public interface LabelDAO {
     @SqlUpdate("INSERT INTO Label (Title, CreatedTime) VALUES (:title, :createdTime)")
     @GetGeneratedKeys
     long createLabel(@Bind("title") final String title,

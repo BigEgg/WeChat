@@ -11,7 +11,7 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import java.sql.Timestamp;
 
 @RegisterMapper(ConversationHistoryMapper.class)
-public interface ConversationHistoryDAO extends DAO {
+public interface ConversationHistoryDAO {
     @SqlUpdate("INSERT INTO ConversationHistory (MemberId, WorkflowName, StartTime) VALUES (:memberId, :workflowName, :startTime)")
     @GetGeneratedKeys
     long createConversationHistory(@Bind("memberId") final long memberId,
