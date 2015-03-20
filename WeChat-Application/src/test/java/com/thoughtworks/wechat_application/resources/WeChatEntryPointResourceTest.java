@@ -1,5 +1,10 @@
 package com.thoughtworks.wechat_application.resources;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.thoughtworks.wechat_application.logic.workflow.WorkflowEngine;
 import com.thoughtworks.wechat_application.resources.exceptions.WeChatMessageAuthenticationException;
 import com.thoughtworks.wechat_application.resources.exceptions.WebApplicationNotAcceptableException;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
@@ -8,6 +13,8 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
@@ -22,14 +29,34 @@ public class WeChatEntryPointResourceTest {
     private final static String echoString = "echo";
     private final static String token = "1a2d202e3e4a5e6c76a7b";
 
+    private static String getResource(final String fileName) {
+        return getResource(fileName, Charsets.UTF_8);
+    }
+
+    private static String getResource(final String filename, final Charset charset) {
+        try {
+            return Resources.toString(Resources.getResource(filename), charset).trim();
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
     public static class when_verify_wechat_authentication {
         private final AdminResourceService adminResourceService = mock(AdminResourceService.class);
+        private final WorkflowEngine workflowEngine = mock(WorkflowEngine.class);
         private WeChatEntryPointResource resource;
+        private Injector injector;
 
         @Before
         public void setUp() throws Exception {
             when(adminResourceService.getAppToken()).thenReturn(token);
-            resource = new WeChatEntryPointResource(adminResourceService);
+
+            injector = Guice.createInjector(binder -> {
+                binder.bind(AdminResourceService.class).toInstance(adminResourceService);
+                binder.bind(WorkflowEngine.class).toInstance(workflowEngine);
+            });
+
+            resource = injector.getInstance(WeChatEntryPointResource.class);
         }
 
         @Test(expected = WebApplicationNotAcceptableException.class)
@@ -63,14 +90,22 @@ public class WeChatEntryPointResourceTest {
         }
     }
 
-    public static class when_handle_message {
+    public static class when_handle_message_with_wrong_authentication {
         private final AdminResourceService adminResourceService = mock(AdminResourceService.class);
+        private final WorkflowEngine workflowEngine = mock(WorkflowEngine.class);
         private WeChatEntryPointResource resource;
+        private Injector injector;
 
         @Before
         public void setUp() throws Exception {
             when(adminResourceService.getAppToken()).thenReturn(token);
-            resource = new WeChatEntryPointResource(adminResourceService);
+
+            injector = Guice.createInjector(binder -> {
+                binder.bind(AdminResourceService.class).toInstance(adminResourceService);
+                binder.bind(WorkflowEngine.class).toInstance(workflowEngine);
+            });
+
+            resource = injector.getInstance(WeChatEntryPointResource.class);
         }
 
         @Test(expected = WebApplicationNotAcceptableException.class)
