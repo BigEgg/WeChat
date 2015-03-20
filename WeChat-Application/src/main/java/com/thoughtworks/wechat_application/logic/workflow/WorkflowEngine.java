@@ -56,6 +56,10 @@ public class WorkflowEngine {
         return outboundMessage;
     }
 
+    public Map<WorkflowLevel, Integer> getWorkflowSize() {
+        return workflows.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
+    }
+
     private void handleExistMember(final InboundMessageEnvelop inboundMessageEnvelop, BasicWorkflowContext context, Member member) {
         Workflow workflow;
         ConversationHistory conversationHistory;

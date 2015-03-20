@@ -25,6 +25,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -86,6 +87,15 @@ public class WorkflowEngineTest {
     public void testInject_Singleton() throws Exception {
         final WorkflowEngine workflowEngine = injector.getInstance(WorkflowEngine.class);
         assertThat(workflowEngine, equalTo(engine));
+    }
+
+    @Test
+    public void testWorkflowGroupByLevel() throws Exception {
+        final Map<WorkflowLevel, Integer> workflowSize = engine.getWorkflowSize();
+
+        assertThat(workflowSize.get(WorkflowLevel.SPECIFIC), equalTo(1));
+        assertThat(workflowSize.get(WorkflowLevel.GENGERATE), equalTo(1));
+        assertThat(workflowSize.get(WorkflowLevel.DEFAULT), equalTo(1));
     }
 
     @Test
