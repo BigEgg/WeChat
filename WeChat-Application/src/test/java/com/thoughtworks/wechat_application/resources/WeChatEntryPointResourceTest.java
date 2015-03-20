@@ -1,8 +1,8 @@
 package com.thoughtworks.wechat_application.resources;
 
-import com.thoughtworks.wechat_application.configs.WeChatConfiguration;
 import com.thoughtworks.wechat_application.resources.exceptions.WeChatMessageAuthenticationException;
 import com.thoughtworks.wechat_application.resources.exceptions.WebApplicationNotAcceptableException;
+import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -15,47 +15,21 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Enclosed.class)
 public class WeChatEntryPointResourceTest {
-    final static String signature = "411ea6a5d9d2f4bc17d82bd56897bd45efe5a3db";
-    final static String wrongSignature = "411ea6a5d9d2f4bc17d82bd56897bd45efe5a3db123";
-    final static String timestamp = "timestamp";
-    final static String nonce = "nonce";
-    final static String echoString = "echo";
-    final static String token = "1a2d202e3e4a5e6c76a7b";
-
-    public static class when_handle_message {
-        private WeChatEntryPointResource resource;
-
-        @Before
-        public void setUp() {
-            WeChatConfiguration configuration = mock(WeChatConfiguration.class);
-            when(configuration.getAppToken()).thenReturn(token);
-            resource = new WeChatEntryPointResource(configuration);
-        }
-
-        @Test(expected = WebApplicationNotAcceptableException.class)
-        public void should_throw_exception_when_signature_empty() throws Exception {
-            resource.handleMessage(null, Optional.empty(), Optional.of(timestamp), Optional.of(nonce));
-        }
-
-        @Test(expected = WebApplicationNotAcceptableException.class)
-        public void should_throw_exception_when_timestamp_empty() throws Exception {
-            resource.handleMessage(null, Optional.of(signature), Optional.empty(), Optional.of(nonce));
-        }
-
-        @Test(expected = WebApplicationNotAcceptableException.class)
-        public void should_throw_exception_when_nonce_empty() throws Exception {
-            resource.handleMessage(null, Optional.of(signature), Optional.of(timestamp), Optional.empty());
-        }
-    }
+    private final static String signature = "411ea6a5d9d2f4bc17d82bd56897bd45efe5a3db";
+    private final static String wrongSignature = "411ea6a5d9d2f4bc17d82bd56897bd45efe5a3db123";
+    private final static String timestamp = "timestamp";
+    private final static String nonce = "nonce";
+    private final static String echoString = "echo";
+    private final static String token = "1a2d202e3e4a5e6c76a7b";
 
     public static class when_verify_wechat_authentication {
+        private final AdminResourceService adminResourceService = mock(AdminResourceService.class);
         private WeChatEntryPointResource resource;
 
         @Before
-        public void setUp() {
-            WeChatConfiguration configuration = mock(WeChatConfiguration.class);
-            when(configuration.getAppToken()).thenReturn(token);
-            resource = new WeChatEntryPointResource(configuration);
+        public void setUp() throws Exception {
+            when(adminResourceService.getAppToken()).thenReturn(token);
+            resource = new WeChatEntryPointResource(adminResourceService);
         }
 
         @Test(expected = WebApplicationNotAcceptableException.class)
@@ -86,6 +60,32 @@ public class WeChatEntryPointResourceTest {
         @Test
         public void should_return_echo_string() throws Exception {
             resource.weChatVerify(Optional.of(signature), Optional.of(timestamp), Optional.of(nonce), Optional.of(echoString));
+        }
+    }
+
+    public static class when_handle_message {
+        private final AdminResourceService adminResourceService = mock(AdminResourceService.class);
+        private WeChatEntryPointResource resource;
+
+        @Before
+        public void setUp() throws Exception {
+            when(adminResourceService.getAppToken()).thenReturn(token);
+            resource = new WeChatEntryPointResource(adminResourceService);
+        }
+
+        @Test(expected = WebApplicationNotAcceptableException.class)
+        public void should_throw_exception_when_signature_empty() throws Exception {
+            resource.handleMessage(null, Optional.empty(), Optional.of(timestamp), Optional.of(nonce));
+        }
+
+        @Test(expected = WebApplicationNotAcceptableException.class)
+        public void should_throw_exception_when_timestamp_empty() throws Exception {
+            resource.handleMessage(null, Optional.of(signature), Optional.empty(), Optional.of(nonce));
+        }
+
+        @Test(expected = WebApplicationNotAcceptableException.class)
+        public void should_throw_exception_when_nonce_empty() throws Exception {
+            resource.handleMessage(null, Optional.of(signature), Optional.of(timestamp), Optional.empty());
         }
     }
 }

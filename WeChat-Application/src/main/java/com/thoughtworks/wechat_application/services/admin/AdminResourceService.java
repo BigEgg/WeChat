@@ -6,6 +6,7 @@ import com.thoughtworks.wechat_application.core.ExpirableResource;
 import com.thoughtworks.wechat_application.core.TextMessage;
 import com.thoughtworks.wechat_application.services.ExpirableResourceService;
 import com.thoughtworks.wechat_application.services.TextMessageService;
+import com.thoughtworks.wechat_application.utils.CacheManager;
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessage;
 import com.thoughtworks.wechat_core.messages.outbound.messages.OutboundTextMessage;
 import org.slf4j.Logger;
@@ -19,12 +20,23 @@ public class AdminResourceService {
     private final String RESOURCE_TYPE = "Admin";
     private final ExpirableResourceService expirableResourceService;
     private final TextMessageService textMessageService;
+    private final CacheManager cacheManager;
 
     @Inject
     public AdminResourceService(final ExpirableResourceService expirableResourceService,
-                                final TextMessageService textMessageService) {
+                                final TextMessageService textMessageService,
+                                final CacheManager cacheManager) {
         this.expirableResourceService = expirableResourceService;
         this.textMessageService = textMessageService;
+        this.cacheManager = cacheManager;
+    }
+
+    public String getAppToken() {
+        return getCachedResources(AdminResourceKeys.WECHAT_APP_TOKEN);
+    }
+
+    public String getAppSecret() {
+        return getCachedResources(AdminResourceKeys.WECHAT_APP_SECRET);
     }
 
     public String getResource(final AdminResourceKeys key) {
@@ -65,5 +77,14 @@ public class AdminResourceService {
             default:
                 return Optional.empty();
         }
+    }
+
+    private String getCachedResources(AdminResourceKeys resourceKey) {
+        final Optional<String> result = cacheManager.get(resourceKey.toString(), String.class);
+        if (!result.isPresent()) {
+            final String appToken = getResource(resourceKey);
+            cacheManager.put(resourceKey.toString(), appToken);
+        }
+        return cacheManager.get(resourceKey.toString(), String.class).get();
     }
 }
