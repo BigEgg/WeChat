@@ -2,9 +2,9 @@ package com.thoughtworks.wechat_application;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.thoughtworks.wechat_application.inject.DAOModule;
-import com.thoughtworks.wechat_application.inject.WeChatApplicationModule;
-import com.thoughtworks.wechat_application.inject.WorkflowModule;
+import com.thoughtworks.wechat_application.configs.inject.DAOModule;
+import com.thoughtworks.wechat_application.configs.inject.WeChatApplicationModule;
+import com.thoughtworks.wechat_application.configs.inject.WorkflowModule;
 import com.thoughtworks.wechat_application.jdbi.*;
 import com.thoughtworks.wechat_application.resources.wechat.WeChatEntryPointResource;
 import com.thoughtworks.wechat_application.resources.wechat.WeChatInboundMessageReader;
