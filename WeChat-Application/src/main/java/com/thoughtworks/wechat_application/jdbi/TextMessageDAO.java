@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_application.jdbi;
 
-import com.thoughtworks.wechat_application.core.TextMessage;
+import com.thoughtworks.wechat_application.jdbi.core.TextMessage;
 import com.thoughtworks.wechat_application.jdbi.mapper.TextMessageMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;

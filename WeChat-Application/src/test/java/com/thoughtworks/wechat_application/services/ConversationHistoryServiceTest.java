@@ -2,8 +2,8 @@ package com.thoughtworks.wechat_application.services;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.thoughtworks.wechat_application.core.ConversationHistory;
-import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.jdbi.core.ConversationHistory;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.jdbi.ConversationHistoryDAO;
 import org.joda.time.DateTime;
 import org.junit.Before;

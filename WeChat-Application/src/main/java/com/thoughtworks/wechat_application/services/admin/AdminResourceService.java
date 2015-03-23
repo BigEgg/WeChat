@@ -2,8 +2,8 @@ package com.thoughtworks.wechat_application.services.admin;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.thoughtworks.wechat_application.core.ExpirableResource;
-import com.thoughtworks.wechat_application.core.TextMessage;
+import com.thoughtworks.wechat_application.jdbi.core.ExpirableResource;
+import com.thoughtworks.wechat_application.jdbi.core.TextMessage;
 import com.thoughtworks.wechat_application.services.ExpirableResourceService;
 import com.thoughtworks.wechat_application.services.TextMessageService;
 import com.thoughtworks.wechat_application.utils.CacheManager;

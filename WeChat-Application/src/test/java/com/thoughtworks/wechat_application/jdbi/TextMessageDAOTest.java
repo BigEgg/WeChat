@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_application.jdbi;
 
-import com.thoughtworks.wechat_application.core.TextMessage;
+import com.thoughtworks.wechat_application.jdbi.core.TextMessage;
 import org.junit.Test;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 

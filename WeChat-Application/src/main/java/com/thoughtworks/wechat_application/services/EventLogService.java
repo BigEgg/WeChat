@@ -2,7 +2,7 @@ package com.thoughtworks.wechat_application.services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.jdbi.EventLogDAO;
 import org.joda.time.DateTime;
 

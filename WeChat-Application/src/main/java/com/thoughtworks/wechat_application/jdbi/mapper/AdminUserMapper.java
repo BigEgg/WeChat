@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_application.jdbi.mapper;
 
-import com.thoughtworks.wechat_application.core.AdminUser;
+import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 

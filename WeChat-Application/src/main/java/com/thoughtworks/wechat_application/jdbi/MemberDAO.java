@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_application.jdbi;
 
-import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.jdbi.mapper.MemberMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;

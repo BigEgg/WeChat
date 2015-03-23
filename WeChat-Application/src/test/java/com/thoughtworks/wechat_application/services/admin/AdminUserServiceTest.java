@@ -2,8 +2,8 @@ package com.thoughtworks.wechat_application.services.admin;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.thoughtworks.wechat_application.core.AdminUser;
-import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.jdbi.AdminUserDAO;
 import com.thoughtworks.wechat_application.services.admin.passwordUtils.PasswordHelper;
 import org.junit.Before;

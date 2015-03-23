@@ -2,7 +2,7 @@ package com.thoughtworks.wechat_application.logic.workflow.subscribe.steps;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowContext;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStep;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStepResult;

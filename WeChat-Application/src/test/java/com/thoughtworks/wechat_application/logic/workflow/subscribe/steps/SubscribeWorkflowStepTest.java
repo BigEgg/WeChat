@@ -2,7 +2,7 @@ package com.thoughtworks.wechat_application.logic.workflow.subscribe.steps;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.logic.workflow.BasicWorkflowContext;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStepResult;
 import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNotSupportMessageException;

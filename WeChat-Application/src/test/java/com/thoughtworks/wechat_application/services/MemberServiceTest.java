@@ -2,8 +2,8 @@ package com.thoughtworks.wechat_application.services;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.thoughtworks.wechat_application.core.Label;
-import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.jdbi.core.Label;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.jdbi.MemberDAO;
 import org.junit.Before;
 import org.junit.Test;

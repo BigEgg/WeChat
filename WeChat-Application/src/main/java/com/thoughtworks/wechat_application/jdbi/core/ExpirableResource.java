@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_application.core;
+package com.thoughtworks.wechat_application.jdbi.core;
 
 import org.joda.time.DateTime;
 

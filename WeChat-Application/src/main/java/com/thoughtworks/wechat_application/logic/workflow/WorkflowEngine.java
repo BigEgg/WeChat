@@ -2,8 +2,8 @@ package com.thoughtworks.wechat_application.logic.workflow;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.thoughtworks.wechat_application.core.ConversationHistory;
-import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.jdbi.core.ConversationHistory;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.logic.workflow.exception.NoSuchWorkflowException;
 import com.thoughtworks.wechat_application.services.ConversationHistoryService;
 import com.thoughtworks.wechat_application.services.MemberService;

@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_application.jdbi;
 
-import com.thoughtworks.wechat_application.core.AdminUser;
+import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
 import org.junit.Test;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 

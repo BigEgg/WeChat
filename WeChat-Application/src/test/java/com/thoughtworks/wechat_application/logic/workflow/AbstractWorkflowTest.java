@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_application.logic.workflow;
 
-import com.thoughtworks.wechat_application.core.Member;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNeverCompleteException;
 import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNotSupportMessageException;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;

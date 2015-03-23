@@ -1,6 +1,6 @@
 package com.thoughtworks.wechat_application.jdbi;
 
-import com.thoughtworks.wechat_application.core.Label;
+import com.thoughtworks.wechat_application.jdbi.core.Label;
 import com.thoughtworks.wechat_application.jdbi.mapper.LabelMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;

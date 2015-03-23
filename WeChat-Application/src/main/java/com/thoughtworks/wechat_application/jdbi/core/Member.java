@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_application.core;
+package com.thoughtworks.wechat_application.jdbi.core;
 
 public class Member {
     private long id;
