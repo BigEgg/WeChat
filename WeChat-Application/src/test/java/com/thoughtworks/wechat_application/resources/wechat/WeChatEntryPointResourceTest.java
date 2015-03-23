@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_application.resources;
+package com.thoughtworks.wechat_application.resources.wechat;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -7,6 +7,7 @@ import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowEngine;
 import com.thoughtworks.wechat_application.resources.exceptions.WeChatMessageAuthenticationException;
 import com.thoughtworks.wechat_application.resources.exceptions.WebApplicationNotAcceptableException;
+import com.thoughtworks.wechat_application.resources.wechat.WeChatEntryPointResource;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import org.junit.Before;
 import org.junit.Test;

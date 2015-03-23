@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_application.resources;
+package com.thoughtworks.wechat_application.resources.wechat;
 
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import com.thoughtworks.wechat_core.wechat.inbound.WeChatInbound;
