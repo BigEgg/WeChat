@@ -33,7 +33,7 @@
             <column name="Id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="MemberId" type="bigint" autoIncrement="true">
+            <column name="MemberId" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="EventType" type="varchar(32)">

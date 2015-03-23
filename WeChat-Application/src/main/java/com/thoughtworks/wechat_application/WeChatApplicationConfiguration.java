@@ -14,15 +14,15 @@ public class WeChatApplicationConfiguration extends Configuration {
 
     @Valid
     @NotNull
-    private DataSourceFactory database = new DataSourceFactory();
+    private DataSourceFactory dataSourceFactory;
 
+    @JsonProperty("cache")
     public CacheConfiguration getCacheConfiguration() {
         return cacheConfiguration;
     }
 
     @JsonProperty("database")
     public DataSourceFactory getDataSourceFactory() {
-        return database;
+        return dataSourceFactory;
     }
-
 }

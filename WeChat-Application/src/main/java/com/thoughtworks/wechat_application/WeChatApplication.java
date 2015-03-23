@@ -41,7 +41,7 @@ public class WeChatApplication extends Application<WeChatApplicationConfiguratio
 
     @Override
     public void run(WeChatApplicationConfiguration weChatApplicationConfiguration, Environment environment) throws Exception {
-        registDAO(environment, weChatApplicationConfiguration);
+        final DAOModule daoModule = registDAO(environment, weChatApplicationConfiguration);
 
         configInjector(weChatApplicationConfiguration, daoModule);
 
