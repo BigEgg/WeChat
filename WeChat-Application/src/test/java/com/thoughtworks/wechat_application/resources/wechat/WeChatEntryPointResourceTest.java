@@ -1,21 +1,16 @@
 package com.thoughtworks.wechat_application.resources.wechat;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowEngine;
 import com.thoughtworks.wechat_application.resources.exceptions.WeChatMessageAuthenticationException;
 import com.thoughtworks.wechat_application.resources.exceptions.WebApplicationNotAcceptableException;
-import com.thoughtworks.wechat_application.resources.wechat.WeChatEntryPointResource;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
@@ -29,18 +24,6 @@ public class WeChatEntryPointResourceTest {
     private final static String nonce = "nonce";
     private final static String echoString = "echo";
     private final static String token = "1a2d202e3e4a5e6c76a7b";
-
-    private static String getResource(final String fileName) {
-        return getResource(fileName, Charsets.UTF_8);
-    }
-
-    private static String getResource(final String filename, final Charset charset) {
-        try {
-            return Resources.toString(Resources.getResource(filename), charset).trim();
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
 
     public static class when_verify_wechat_authentication {
         private final AdminResourceService adminResourceService = mock(AdminResourceService.class);
