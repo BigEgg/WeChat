@@ -37,7 +37,7 @@ public class OAuthResource {
         final Optional<AdminUser> adminUser = adminUserService.logIn(username, password);
         if (adminUser.isPresent()) {
             final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN);
-            return new OAuthResponse(oAuthInfo.getRefreshToken().get(), oAuthInfo.getAccessToken().get());
+            return new OAuthResponse(oAuthInfo.getAccessToken().get(), oAuthInfo.getRefreshToken().get());
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
@@ -50,7 +50,7 @@ public class OAuthResource {
         final Optional<OAuthInfo> oAuthInfo = oAuthProvider.refreshAccessToken(request.getAccessToken(), request.getRefreshToken());
 
         if (oAuthInfo.isPresent()) {
-            return new OAuthResponse(oAuthInfo.get().getRefreshToken().get(), oAuthInfo.get().getAccessToken().get());
+            return new OAuthResponse(oAuthInfo.get().getAccessToken().get(), oAuthInfo.get().getRefreshToken().get());
         } else {
             throw new WebApplicationException(Response.Status.FORBIDDEN);
         }
