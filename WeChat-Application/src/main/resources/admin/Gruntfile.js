@@ -1,14 +1,29 @@
 module.exports = function (grunt) {
+    var BUILD_DIR = 'build/';
+    var SRC_DIR = 'src/';
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        scriptsSrc: 'src/scripts',
-        build: 'build',
+
+        clean: {
+            build: {
+                src: [BUILD_DIR]
+            }
+        },
+        copy: {
+            build: {
+                cwd: SRC_DIR,
+                src: ['**', '!scripts/com/**', '!styles/less/**'],
+                dest: BUILD_DIR,
+                expand: true
+            }
+        },
         jshint: {
             all: [
                 'Gruntfile.js',
-                '<%= scriptsSrc %>/com/*.js',
-                '<%= scriptsSrc %>/com/**/*.js'
+                SRC_DIR + 'com/*.js',
+                SRC_DIR + 'com/**/*.js'
             ],
             options: {
                 reporter: require('jshint-stylish'),
@@ -17,13 +32,23 @@ module.exports = function (grunt) {
                     "_": true
                 }
             }
+        },
+        less: {
+            development: {
+                options: {
+                    cleancss: true
+                },
+                files: {
+                    'src/styles/main.css': "src/styles/less/*.less"
+                }
+            }
         }
     });
 
-    // 加载包含 "uglify" 任务的插件。
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
-    // 默认被执行的任务列表。
-    grunt.registerTask('default', ['jshint']);
-
+    grunt.registerTask('default', ['jshint', 'less', 'clean', 'copy']);
 };

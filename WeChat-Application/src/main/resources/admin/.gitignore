@@ -5,3 +5,5 @@
 
 node_modules
 build
+src/scripts/app.js
+src/styles/main.css
