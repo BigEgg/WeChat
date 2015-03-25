@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="adminApp">
 <head lang="en">
     <title>ThoughtWorks WeChat Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,11 +12,11 @@
     <link rel="icon" href="../imgs/favicon32x32.png" sizes="32x32">
 </head>
 <body>
-<div class="col-xs-12">
+<div class="col-xs-12" ng-controller="AppController">
     <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only">{{i18n.get('index.navigator.menu')}}</span>
             </button>
             <a class="navbar-brand" href="#">
                 <img src="../imgs/tw-logo-white.png" height="25px"/>
@@ -25,17 +25,18 @@
         <div class="collapse navbar-collapse" id="navbar-collapse-01">
             <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">基础设置<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{i18n.get('index.navigator.basicSetting')}}<b
+                            class="caret"></b></a>
                     <span class="dropdown-arrow"></span>
                     <ul class="dropdown-menu">
-                        <li><a href="#">微信基本信息</a></li>
+                        <li><a href="#">{{i18n.get('index.navigator.basicSetting.wechat')}}</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">系统默认对话</a></li>
-                        <li><a href="#">公众号菜单</a></li>
-                        <li><a href="#">用户管理</a></li>
+                        <li><a href="#">{{i18n.get('index.navigator.basicSetting.conversation')}}</a></li>
+                        <li><a href="#">{{i18n.get('index.navigator.basicSetting.menu')}}</a></li>
+                        <li><a href="#">{{i18n.get('index.navigator.basicSetting.user')}}</a></li>
                     </ul>
                 </li>
-                <li><a href="#fakelink">关于我们</a></li>
+                <li><a href="#fakelink">{{i18n.get('index.navigator.about')}}</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -43,23 +44,24 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <input class="form-control" id="username" type="text" name="username"
-                                       placeholder="用户名">
+                                       placeholder="{{i18n.get('index.navigator.logIn.username')}}">
                             </div>
                             <div class="input-group">
                                 <input class="form-control" id="password" type="password" name="password"
-                                       placeholder="密码">
+                                       placeholder="{{i18n.get('index.navigator.logIn.password')}}">
                             </div>
-                            <button type="submit" class="btn">登陆</button>
+                            <button type="submit" class="btn">{{i18n.get('index.navigator.logIn.signIn')}}</button>
                         </div>
                     </form>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">欢迎<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{i18n.get('index.navigator.user.welcome')}}<b
+                            class="caret"></b></a>
                     <span class="dropdown-arrow"></span>
                     <ul class="dropdown-menu">
-                        <li><a href="#">微信用户绑定</a></li>
+                        <li><a href="#">{{i18n.get('index.navigator.user.bind')}}</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">登出</a></li>
+                        <li><a href="#">{{i18n.get('index.navigator.user.signOut')}}</a></li>
                     </ul>
                 </li>
             </ul>
@@ -68,25 +70,29 @@
 
     <div role="main" class="container">
         <div class="row col-xs-12">
-            <p class="lead">欢迎光临ThoughtWorks内部微信公众平台管理员界面</p>
-
-            <p>如果您不是管理员，而只想关注我们，请扫描下面的二维码</p>
-
-            <img src="../imgs/wechat-qrcode.png"/>
+            <p class="lead">{{i18n.get('index.content.welcome')}}</p>
         </div>
     </div>
 </div>
 
 <footer class="footer">
     <div class="container">
-        <p>由©2015 <a href="http://www.thoughtworks.com/" target="_blank">ThoughtWorks Inc.</a>制作</p>
+        <p>Produce by <a href="http://www.thoughtworks.com/" target="_blank">©2015 ThoughtWorks Inc.</a></p>
 
         <p>Code licensed under the The <a href="https://github.com/angular/angular.js/blob/master/LICENSE"
                                           target="_blank">The MIT License</a>.</p>
     </div>
 </footer>
 
+
 <script src="../../vendor/scripts/jquery.min.js"></script>
 <script src="../../vendor/scripts/flat-ui.min.js"></script>
+<script src="../../vendor/scripts/underscore.js"></script>
+
+<script src="../../vendor/scripts/angular.min.js"></script>
+<script src="../../vendor/scripts/angular-route.min.js"></script>
+
+<script src="../scripts/main.js"></script>
+
 </body>
 </html>

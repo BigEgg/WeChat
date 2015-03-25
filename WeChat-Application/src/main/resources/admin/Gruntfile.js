@@ -8,15 +8,27 @@ module.exports = function (grunt) {
 
         clean: {
             build: {
-                src: [BUILD_DIR]
+                src: [BUILD_DIR, SRC_DIR + 'scripts/main.js']
             }
         },
         copy: {
             build: {
                 cwd: SRC_DIR,
-                src: ['**', '!scripts/com/**', '!styles/less/**'],
+                src: ['**', 'scripts/main.js', '!scripts/**', '!styles/less/**'],
                 dest: BUILD_DIR,
                 expand: true
+            }
+        },
+        concat: {
+            options: {
+                separator: ';'
+            },
+            modules: {
+                src: [
+                    SRC_DIR + 'scripts/app.js',
+                    SRC_DIR + 'scripts/**/*.js'
+                ],
+                dest: SRC_DIR + 'scripts/main.js'
             }
         },
         jshint: {
@@ -47,8 +59,9 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
-    grunt.registerTask('default', ['jshint', 'less', 'clean', 'copy']);
+    grunt.registerTask('default', ['jshint', 'less', 'clean', 'concat', 'copy']);
 };
