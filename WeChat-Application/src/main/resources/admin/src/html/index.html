@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>ThoughtWorks WeChat Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../styles/vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="../styles/vendor/flat-ui.min.css" rel="stylesheet">
+    <link href="../styles/main.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="../imgs/favicon.ico">
+    <link rel="icon" href="../imgs/favicon32x32.png" sizes="32x32">
+</head>
+<body>
+<div class="col-xs-12">
+    <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img src="../imgs/tw-logo-white.png" height="25px"/>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-01">
+            <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">基础设置<b class="caret"></b></a>
+                    <span class="dropdown-arrow"></span>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">微信基本信息</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">系统默认对话</a></li>
+                        <li><a href="#">公众号菜单</a></li>
+                        <li><a href="#">用户管理</a></li>
+                    </ul>
+                </li>
+                <li><a href="#fakelink">关于我们</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <form class="navbar-form navbar-right" action="#" role="search">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input class="form-control" id="username" type="text" name="username"
+                                       placeholder="用户名">
+                            </div>
+                            <div class="input-group">
+                                <input class="form-control" id="password" type="password" name="password"
+                                       placeholder="密码">
+                            </div>
+                            <button type="submit" class="btn">登陆</button>
+                        </div>
+                    </form>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">欢迎<b class="caret"></b></a>
+                    <span class="dropdown-arrow"></span>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">微信用户绑定</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">登出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div role="main" class="container">
+        <div class="row col-xs-12">
+            <p class="lead">欢迎光临ThoughtWorks内部微信公众平台管理员界面</p>
+
+            <p>如果您不是管理员，而只想关注我们，请扫描下面的二维码</p>
+
+            <img src="../imgs/favicon32x32.png"/>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>由©2015 <a href="http://www.thoughtworks.com/" target="_blank">ThoughtWorks Inc.</a>制作</p>
+
+        <p>Code licensed under the The <a href="https://github.com/angular/angular.js/blob/master/LICENSE"
+                                          target="_blank">The MIT License</a>.</p>
+    </div>
+</footer>
+
+<script src="../scripts/vendor/jquery.min.js"></script>
+<script src="../scripts/vendor/flat-ui.min.js"></script>
+</body>
+</html>
