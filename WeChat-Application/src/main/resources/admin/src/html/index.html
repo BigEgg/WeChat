@@ -16,7 +16,7 @@
     <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
-                <span class="sr-only">{{i18n.get('index.navigator.menu')}}</span>
+                <span class="sr-only" translate="index.navigator.menu"></span>
             </button>
             <a class="navbar-brand" href="#">
                 <img src="../imgs/tw-logo-white.png" height="25px"/>
@@ -24,44 +24,44 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-01">
             <ul class="nav navbar-nav navbar-left">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{i18n.get('index.navigator.basicSetting')}}<b
+                <li class="dropdown" ng-if="oAuth.isLogin()">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate="index.navigator.basicSetting"><b
                             class="caret"></b></a>
                     <span class="dropdown-arrow"></span>
                     <ul class="dropdown-menu">
-                        <li><a href="#">{{i18n.get('index.navigator.basicSetting.wechat')}}</a></li>
+                        <li><a href="#" translate="index.navigator.basicSetting.wechat"></a></li>
                         <li class="divider"></li>
-                        <li><a href="#">{{i18n.get('index.navigator.basicSetting.conversation')}}</a></li>
-                        <li><a href="#">{{i18n.get('index.navigator.basicSetting.menu')}}</a></li>
-                        <li><a href="#">{{i18n.get('index.navigator.basicSetting.user')}}</a></li>
+                        <li><a href="#" translate="index.navigator.basicSetting.conversation"></a></li>
+                        <li><a href="#" translate="index.navigator.basicSetting.menu"></a></li>
+                        <li><a href="#" translate="index.navigator.basicSetting.user"></a></li>
                     </ul>
                 </li>
-                <li><a href="#fakelink">{{i18n.get('index.navigator.about')}}</a></li>
+                <li><a href="#fakelink" translate="index.navigator.about"></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                <li ng-if="!oAuth.isLogin()">
                     <form class="navbar-form navbar-right" action="#" role="search">
                         <div class="form-group">
                             <div class="input-group">
                                 <input class="form-control" id="username" type="text" name="username"
-                                       placeholder="{{i18n.get('index.navigator.logIn.username')}}">
+                                       placeholder="{{'index.navigator.logIn.username' | translate}}">
                             </div>
                             <div class="input-group">
                                 <input class="form-control" id="password" type="password" name="password"
-                                       placeholder="{{i18n.get('index.navigator.logIn.password')}}">
+                                       placeholder="{{'index.navigator.logIn.password' | translate}}">
                             </div>
-                            <button type="submit" class="btn">{{i18n.get('index.navigator.logIn.signIn')}}</button>
+                            <button type="submit" class="btn" translate="index.navigator.logIn.signIn"></button>
                         </div>
                     </form>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{i18n.get('index.navigator.user.welcome')}}<b
+                <li class="dropdown" ng-if="oAuth.isLogin()">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate="index.navigator.user.welcome"><b
                             class="caret"></b></a>
                     <span class="dropdown-arrow"></span>
                     <ul class="dropdown-menu">
-                        <li><a href="#">{{i18n.get('index.navigator.user.bind')}}</a></li>
+                        <li><a href="#" translate="index.navigator.user.bind"></a></li>
                         <li class="divider"></li>
-                        <li><a href="#">{{i18n.get('index.navigator.user.signOut')}}</a></li>
+                        <li><a href="#" translate="index.navigator.user.signOut"></a></li>
                     </ul>
                 </li>
             </ul>
@@ -70,7 +70,7 @@
 
     <div role="main" class="container">
         <div class="row col-xs-12">
-            <p class="lead">{{i18n.get('index.content.welcome')}}</p>
+            <p class="lead" translate="index.content.welcome"></p>
         </div>
     </div>
 </div>
@@ -84,15 +84,18 @@
     </div>
 </footer>
 
+<div id="scripts">
+    <script src="../../vendor/scripts/jquery.min.js"></script>
+    <script src="../../vendor/scripts/flat-ui.min.js"></script>
+    <script src="../../vendor/scripts/underscore-min.js"></script>
 
-<script src="../../vendor/scripts/jquery.min.js"></script>
-<script src="../../vendor/scripts/flat-ui.min.js"></script>
-<script src="../../vendor/scripts/underscore.js"></script>
+    <script src="../../vendor/scripts/angular.min.js"></script>
+    <script src="../../vendor/scripts/angular-route.min.js"></script>
+    <script src="../../vendor/scripts/angular-translate.min.js"></script>
+    <script src="../../vendor/scripts/angular-translate-loader-static-files.min.js"></script>
 
-<script src="../../vendor/scripts/angular.min.js"></script>
-<script src="../../vendor/scripts/angular-route.min.js"></script>
-
-<script src="../scripts/main.js"></script>
+    <script src="../scripts/main.js"></script>
+</div>
 
 </body>
 </html>

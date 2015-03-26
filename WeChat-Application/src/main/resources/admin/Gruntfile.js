@@ -26,6 +26,7 @@ module.exports = function (grunt) {
             modules: {
                 src: [
                     SRC_DIR + 'scripts/app.js',
+                    SRC_DIR + 'scripts/config.js',
                     SRC_DIR + 'scripts/**/*.js'
                 ],
                 dest: SRC_DIR + 'scripts/main.js'
