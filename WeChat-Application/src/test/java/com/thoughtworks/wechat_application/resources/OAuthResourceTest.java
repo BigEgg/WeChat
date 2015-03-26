@@ -1,7 +1,9 @@
 package com.thoughtworks.wechat_application.resources;
 
+import com.thoughtworks.wechat_application.api.oauth.AdminLoginRequest;
+import com.thoughtworks.wechat_application.api.oauth.AdminLoginResponse;
 import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshRequest;
-import com.thoughtworks.wechat_application.api.oauth.OAuthResponse;
+import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshResponse;
 import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
 import com.thoughtworks.wechat_application.logic.OAuthProvider;
 import com.thoughtworks.wechat_application.models.oauth.AuthenticateRole;
@@ -15,7 +17,6 @@ import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 import java.util.Optional;
 
@@ -47,29 +48,30 @@ public class OAuthResourceTest extends ResourceTestBase {
 
     @Test
     public void return_token_if_log_in_success() throws Exception {
-        when(adminUserService.logIn("username", "password")).thenReturn(Optional.of(mock(AdminUser.class)));
+        when(adminUserService.logIn("abc@abc.com", "password")).thenReturn(Optional.of(mock(AdminUser.class)));
         when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN)).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
 
-        final Response response = resources.client().target("/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.form(new MultivaluedHashMap<String, String>() {{
-            add("username", "username");
-            add("password", "password");
-        }}));
+        final AdminLoginRequest request = new AdminLoginRequest();
+        request.setUsername("abc@abc.com");
+        request.setPassword("password");
+        final Response response = resources.client().target("/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
-        final OAuthResponse entity = getResponseEntity(response, OAuthResponse.class);
+        final AdminLoginResponse entity = getResponseEntity(response, AdminLoginResponse.class);
         assertThat(entity.getAccessToken()).isEqualTo("access_token");
         assertThat(entity.getRefreshToken()).isEqualTo("refresh_token");
+        assertThat(entity.getName()).isEqualTo("abc");
     }
 
     @Test
     public void return_token_if_log_in_failed() throws Exception {
-        when(adminUserService.logIn("username", "password")).thenReturn(Optional.empty());
+        when(adminUserService.logIn("abc@abc.com", "password")).thenReturn(Optional.empty());
         when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN)).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
 
-        final Response response = resources.client().target("/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.form(new MultivaluedHashMap<String, String>() {{
-            add("username", "username");
-            add("password", "password");
-        }}));
+        final AdminLoginRequest request = new AdminLoginRequest();
+        request.setUsername("abc@abc.com");
+        request.setPassword("password");
+        final Response response = resources.client().target("/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.UNAUTHORIZED);
     }
@@ -84,7 +86,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         final Response response = resources.client().target("/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
-        final OAuthResponse entity = getResponseEntity(response, OAuthResponse.class);
+        final OAuthRefreshResponse entity = getResponseEntity(response, OAuthRefreshResponse.class);
         assertThat(entity.getAccessToken()).isEqualTo("access_token2");
         assertThat(entity.getRefreshToken()).isEqualTo("refresh_token");
     }

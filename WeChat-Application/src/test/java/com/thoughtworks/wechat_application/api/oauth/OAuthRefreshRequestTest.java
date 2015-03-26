@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class OAuthRefreshRequestTest extends APITestBase {
     @Test
-    public void deserializeFromJson() throws Exception {
+    public void deserializeFromJSON() throws Exception {
         final OAuthRefreshRequest oAuthRefreshRequest = new OAuthRefreshRequest();
         oAuthRefreshRequest.setAccessToken("access_token");
         oAuthRefreshRequest.setRefreshToken("refresh_token");

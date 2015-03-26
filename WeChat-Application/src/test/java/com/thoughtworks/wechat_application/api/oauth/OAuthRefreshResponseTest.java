@@ -5,11 +5,11 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OAuthResponseTest extends APITestBase {
+public class OAuthRefreshResponseTest extends APITestBase {
     @Test
     public void serializesToJSON() throws Exception {
-        final OAuthResponse oAuthResponse = new OAuthResponse("access_token", "refresh_token");
-        assertThat(serializeObject(oAuthResponse))
+        final OAuthRefreshResponse oAuthRefreshResponse = new OAuthRefreshResponse("access_token", "refresh_token");
+        assertThat(serializeObject(oAuthRefreshResponse))
                 .isEqualTo(getResource("fixtures/api/oauth/OAuthResponse.json"));
     }
 }
