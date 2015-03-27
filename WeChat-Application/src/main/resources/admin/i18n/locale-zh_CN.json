@@ -12,5 +12,11 @@
   "index.navigator.user.welcome": "欢迎，",
   "index.navigator.user.bind": "微信用户绑定",
   "index.navigator.user.signOut": "登出",
-  "index.content.welcome": "欢迎光临ThoughtWorks内部微信公众平台管理员界面"
+  "index.content.welcome": "欢迎光临ThoughtWorks内部微信公众平台管理员界面",
+  "notify.title.success": "成功",
+  "notify.title.info": "信息",
+  "notify.title.warning": "警告",
+  "notify.title.danger": "危险",
+  "oauth.login.failed": "登录失败，请检查用户名和密码哟。",
+  "system.bad.network": "无法连接到服务器，请检查网络。"
 }

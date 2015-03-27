@@ -1,4 +1,4 @@
-admin.app.factory('oAuth', ['$window', '$http', function ($window, $http) {
+admin.app.factory('oAuth', ['$window', '$http', 'notify', function ($window, $http, notify) {
     var KEY_ACCESS_TOKEN = "access_token";
     var KEY_REFRESH_TOKEN = "refresh_token";
 
@@ -13,7 +13,11 @@ admin.app.factory('oAuth', ['$window', '$http', function ($window, $http) {
                 $window.sessionStorage.setItem(KEY_REFRESH_TOKEN, data.refresh_token);
             }).
             error(function (data, status, headers, config) {
-
+                if (status === 404) {
+                    notify.danger('system.bad.network');
+                } else {
+                    notify.warning('oauth.login.failed');
+                }
             });
     };
     oAuth.signOut = function () {
