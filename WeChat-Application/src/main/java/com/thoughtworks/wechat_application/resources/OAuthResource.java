@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response;
 import java.util.Optional;
 
 @Singleton
-@Path("/oauth")
+@Path("/api/oauth")
 @Produces(MediaType.APPLICATION_JSON)
 public class OAuthResource {
     private final AdminUserService adminUserService;

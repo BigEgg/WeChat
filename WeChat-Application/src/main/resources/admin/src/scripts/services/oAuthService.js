@@ -7,7 +7,7 @@ admin.app.factory('oAuth', ['$window', '$http', function ($window, $http) {
         return $window.sessionStorage.getItem(KEY_ACCESS_TOKEN) && $window.sessionStorage.getItem(KEY_REFRESH_TOKEN);
     };
     oAuth.logIn = function (username, password) {
-        $http.post('/oauth/admin', {username: username, password: password}).
+        $http.post('/api/oauth/admin', {username: username, password: password}).
             success(function (data, status, headers, config) {
                 $window.sessionStorage.setItem(KEY_ACCESS_TOKEN, data.access_token);
                 $window.sessionStorage.setItem(KEY_REFRESH_TOKEN, data.refresh_token);

@@ -54,7 +54,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         final AdminLoginRequest request = new AdminLoginRequest();
         request.setUsername("abc@abc.com");
         request.setPassword("password");
-        final Response response = resources.client().target("/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+        final Response response = resources.client().target("/api/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
         final AdminLoginResponse entity = getResponseEntity(response, AdminLoginResponse.class);
@@ -71,7 +71,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         final AdminLoginRequest request = new AdminLoginRequest();
         request.setUsername("abc@abc.com");
         request.setPassword("password");
-        final Response response = resources.client().target("/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+        final Response response = resources.client().target("/api/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.UNAUTHORIZED);
     }
@@ -83,7 +83,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         final OAuthRefreshRequest request = new OAuthRefreshRequest();
         request.setAccessToken("access_token");
         request.setRefreshToken("refresh_token");
-        final Response response = resources.client().target("/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+        final Response response = resources.client().target("/api/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
         final OAuthRefreshResponse entity = getResponseEntity(response, OAuthRefreshResponse.class);
@@ -98,7 +98,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         final OAuthRefreshRequest request = new OAuthRefreshRequest();
         request.setAccessToken("access_token");
         request.setRefreshToken("refresh_token");
-        final Response response = resources.client().target("/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+        final Response response = resources.client().target("/api/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
     }
