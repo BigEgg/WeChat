@@ -51,7 +51,8 @@
                                 <input class="form-control" id="password" type="password" ng-model="password"
                                        placeholder="{{'index.navigator.logIn.password' | translate}}">
                             </div>
-                            <button type="submit" class="btn" ng-click="oAuth.logIn(username, password)"
+                            <button type="submit" class="btn disabled" ng-click="oAuth.logIn(username, password)"
+                                    ng-class="{disabled: !username}"
                                     translate="index.navigator.logIn.signIn"></button>
                         </div>
                     </div>
