@@ -1,7 +1,7 @@
 var admin = admin || {};
-admin.app = angular.module('adminApp', ['pascalprecht.translate']);
+admin.app = angular.module('adminApp', ['ngRoute', 'pascalprecht.translate']);
 
-admin.app.controller('AppController', ['$scope', 'oAuth', function ($scope, oAuth) {
+admin.app.controller('AppCtrl', ['$scope', 'oAuth', function ($scope, oAuth) {
         $scope.oAuth = oAuth;
     }]
 );
