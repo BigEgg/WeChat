@@ -94,7 +94,7 @@ public class WorkflowEngineTest {
         final Map<WorkflowLevel, Integer> workflowSize = engine.getWorkflowSize();
 
         assertThat(workflowSize.get(WorkflowLevel.SPECIFIC), equalTo(1));
-        assertThat(workflowSize.get(WorkflowLevel.GENGERATE), equalTo(1));
+        assertThat(workflowSize.get(WorkflowLevel.GENERATE), equalTo(1));
         assertThat(workflowSize.get(WorkflowLevel.DEFAULT), equalTo(1));
     }
 

@@ -106,7 +106,7 @@ public class WorkflowEngine {
         workflowList.stream().forEach(workflow -> {
             final WorkflowLevel level = workflow.getClass().isAnnotationPresent(WorkflowLevelAnnotation.class)
                     ? workflow.getClass().getAnnotation(WorkflowLevelAnnotation.class).level()
-                    : WorkflowLevel.GENGERATE;
+                    : WorkflowLevel.GENERATE;
 
             workflows.get(level).put(getWorkflowName(workflow.getClass()), workflow);
         });
@@ -132,7 +132,7 @@ public class WorkflowEngine {
             return workflowOpt.get();
         }
 
-        workflowOpt = getWorkflowByLevel(inboundMessageEnvelop, WorkflowLevel.GENGERATE);
+        workflowOpt = getWorkflowByLevel(inboundMessageEnvelop, WorkflowLevel.GENERATE);
         if (workflowOpt.isPresent()) {
             return workflowOpt.get();
         }

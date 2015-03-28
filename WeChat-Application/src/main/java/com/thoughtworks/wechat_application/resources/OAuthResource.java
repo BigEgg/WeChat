@@ -21,6 +21,7 @@ import java.util.Optional;
 
 @Singleton
 @Path("/api/oauth")
+@Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class OAuthResource {
     private final AdminUserService adminUserService;
@@ -48,7 +49,6 @@ public class OAuthResource {
 
     @POST
     @Path("/refresh")
-    @Consumes(MediaType.APPLICATION_JSON)
     public OAuthRefreshResponse refresh(@NotBlank final OAuthRefreshRequest request) {
         final Optional<OAuthInfo> oAuthInfo = oAuthProvider.refreshAccessToken(request.getAccessToken(), request.getRefreshToken());
 

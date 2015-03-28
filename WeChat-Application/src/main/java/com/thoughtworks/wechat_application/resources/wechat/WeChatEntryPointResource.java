@@ -1,5 +1,6 @@
 package com.thoughtworks.wechat_application.resources.wechat;
 
+import com.codahale.metrics.annotation.Timed;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowEngine;
@@ -12,6 +13,7 @@ import com.thoughtworks.wechat_core.messages.outbound.OutboundMessageEnvelop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Optional;
@@ -20,47 +22,58 @@ import static com.thoughtworks.wechat_core.messages.MessageAuthentication.valida
 
 @Singleton
 @Path("/wechat")
-@Produces(MediaType.APPLICATION_XML)
-@Consumes({MediaType.TEXT_XML, MediaType.APPLICATION_XML})
 public class WeChatEntryPointResource {
-    private final Logger LOGGOR = LoggerFactory.getLogger(WeChatEntryPointResource.class);
-    private final String appToken;
+    private final Logger LOGGER = LoggerFactory.getLogger(WeChatEntryPointResource.class);
+    private final AdminResourceService adminResourceService;
     private final WorkflowEngine workflowEngine;
 
     @Inject
     public WeChatEntryPointResource(final AdminResourceService adminResourceService,
                                     final WorkflowEngine workflowEngine) {
         this.workflowEngine = workflowEngine;
-        appToken = adminResourceService.getAppToken();
+        this.adminResourceService = adminResourceService;
     }
 
     @POST
-    public OutboundMessageEnvelop handleMessage(InboundMessageEnvelop inboundMessageEnvelop,
-                                                @QueryParam("signature") Optional<String> signature,
-                                                @QueryParam("timestamp") Optional<String> timestamp,
-                                                @QueryParam("nonce") Optional<String> nonce) throws Exception {
-        validationWeChatCommunication(signature, timestamp, nonce);
+    @Produces(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_XML)
+    public OutboundMessageEnvelop handleMessage(@NotNull InboundMessageEnvelop inboundMessageEnvelop,
+                                                @QueryParam("signature") String signature,
+                                                @QueryParam("timestamp") String timestamp,
+                                                @QueryParam("nonce") String nonce) throws Exception {
+        validationWeChatCommunication(
+                Optional.ofNullable(signature),
+                Optional.ofNullable(timestamp),
+                Optional.ofNullable(nonce));
 
         final String fromUser = inboundMessageEnvelop.getFromUser();
-        LOGGOR.info("[HandleMessage] Get response message(type: {}) from user {};", inboundMessageEnvelop.getMessage().getMessageType(), fromUser);
+        LOGGER.info("[HandleMessage] Get response message(type: {}) from user {};", inboundMessageEnvelop.getMessage().getMessageType(), fromUser);
         final Optional<OutboundMessage> outboundMessage = workflowEngine.handle(inboundMessageEnvelop);
         if (outboundMessage.isPresent()) {
-            LOGGOR.info("[HandleMessage] Reply user {} with message(type: {}).", fromUser, outboundMessage.get().getMessageType());
+            LOGGER.info("[HandleMessage] Reply user {} with message(type: {}).", fromUser, outboundMessage.get().getMessageType());
         } else {
-            LOGGOR.info("[HandleMessage] Reply user {} with empty message.", fromUser);
+            LOGGER.info("[HandleMessage] Reply user {} with empty message.", fromUser);
         }
 
         return inboundMessageEnvelop.reply(outboundMessage);
     }
 
     @GET
-    public String weChatVerify(@QueryParam("signature") Optional<String> signature,
-                               @QueryParam("timestamp") Optional<String> timestamp,
-                               @QueryParam("nonce") Optional<String> nonce,
-                               @QueryParam("echostr") Optional<String> echoStr) throws Exception {
-        validationWeChatCommunication(signature, timestamp, nonce);
+    @Timed
+    public String weChatVerify(@QueryParam("signature") String signature,
+                               @QueryParam("timestamp") String timestamp,
+                               @QueryParam("nonce") String nonce,
+                               @QueryParam("echostr") String echoStr) throws Exception {
+        validationWeChatCommunication(
+                Optional.ofNullable(signature),
+                Optional.ofNullable(timestamp),
+                Optional.ofNullable(nonce));
 
-        return echoStr.orElseThrow(WebApplicationNotAcceptableException::new);
+        if (echoStr == null) {
+            throw new WebApplicationNotAcceptableException();
+        } else {
+            return echoStr;
+        }
     }
 
     private void validationWeChatCommunication(Optional<String> signature,
@@ -70,7 +83,7 @@ public class WeChatEntryPointResource {
             throw new WebApplicationNotAcceptableException();
         }
 
-        if (!validation(signature.get(), appToken, timestamp.get(), nonce.get())) {
+        if (!validation(signature.get(), adminResourceService.getAppToken(), timestamp.get(), nonce.get())) {
             throw new WeChatMessageAuthenticationException();
         }
     }

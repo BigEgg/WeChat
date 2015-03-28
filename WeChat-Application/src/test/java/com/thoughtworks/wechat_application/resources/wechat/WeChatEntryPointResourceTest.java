@@ -11,8 +11,6 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import java.util.Optional;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,32 +43,32 @@ public class WeChatEntryPointResourceTest {
 
         @Test(expected = WebApplicationNotAcceptableException.class)
         public void should_throw_exception_when_signature_empty() throws Exception {
-            resource.weChatVerify(Optional.empty(), Optional.of(timestamp), Optional.of(nonce), Optional.of(echoString));
+            resource.weChatVerify(null, timestamp, nonce, echoString);
         }
 
         @Test(expected = WebApplicationNotAcceptableException.class)
         public void should_throw_exception_when_timestamp_empty() throws Exception {
-            resource.weChatVerify(Optional.of(signature), Optional.empty(), Optional.of(nonce), Optional.of(echoString));
+            resource.weChatVerify(signature, null, nonce, echoString);
         }
 
         @Test(expected = WebApplicationNotAcceptableException.class)
         public void should_throw_exception_when_nonce_empty() throws Exception {
-            resource.weChatVerify(Optional.of(signature), Optional.of(timestamp), Optional.empty(), Optional.of(echoString));
+            resource.weChatVerify(signature, timestamp, null, echoString);
         }
 
         @Test(expected = WeChatMessageAuthenticationException.class)
         public void should_throw_exception_wechat_authentication_failed() throws Exception {
-            resource.weChatVerify(Optional.of(wrongSignature), Optional.of(timestamp), Optional.of(nonce), Optional.of(echoString));
+            resource.weChatVerify(wrongSignature, timestamp, nonce, echoString);
         }
 
         @Test(expected = WebApplicationNotAcceptableException.class)
         public void should_throw_exception_when_echo_empty() throws Exception {
-            resource.weChatVerify(Optional.of(signature), Optional.of(timestamp), Optional.of(nonce), Optional.empty());
+            resource.weChatVerify(signature, timestamp, nonce, null);
         }
 
         @Test
         public void should_return_echo_string() throws Exception {
-            resource.weChatVerify(Optional.of(signature), Optional.of(timestamp), Optional.of(nonce), Optional.of(echoString));
+            resource.weChatVerify(signature, timestamp, nonce, echoString);
         }
     }
 
@@ -94,17 +92,17 @@ public class WeChatEntryPointResourceTest {
 
         @Test(expected = WebApplicationNotAcceptableException.class)
         public void should_throw_exception_when_signature_empty() throws Exception {
-            resource.handleMessage(null, Optional.empty(), Optional.of(timestamp), Optional.of(nonce));
+            resource.handleMessage(null, null, timestamp, nonce);
         }
 
         @Test(expected = WebApplicationNotAcceptableException.class)
         public void should_throw_exception_when_timestamp_empty() throws Exception {
-            resource.handleMessage(null, Optional.of(signature), Optional.empty(), Optional.of(nonce));
+            resource.handleMessage(null, signature, null, nonce);
         }
 
         @Test(expected = WebApplicationNotAcceptableException.class)
         public void should_throw_exception_when_nonce_empty() throws Exception {
-            resource.handleMessage(null, Optional.of(signature), Optional.of(timestamp), Optional.empty());
+            resource.handleMessage(null, signature, timestamp, null);
         }
     }
 }
