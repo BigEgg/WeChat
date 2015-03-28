@@ -10,6 +10,7 @@ import com.thoughtworks.wechat_application.resources.wechat.WeChatEntryPointReso
 import com.thoughtworks.wechat_application.resources.wechat.WeChatInboundMessageReader;
 import com.thoughtworks.wechat_application.resources.wechat.WeChatOutboundMessageWriter;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.migrations.MigrationsBundle;
@@ -37,6 +38,8 @@ public class WeChatApplication extends Application<WeChatApplicationConfiguratio
                 return configuration.getDataSourceFactory();
             }
         });
+
+        bootstrap.addBundle(new AssetsBundle("/admin/build", "/admin"));
     }
 
     @Override
