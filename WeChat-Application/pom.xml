@@ -143,5 +143,19 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>admin/.idea/</exclude>
+                    <exclude>admin/node_module/</exclude>
+                    <exclude>admin/src/</exclude>
+                    <exclude>admin/.gitignore</exclude>
+                    <exclude>admin/Gruntfile.js</exclude>
+                    <exclude>admin/package.json</exclude>
+                    <exclude>admin/server.js</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>
 </project>
