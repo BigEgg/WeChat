@@ -11,6 +11,7 @@ admin.app.factory('oAuth', ['$window', '$http', 'notify', function ($window, $ht
             success(function (data, status, headers, config) {
                 $window.sessionStorage.setItem(KEY_ACCESS_TOKEN, data.access_token);
                 $window.sessionStorage.setItem(KEY_REFRESH_TOKEN, data.refresh_token);
+                return data.name;
             }).
             error(function (data, status, headers, config) {
                 if (status === 404) {
@@ -18,6 +19,7 @@ admin.app.factory('oAuth', ['$window', '$http', 'notify', function ($window, $ht
                 } else {
                     notify.warning('oauth.login.failed');
                 }
+                return ""
             });
     };
     oAuth.signOut = function () {

@@ -8,7 +8,12 @@ admin.app.config(function ($routeProvider, $translateProvider) {
     $routeProvider
         .when('/', {
             controller: 'AppCtrl',
-            templateUrl: '../html/views/home.html'
+            templateUrl: '../html/views/home.html',
+            publicAccess: true
+        })
+        .when('/dashboard', {
+            controller: 'DashboardCtrl',
+            templateUrl: '../html/views/dashboard.html'
         })
         .otherwise({
             redirectTo: '/'
