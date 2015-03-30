@@ -13,7 +13,6 @@ describe('OAuth Service Test', function () {
 
     it('should not logged in before sign in', inject(function (oAuthSrv) {
         expect(oAuthSrv.isLoggedIn()).toBeFalsy();
-        expect(oAuthSrv.getUsername()).toBeNull();
     }));
 
     it('should logged in after sign in success', inject(function ($httpBackend, $window, oAuthSrv) {
@@ -39,6 +38,7 @@ describe('OAuth Service Test', function () {
         $httpBackend.expectGET('../html/views/home.html').respond(200, '');
 
         oAuthSrv.signIn('abc@abc.com', 'password').then(
+            null,
             function (e) {
                 expect(e instanceof SystemBadNetworkException).toBeTruthy();
             }
@@ -53,6 +53,7 @@ describe('OAuth Service Test', function () {
         $httpBackend.expectGET('../html/views/home.html').respond(200, '');
 
         oAuthSrv.signIn('abc@abc.com', 'password').then(
+            null,
             function (e) {
                 expect(e instanceof AuthorizeFailedException).toBeTruthy();
             }

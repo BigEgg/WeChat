@@ -11,13 +11,15 @@ admin.app.controller('AppCtrl', ['$scope', '$location', 'oAuthSrv', 'notify', fu
         oAuthSrv.signIn(username, password).then(
             function (name) {
                 $scope.status.logging = false;
-
-                if (name instanceof AuthorizeFailedException) {
+                $scope.name = name;
+            },
+            function (e) {
+                if (e instanceof AuthorizeFailedException) {
                     notify.warning('oauth.signIn.failed');
-                } else if (name instanceof SystemBadNetworkException) {
+                } else if (e instanceof SystemBadNetworkException) {
                     notify.danger(e.message);
                 } else {
-                    $scope.name = name;
+                    notify.danger('error.unknown');
                 }
             });
     };
