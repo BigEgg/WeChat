@@ -1,4 +1,4 @@
-admin.app.factory('oAuthSrv', ['$window', '$http', 'notify', function ($window, $http, notify) {
+admin.app.factory('oAuthSrv', ['$window', '$http', function ($window, $http) {
     var KEY_ACCESS_TOKEN = "access_token";
     var KEY_REFRESH_TOKEN = "refresh_token";
 
@@ -15,11 +15,10 @@ admin.app.factory('oAuthSrv', ['$window', '$http', 'notify', function ($window, 
             }).
             error(function (data, status, headers, config) {
                 if (status === 404) {
-                    notify.danger('system.bad.network');
+                    throw new SystemBadNetworkException();
                 } else {
-                    notify.warning('oauth.login.failed');
+                    throw new AuthorizeFailedException();
                 }
-                return ""
             });
     };
     oAuth.signOut = function () {
