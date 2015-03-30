@@ -32,12 +32,16 @@ public class OAuthResourceTest extends ResourceTestBase {
             .addResource(new OAuthResource(adminUserService, oAuthProvider))
             .build();
 
+    private static AdminUser createAdmin() {
+        return new AdminUser(1L, "username", "hashedPassword", Optional.<Long>empty());
+    }
+
     private static OAuthInfo createOAuthInfo1(AuthenticateRole role) {
-        return new OAuthInfo(role, "access_token", "refresh_token", 1000, 1000, DateTime.now());
+        return new OAuthInfo(role, "access_token", "refresh_token", createAdmin(), 1000, 1000, DateTime.now());
     }
 
     private static OAuthInfo createOAuthInfo2(AuthenticateRole role) {
-        return new OAuthInfo(role, "access_token2", "refresh_token", 1000, 1000, DateTime.now());
+        return new OAuthInfo(role, "access_token2", "refresh_token", createAdmin(), 1000, 1000, DateTime.now());
     }
 
     @After
@@ -48,8 +52,9 @@ public class OAuthResourceTest extends ResourceTestBase {
 
     @Test
     public void return_token_if_log_in_success() throws Exception {
-        when(adminUserService.logIn("abc@abc.com", "password")).thenReturn(Optional.of(mock(AdminUser.class)));
-        when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN)).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
+        final AdminUser admin = createAdmin();
+        when(adminUserService.logIn("abc@abc.com", "password")).thenReturn(Optional.of(admin));
+        when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN, admin)).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
 
         final AdminLoginRequest request = new AdminLoginRequest();
         request.setUsername("abc@abc.com");
@@ -66,7 +71,7 @@ public class OAuthResourceTest extends ResourceTestBase {
     @Test
     public void return_token_if_log_in_failed() throws Exception {
         when(adminUserService.logIn("abc@abc.com", "password")).thenReturn(Optional.empty());
-        when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN)).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
+        when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin())).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
 
         final AdminLoginRequest request = new AdminLoginRequest();
         request.setUsername("abc@abc.com");

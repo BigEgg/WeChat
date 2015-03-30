@@ -40,7 +40,7 @@ public class OAuthResource {
         final String username = request.getUsername();
         final Optional<AdminUser> adminUser = adminUserService.logIn(username, request.getPassword());
         if (adminUser.isPresent()) {
-            final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN);
+            final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, adminUser.get());
             return new AdminLoginResponse(oAuthInfo.getAccessToken().get(), oAuthInfo.getRefreshToken().get(), username.split("@")[0]);
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);

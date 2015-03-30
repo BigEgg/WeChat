@@ -3,6 +3,7 @@ package com.thoughtworks.wechat_application.logic;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.configs.OAuthConfiguration;
+import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
 import com.thoughtworks.wechat_application.models.oauth.AuthenticateRole;
 import com.thoughtworks.wechat_application.models.oauth.OAuthInfo;
 import org.junit.Before;
@@ -13,8 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.any;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -48,7 +48,7 @@ public class OAuthProviderTest {
         when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(10);
         when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(10);
 
-        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN);
+        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin());
 
         assertThat(oAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
         assertThat(oAuthInfo.getAccessToken().isPresent(), equalTo(true));
@@ -57,6 +57,26 @@ public class OAuthProviderTest {
         assertThat(oAuthInfo.getRefreshToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo.getRefreshToken().get(), any(String.class));
         assertThat(oAuthInfo.getRefreshToken().get().length(), equalTo(configuration.getoAuthRefreshTokenLength()));
+        assertThat(oAuthInfo.getClient() instanceof AdminUser, equalTo(true));
+    }
+
+    @Test
+    public void testNewOAuth_ExistAdmin() throws Exception {
+        when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(10);
+        when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(10);
+
+        final AdminUser admin = createAdmin();
+        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, admin);
+        final OAuthInfo oAuthInfo2 = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, admin);
+
+        assertThat(oAuthInfo2.getRole(), equalTo(AuthenticateRole.ADMIN));
+        assertThat(oAuthInfo2.getAccessToken().isPresent(), equalTo(true));
+        assertThat(oAuthInfo2.getAccessToken().get(), not(equalTo(oAuthInfo.getAccessToken().get())));
+        assertThat(oAuthInfo2.getAccessToken().get().length(), equalTo(configuration.getoAuthAccessTokenLength()));
+        assertThat(oAuthInfo2.getRefreshToken().isPresent(), equalTo(true));
+        assertThat(oAuthInfo2.getRefreshToken().get(), not(equalTo(oAuthInfo.getRefreshToken().get())));
+        assertThat(oAuthInfo2.getRefreshToken().get().length(), equalTo(configuration.getoAuthRefreshTokenLength()));
+        assertThat(oAuthInfo2.getClient(), equalTo(oAuthInfo.getClient()));
     }
 
     @Test
@@ -64,7 +84,7 @@ public class OAuthProviderTest {
         when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(1, 10);
         when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(10);
 
-        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN);
+        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin());
         final String accessToken = oAuthInfo.getAccessToken().get();
         Thread.sleep(1000);
 
@@ -86,7 +106,7 @@ public class OAuthProviderTest {
         when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(1);
         when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(10);
 
-        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN);
+        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin());
         Thread.sleep(1000);
 
         final Optional<OAuthInfo> newOAuthInfoOpt = oAuthProvider.refreshAccessToken("wrongAccessToken", oAuthInfo.getRefreshToken().get());
@@ -98,7 +118,7 @@ public class OAuthProviderTest {
         when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(10);
         when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(1);
 
-        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN);
+        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin());
         final String accessToken = oAuthInfo.getAccessToken().get();
         final String refreshToken = oAuthInfo.getRefreshToken().get();
         Thread.sleep(1000);
@@ -112,7 +132,7 @@ public class OAuthProviderTest {
         when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(10);
         when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(10);
 
-        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN);
+        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin());
         final AuthenticateRole role = oAuthProvider.getRole(oAuthInfo.getAccessToken().get());
 
         assertThat(role, equalTo(AuthenticateRole.ADMIN));
@@ -123,7 +143,7 @@ public class OAuthProviderTest {
         when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(1);
         when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(10);
 
-        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN);
+        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin());
         final String accessToken = oAuthInfo.getAccessToken().get();
         Thread.sleep(1000);
 
@@ -136,9 +156,13 @@ public class OAuthProviderTest {
         when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(10);
         when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(10);
 
-        oAuthProvider.newOAuth(AuthenticateRole.ADMIN);
+        oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin());
         final AuthenticateRole role = oAuthProvider.getRole("wrongAccessToken");
 
         assertThat(role, equalTo(AuthenticateRole.NONE));
+    }
+
+    private AdminUser createAdmin() {
+        return new AdminUser(1L, "username", "hashedPassword", Optional.<Long>empty());
     }
 }

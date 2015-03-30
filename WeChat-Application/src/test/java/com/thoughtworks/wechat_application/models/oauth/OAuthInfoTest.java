@@ -1,7 +1,10 @@
 package com.thoughtworks.wechat_application.models.oauth;
 
+import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -10,18 +13,20 @@ import static org.junit.Assert.assertThat;
 public class OAuthInfoTest {
     @Test
     public void testGenerate() throws Exception {
-        final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", 10, 10, DateTime.now());
+        final AdminUser admin = createAdmin();
+        final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", admin, 10, 10, DateTime.now());
 
         assertThat(oAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
         assertThat(oAuthInfo.getAccessToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo.getAccessToken().get(), equalTo("accessToken"));
         assertThat(oAuthInfo.getRefreshToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo.getRefreshToken().get(), equalTo("refreshToken"));
+        assertThat(oAuthInfo.getClient(), equalTo(admin));
     }
 
     @Test
     public void testAccessTokenExpired() throws Exception {
-        final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", 1, 10, DateTime.now());
+        final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", createAdmin(), 1, 10, DateTime.now());
 
         Thread.sleep(1000);
         assertThat(oAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
@@ -32,11 +37,15 @@ public class OAuthInfoTest {
 
     @Test
     public void testRefreshTokenExpired() throws Exception {
-        final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", 10, 1, DateTime.now());
+        final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", createAdmin(), 10, 1, DateTime.now());
 
         Thread.sleep(1000);
         assertThat(oAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
         assertThat(oAuthInfo.getAccessToken().isPresent(), equalTo(false));
         assertThat(oAuthInfo.getRefreshToken().isPresent(), equalTo(false));
+    }
+
+    private AdminUser createAdmin() {
+        return new AdminUser(1L, "username", "hashedPassword", Optional.<Long>empty());
     }
 }

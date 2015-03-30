@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.thoughtworks.wechat_core.util.HashHelper.sha1Hash;
 
 @Singleton
@@ -30,14 +31,18 @@ public class OAuthProvider {
         this.oAuthInfoMap = new HashMap<>();
     }
 
-    public OAuthInfo newOAuth(final AuthenticateRole role) {
-        String accessToken = getAccessToken();
+    public OAuthInfo newOAuth(final AuthenticateRole role, final Object client) {
+        checkNotNull(client);
 
+        deleteExistOAuth(role, client);
+
+        final String accessToken = getAccessToken();
         final String refreshToken = getToken(oAuthConfiguration.getoAuthRefreshTokenLength());
         final OAuthInfo oAuthInfo = new OAuthInfo(
                 role,
                 accessToken,
                 refreshToken,
+                client,
                 oAuthConfiguration.getoAuthAccessTokenExpireSeconds(),
                 oAuthConfiguration.getoAuthRefreshTokenExpireSeconds(),
                 DateTime.now());
@@ -86,6 +91,16 @@ public class OAuthProvider {
         oAuthInfoMap.entrySet().stream()
                 .filter(entry -> !entry.getValue().getRefreshToken().isPresent())
                 .forEach(entry -> oAuthInfoMap.remove(entry.getKey()));
+    }
+
+    private void deleteExistOAuth(final AuthenticateRole role, final Object client) {
+        final Optional<Map.Entry<String, OAuthInfo>> existOAuth = oAuthInfoMap.entrySet().stream().filter(entry -> {
+            final OAuthInfo value = entry.getValue();
+            return value.getRole() == role && value.getClient() == client;
+        }).findFirst();
+        if (existOAuth.isPresent()) {
+            oAuthInfoMap.remove(existOAuth.get().getKey());
+        }
     }
 
     private String getAccessToken() {
