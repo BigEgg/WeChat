@@ -25,7 +25,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-01">
             <ul class="nav navbar-nav navbar-left">
-                <li class="dropdown" ng-if="oAuth.isLoggedIn()">
+                <li class="dropdown" ng-if="isLoggedIn()">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate="index.navigator.basicSetting"><b
                             class="caret"></b></a>
                     <span class="dropdown-arrow"></span>
@@ -40,7 +40,7 @@
                 <li><a href="#fakelink" translate="index.navigator.about"></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-if="!oAuth.isLoggedIn()">
+                <li ng-if="!isLoggedIn()">
                     <div class="navbar-form navbar-right">
                         <div class="form-group">
                             <div class="input-group">

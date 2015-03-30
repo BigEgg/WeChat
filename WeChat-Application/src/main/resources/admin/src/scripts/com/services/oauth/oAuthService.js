@@ -8,17 +8,19 @@ admin.app.service('oAuthSrv', ['$window', '$http', function ($window, $http) {
     };
 
     this.signIn = function (username, password) {
-        $http.post('/api/oauth/admin', {username: username, password: password})
-            .success(function (data, status, headers, config) {
+        return $http.post('/api/oauth/admin', {username: username, password: password}).then(
+            function (response) {
+                var data = response.data;
+
                 $window.sessionStorage.setItem(KEY_ACCESS_TOKEN, data.access_token);
                 $window.sessionStorage.setItem(KEY_REFRESH_TOKEN, data.refresh_token);
-                $window.sessionStorage.setItem(KEY_USER_NAME, data.name);
-            })
-            .error(function (data, status, headers, config) {
-                if (status === 404) {
-                    throw new SystemBadNetworkException();
+                return data.name;
+            },
+            function (response) {
+                if (response.status === 404) {
+                    return new SystemBadNetworkException();
                 } else {
-                    throw new AuthorizeFailedException();
+                    return new AuthorizeFailedException();
                 }
             });
     };

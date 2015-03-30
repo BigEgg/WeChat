@@ -22,41 +22,41 @@ describe('OAuth Service Test', function () {
             .respond(200, {access_token: 'access', refresh_token: 'refresh', name: 'name'});
         $httpBackend.expectGET('../html/views/home.html').respond(200, '');
 
-        oAuthSrv.signIn('abc@abc.com', 'password');
+        oAuthSrv.signIn('abc@abc.com', 'password').then(function (name) {
+            expect(name).toBe('name');
+        });
         $httpBackend.flush();
 
         expect($window.sessionStorage.getItem('access_token')).toBe('access');
         expect($window.sessionStorage.getItem('refresh_token')).toBe('refresh');
-        expect($window.sessionStorage.getItem('user_name')).toEqual('name');
         expect(oAuthSrv.isLoggedIn()).toBeTruthy();
-        expect(oAuthSrv.getUsername()).toBe('name');
     }));
 
-    it('should throw system bad network exception if bad network', inject(function ($httpBackend, $window, oAuthSrv) {
+    it('should return system bad network exception if bad network', inject(function ($httpBackend, $window, oAuthSrv) {
         $httpBackend
             .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
             .respond(404);
         $httpBackend.expectGET('../html/views/home.html').respond(200, '');
 
-        try {
-            oAuthSrv.signIn('abc@abc.com', 'password');
-            $httpBackend.flush();
-        } catch (e) {
-            expect(e instanceof SystemBadNetworkException).toBeTruthy();
-        }
+        oAuthSrv.signIn('abc@abc.com', 'password').then(
+            function (e) {
+                expect(e instanceof SystemBadNetworkException).toBeTruthy();
+            }
+        );
+        $httpBackend.flush();
     }));
 
-    it('should throw authorize failed exception if sign in failed', inject(function ($httpBackend, $window, oAuthSrv) {
+    it('should return authorize failed exception if sign in failed', inject(function ($httpBackend, $window, oAuthSrv) {
         $httpBackend
             .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
             .respond(401);
         $httpBackend.expectGET('../html/views/home.html').respond(200, '');
 
-        try {
-            oAuthSrv.signIn('abc@abc.com', 'password');
-            $httpBackend.flush();
-        } catch (e) {
-            expect(e instanceof AuthorizeFailedException).toBeTruthy();
-        }
+        oAuthSrv.signIn('abc@abc.com', 'password').then(
+            function (e) {
+                expect(e instanceof AuthorizeFailedException).toBeTruthy();
+            }
+        );
+        $httpBackend.flush();
     }));
 });
