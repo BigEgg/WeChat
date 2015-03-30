@@ -1,4 +1,4 @@
-admin.app.factory('0AuthSrv', ['$window', '$http', 'notify', function ($window, $http, notify) {
+admin.app.factory('oAuthSrv', ['$window', '$http', 'notify', function ($window, $http, notify) {
     var KEY_ACCESS_TOKEN = "access_token";
     var KEY_REFRESH_TOKEN = "refresh_token";
 
