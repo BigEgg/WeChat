@@ -6,11 +6,15 @@ admin.app.controller('AppCtrl', ['$scope', '$location', 'oAuthSrv', function ($s
         return oAuthSrv.isLoggedIn();
     };
 
-    $scope.logIn = function (username, password) {
+    $scope.signIn = function (username, password) {
         $scope.status.logging = true;
         try {
-            $scope.name = oAuthSrv.logIn(username, password);
+            oAuthSrv.signIn(username, password).then(function (name) {
+                $scope.name = name;
+                $scope.status.logging = false;
+            });
         } catch (e) {
+            $scope.status.logging = false;
             if (e instanceof AuthorizeFailedException) {
                 notify.warning('oauth.login.failed');
             } else if (e instanceof SystemBadNetworkException) {

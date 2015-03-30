@@ -60,7 +60,7 @@ module.exports = function (grunt) {
             module: {
                 src: 'src/scripts/com/**/*.js',
                 options: {
-                    specs: 'src/scripts/spec/*Spec.js',
+                    specs: 'src/scripts/spec/**/*Spec.js',
                     vendor: [
                         "vendor/scripts/angular.min.js",
                         "vendor/scripts/angular-route.min.js",
