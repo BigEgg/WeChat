@@ -1,17 +1,17 @@
-admin.app.controller('AppCtrl', ['$scope', '$location', 'oAuth', function ($scope, $location, oAuth) {
+admin.app.controller('AppCtrl', ['$scope', '$location', 'OAuthSrv', function ($scope, $location, OAuthSrv) {
         $scope.isLoggedIn = function () {
-            return oAuth.isLoggedIn();
+            return OAuthSrv.isLoggedIn();
         };
 
         $scope.logIn = function (username, password) {
-            var name = oAuth.logIn(username, password);
+            var name = OAuthSrv.logIn(username, password);
             if (name) {
                 $scope.username = name;
             }
         };
 
         $scope.signOut = function () {
-            oAuth.signOut();
+            OAuthSrv.signOut();
             $location.path('/');
         };
     }]

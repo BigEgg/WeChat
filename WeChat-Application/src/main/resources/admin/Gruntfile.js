@@ -55,6 +55,21 @@ module.exports = function (grunt) {
                     'src/styles/main.css': "src/styles/less/*.less"
                 }
             }
+        },
+        jasmine: {
+            module: {
+                src: 'src/scripts/com/**/*.js',
+                options: {
+                    specs: 'src/scripts/spec/*Spec.js',
+                    vendor: [
+                        "vendor/scripts/angular.min.js",
+                        "vendor/scripts/angular-route.min.js",
+                        "vendor/scripts/angular-translate.min.js",
+                        "vendor/scripts/angular-translate-loader-static-files.min.js",
+                        "vendor/scripts/spec/angular-mocks.js"
+                    ]
+                }
+            }
         }
     });
 
@@ -63,6 +78,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
-    grunt.registerTask('default', ['jshint', 'less', 'clean', 'concat', 'copy']);
+    grunt.registerTask('default', ['jshint', 'less', 'clean', 'concat', 'copy', 'jasmine']);
 };

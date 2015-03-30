@@ -6,4 +6,5 @@
 node_modules
 build
 src/scripts/main.js
+src/scripts/spec/reports
 src/styles/main.css
