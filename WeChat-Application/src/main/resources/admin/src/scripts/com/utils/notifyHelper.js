@@ -1,4 +1,4 @@
-admin.app.factory('Notify', function ($filter) {
+admin.app.factory('notify', function ($filter) {
     var translate = $filter('translate');
 
     var sendNotify = function (icon, title, message, type) {

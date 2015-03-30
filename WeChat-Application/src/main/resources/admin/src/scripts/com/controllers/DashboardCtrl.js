@@ -1,3 +1,3 @@
-admin.app.controller('dashboardCtrl', [function() {
+admin.app.controller('DashboardCtrl', [function() {
 
 }]);
