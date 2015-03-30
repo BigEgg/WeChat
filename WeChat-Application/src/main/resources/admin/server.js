@@ -1,14 +1,16 @@
-var server = require('node-http-server');
+var express = require('express'),
+    bodyParser = require('body-parser'),
+    oAuth = require('./mock_server/oauth');
 
-var config = server.configTemplate();
-config.errors['404']    = 'These are not the files you are looking for...';
-config.contentType.mp4  = 'video/mp4';
-config.contentType.m4v  = 'video/mp4';
-config.contentType.ogg  = 'video/ogg';
-config.contentType.ogv  = 'video/ogg';
-config.contentType.webm = 'video/webm';
-config.port = 8001;
-config.verbose = false;
+var app = express();
+app.locals.title = 'Mock Admin Site';
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
 
-console.log(server);
-server.deploy(config);
+app.use('/admin', express.static(__dirname + '/src'));
+app.use('/vendor', express.static(__dirname + '/vendor'));
+app.use('/i18n', express.static(__dirname + '/i18n'));
+
+app.post('/api/oauth/admin', oAuth.admin);
+
+app.listen(3000);
