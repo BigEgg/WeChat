@@ -52,7 +52,7 @@ module.exports = function (grunt) {
                     cleancss: true
                 },
                 files: {
-                    'src/styles/main.css': "src/styles/less/*.less"
+                    'src/styles/main.css': "src/styles/less/**/*.less"
                 }
             }
         },

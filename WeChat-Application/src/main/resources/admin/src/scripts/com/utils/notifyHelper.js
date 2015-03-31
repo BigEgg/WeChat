@@ -1,7 +1,7 @@
 admin.app.factory('notify', function ($filter) {
     var translate = $filter('translate');
 
-    var sendNotify = function (icon, title, message, type) {
+    var sendNotify = function (icon, title, message, type, delay) {
         $.notify(
             {
                 icon: icon,
@@ -24,16 +24,16 @@ admin.app.factory('notify', function ($filter) {
                 },
                 spacing: 10,
                 z_index: 1000,
-                delay: 3000,
+                delay: delay,
                 mouse_over: null,
-                template: '<div data-notify="container" style="padding: 0;" class="col-xs-4 alert alert-{0}" role="alert">' +
-                '<button type="button" style="margin-right: 5px;" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                '<div style="margin: 10px 15px 10px 15px;">' +
-                '<span style="margin-right: 8px;" data-notify="icon"></span>' +
-                '<span style="margin-right: 8px;" data-notify="title"><strong>{1}</strong></span>' +
-                '<span style="vertical-align: middle; font-size: 14px;" data-notify="message">{2}</span>' +
+                template: '<div data-notify="container" class="col-xs-4 alert alert-{0} notify-container" role="alert">' +
+                '<button type="button" aria-hidden="true" class="close dismiss-button" data-notify="dismiss">×</button>' +
+                '<div class="notify-data">' +
+                '<span class="notify-data-icon" data-notify="icon"></span>' +
+                '<span class="notify-data-title" data-notify="title"><strong>{1}</strong></span>' +
+                '<span class="notify-data-message" data-notify="message">{2}</span>' +
                 '</div>' +
-                '<div class="progress" style="height: 3px; margin-bottom: 0;" data-notify="progressbar">' +
+                '<div class="progress notify-progress" data-notify="progressbar">' +
                 '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
                 '</div>' +
                 '</div>'
@@ -42,29 +42,17 @@ admin.app.factory('notify', function ($filter) {
     };
 
     var notify = {};
-    notify.success = function (title, message) {
-        sendNotify('fui-check-circle', title, message, 'success');
+    notify.success = function (message, title, delay) {
+        sendNotify('fui-check-circle', title || 'notify.title.success', message, 'success', delay || 3000);
     };
-    notify.success = function (message) {
-        sendNotify('fui-check-circle', 'notify.title.success', message, 'success');
+    notify.info = function (message, title, delay) {
+        sendNotify('fui-info-circle', title || 'notify.title.info', message, 'info', delay || 3000);
     };
-    notify.info = function (title, message) {
-        sendNotify('fui-info-circle', title, message, 'info');
+    notify.warning = function (message, title, delay) {
+        sendNotify('fui-question-circle', title || 'notify.title.warning', message, 'warning', delay || 3000);
     };
-    notify.info = function (message) {
-        sendNotify('fui-info-circle', 'notify.title.info', message, 'info');
-    };
-    notify.warning = function (title, message) {
-        sendNotify('fui-question-circle', title, message, 'warning');
-    };
-    notify.warning = function (message) {
-        sendNotify('fui-question-circle', 'notify.title.warning', message, 'warning');
-    };
-    notify.danger = function (title, message) {
-        sendNotify('fui-alert-circle', title, message, 'danger');
-    };
-    notify.danger = function (message) {
-        sendNotify('fui-alert-circle', 'notify.title.danger', message, 'danger');
+    notify.danger = function (message, title, delay) {
+        sendNotify('fui-alert-circle', title || 'notify.title.danger', message, 'danger', delay || 3000);
     };
 
     return notify;
