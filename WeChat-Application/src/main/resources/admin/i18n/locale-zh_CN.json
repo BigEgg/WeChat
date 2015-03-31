@@ -17,6 +17,7 @@
   "notify.title.warning": "警告",
   "notify.title.danger": "危险",
   "oauth.signIn.failed": "登录失败，请检查用户名和密码哟。",
+  "error.route.unAuthorize": "嘿。不要使坏，乖乖登陆哦。",
   "error.system.bad.network": "无法连接到服务器，请检查网络。",
   "error.unknown": "我也不知道为什么，但就是挂了。。。"
 }

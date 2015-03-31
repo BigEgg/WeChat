@@ -9,6 +9,13 @@ describe('OAuth Service Test', function () {
         });
 
         $translateProvider.useLoader('customLoader');
+
+        $provide.factory('$location', function () {
+            return {
+                path: function (url) {
+                }
+            }
+        });
     }));
 
     it('should not logged in before sign in', inject(function (oAuthSrv) {
@@ -20,7 +27,6 @@ describe('OAuth Service Test', function () {
         $httpBackend
             .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
             .respond(200, {access_token: 'access', refresh_token: 'refresh', name: 'name'});
-        $httpBackend.expectGET('../html/views/home.html').respond(200, '');
 
         oAuthSrv.signIn('abc@abc.com', 'password').then(function (name) {
             expect(name).toBe('name');
@@ -38,7 +44,6 @@ describe('OAuth Service Test', function () {
         $httpBackend
             .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
             .respond(200, {access_token: 'access', refresh_token: 'refresh', name: 'name'});
-        $httpBackend.expectGET('../html/views/home.html').respond(200, '');
 
         oAuthSrv.signIn('abc@abc.com', 'password');
         $httpBackend.flush();
@@ -53,7 +58,6 @@ describe('OAuth Service Test', function () {
         $httpBackend
             .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
             .respond(404);
-        $httpBackend.expectGET('../html/views/home.html').respond(200, '');
 
         oAuthSrv.signIn('abc@abc.com', 'password').then(
             null,
@@ -69,7 +73,6 @@ describe('OAuth Service Test', function () {
         $httpBackend
             .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
             .respond(401);
-        $httpBackend.expectGET('../html/views/home.html').respond(200, '');
 
         oAuthSrv.signIn('abc@abc.com', 'password').then(
             null,

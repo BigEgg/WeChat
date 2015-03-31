@@ -9,6 +9,13 @@ describe('App Controller Test', function () {
         });
 
         $translateProvider.useLoader('customLoader');
+
+        $provide.factory('$location', function () {
+            return {
+                path: function (url) {
+                }
+            }
+        });
     }));
 
     var $scope, $location, oAuthSrv, notify, AppCtrl;
@@ -71,7 +78,6 @@ describe('App Controller Test', function () {
 
     describe('should handle both sign in success and error', function () {
         it('when sign in success', inject(function ($q, $rootScope, $httpBackend) {
-            $httpBackend.expectGET('../html/views/home.html').respond(200, '');
             spyOn(oAuthSrv, 'signIn').and.callFake(function () {
                 var deferred = $q.defer();
                 deferred.resolve('name');
@@ -88,7 +94,6 @@ describe('App Controller Test', function () {
         }));
 
         it('when authorize failed', inject(function ($q, $rootScope, $httpBackend) {
-            $httpBackend.expectGET('../html/views/home.html').respond(200, '');
             spyOn(oAuthSrv, 'signIn').and.callFake(function () {
                 var deferred = $q.defer();
                 deferred.reject(new AuthorizeFailedException());
@@ -104,7 +109,6 @@ describe('App Controller Test', function () {
         }));
 
         it('when bad network', inject(function ($q, $rootScope, $httpBackend) {
-            $httpBackend.expectGET('../html/views/home.html').respond(200, '');
             spyOn(oAuthSrv, 'signIn').and.callFake(function () {
                 var deferred = $q.defer();
                 deferred.reject(new SystemBadNetworkException());
