@@ -31,6 +31,20 @@ describe('OAuth Service Test', function () {
         expect(oAuthSrv.isLoggedIn()).toBeTruthy();
     }));
 
+    it('should not logged in after sign out', inject(function ($httpBackend, oAuthSrv) {
+        $httpBackend
+            .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
+            .respond(200, {access_token: 'access', refresh_token: 'refresh', name: 'name'});
+        $httpBackend.expectGET('../html/views/home.html').respond(200, '');
+
+        oAuthSrv.signIn('abc@abc.com', 'password');
+        $httpBackend.flush();
+
+        expect(oAuthSrv.isLoggedIn()).toBeTruthy();
+        oAuthSrv.signOut();
+        expect(oAuthSrv.isLoggedIn()).toBeFalsy();
+    }));
+
     it('should return system bad network exception if bad network', inject(function ($httpBackend, $window, oAuthSrv) {
         $httpBackend
             .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
