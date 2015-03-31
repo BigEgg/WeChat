@@ -4,6 +4,10 @@ admin.app = angular.module('adminApp', ['ngRoute', 'pascalprecht.translate']);
 
 admin.app.run(function ($rootScope, $location, oAuthSrv, $route, notify) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
+        if (next.templateUrl === undefined) {
+            return;
+        }
+
         var publicAccess = next && next.publicAccess;
 
         if (!publicAccess && !oAuthSrv.isLoggedIn()) {
