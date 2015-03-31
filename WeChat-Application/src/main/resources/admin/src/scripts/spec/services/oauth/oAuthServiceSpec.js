@@ -13,6 +13,7 @@ describe('OAuth Service Test', function () {
 
     it('should not logged in before sign in', inject(function (oAuthSrv) {
         expect(oAuthSrv.isLoggedIn()).toBeFalsy();
+        expect(oAuthSrv.getUsername()).toBe('');
     }));
 
     it('should logged in after sign in success', inject(function ($httpBackend, $window, oAuthSrv) {
@@ -28,7 +29,9 @@ describe('OAuth Service Test', function () {
 
         expect($window.sessionStorage.getItem('access_token')).toBe('access');
         expect($window.sessionStorage.getItem('refresh_token')).toBe('refresh');
+        expect($window.sessionStorage.getItem('username')).toBe('name');
         expect(oAuthSrv.isLoggedIn()).toBeTruthy();
+        expect(oAuthSrv.getUsername()).toBe('name');
     }));
 
     it('should not logged in after sign out', inject(function ($httpBackend, oAuthSrv) {
@@ -43,6 +46,7 @@ describe('OAuth Service Test', function () {
         expect(oAuthSrv.isLoggedIn()).toBeTruthy();
         oAuthSrv.signOut();
         expect(oAuthSrv.isLoggedIn()).toBeFalsy();
+        expect(oAuthSrv.getUsername()).toBe('');
     }));
 
     it('should return system bad network exception if bad network', inject(function ($httpBackend, $window, oAuthSrv) {
@@ -55,6 +59,7 @@ describe('OAuth Service Test', function () {
             null,
             function (e) {
                 expect(e instanceof SystemBadNetworkException).toBeTruthy();
+                expect(oAuthSrv.getUsername()).toBe('');
             }
         );
         $httpBackend.flush();
@@ -70,6 +75,7 @@ describe('OAuth Service Test', function () {
             null,
             function (e) {
                 expect(e instanceof AuthorizeFailedException).toBeTruthy();
+                expect(oAuthSrv.getUsername()).toBe('');
             }
         );
         $httpBackend.flush();

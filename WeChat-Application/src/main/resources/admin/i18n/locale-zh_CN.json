@@ -9,7 +9,6 @@
   "index.navigator.signIn.username": "用户名",
   "index.navigator.signIn.password": "密码",
   "index.navigator.signIn.submit": "登陆",
-  "index.navigator.user.welcome": "欢迎，",
   "index.navigator.user.bind": "微信用户绑定",
   "index.navigator.user.signOut": "登出",
   "index.content.welcome": "欢迎光临ThoughtWorks内部微信公众平台管理员界面",

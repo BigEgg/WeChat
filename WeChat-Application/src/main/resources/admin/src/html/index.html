@@ -26,8 +26,9 @@
         <div class="collapse navbar-collapse" id="navbar-collapse-01">
             <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown" ng-if="isLoggedIn()">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate="index.navigator.basicSetting"><b
-                            class="caret"></b></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        {{'index.navigator.basicSetting' | translate}}<b class="caret"></b>
+                    </a>
                     <span class="dropdown-arrow"></span>
                     <ul class="dropdown-menu">
                         <li><a href="#" translate="index.navigator.basicSetting.wechat"></a></li>
@@ -52,14 +53,15 @@
                                        placeholder="{{'index.navigator.signIn.password' | translate}}">
                             </div>
                             <button type="submit" class="btn disabled" ng-click="signIn(username, password)"
-                                    ng-class="{disabled: !username}"
+                                    ng-class="{disabled: !username || status.logging}"
                                     translate="index.navigator.signIn.submit"></button>
                         </div>
                     </div>
                 </li>
                 <li class="dropdown" ng-if="isLoggedIn()">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate="index.navigator.user.welcome"><b
-                            class="caret"></b></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        {{getLoginUsername()}}<b class="caret"></b>
+                    </a>
                     <span class="dropdown-arrow"></span>
                     <ul class="dropdown-menu">
                         <li><a href="#" translate="index.navigator.user.bind"></a></li>

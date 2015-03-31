@@ -37,10 +37,10 @@ describe('App Controller Test', function () {
         AppCtrl = $controller('AppCtrl', {$scope: $scope, $location: $location, oAuthSrv: oAuthSrv, notify: notify});
     }));
 
-    it('should set initiate stats', function () {
+    it('should set initiate stats', inject(function ($rootScope) {
         expect($scope.status).toBeDefined();
         expect($scope.status.logging).toBeFalsy();
-    });
+    }));
 
     describe('should return same logged in status as OAuth Service', function () {
         it('when logged in', function () {
@@ -77,13 +77,14 @@ describe('App Controller Test', function () {
                 deferred.resolve('name');
                 return deferred.promise;
             });
+            spyOn($location, 'path');
 
             $scope.signIn('username', 'password');
             expect($scope.status.logging).toBeTruthy();
 
             $rootScope.$apply();
             expect($scope.status.logging).toBeFalsy();
-            expect($scope.name).toBe('name');
+            expect($location.path).toHaveBeenCalledWith('/dashboard');
         }));
 
         it('when authorize failed', inject(function ($q, $rootScope, $httpBackend) {

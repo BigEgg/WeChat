@@ -1,5 +1,5 @@
-admin.app.controller('AppCtrl', ['$scope', '$location', 'oAuthSrv', 'notify', function ($scope, $location, oAuthSrv, notify) {
-    $scope.status = {};
+admin.app.controller('AppCtrl', ['$scope', '$rootScope', '$location', 'oAuthSrv', 'notify', function ($scope, $rootScope, $location, oAuthSrv, notify) {
+    $scope.status = $scope.status || {};
     $scope.status.logging = false;
 
     $scope.isLoggedIn = function () {
@@ -11,7 +11,7 @@ admin.app.controller('AppCtrl', ['$scope', '$location', 'oAuthSrv', 'notify', fu
         oAuthSrv.signIn(username, password).then(
             function (name) {
                 $scope.status.logging = false;
-                $scope.name = name;
+                $location.path('/dashboard')
             },
             function (e) {
                 $scope.status.logging = false;
@@ -29,5 +29,8 @@ admin.app.controller('AppCtrl', ['$scope', '$location', 'oAuthSrv', 'notify', fu
         oAuthSrv.signOut();
         $location.path('/');
     };
-}])
-;
+
+    $scope.getLoginUsername = function () {
+        return oAuthSrv.getUsername();
+    }
+}]);

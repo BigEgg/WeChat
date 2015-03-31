@@ -1,6 +1,7 @@
 admin.app.service('oAuthSrv', ['$window', '$http', '$q', function ($window, $http, $q) {
     var KEY_ACCESS_TOKEN = "access_token";
     var KEY_REFRESH_TOKEN = "refresh_token";
+    var KEY_USERNAME = "username";
 
     this.isLoggedIn = function () {
         return $window.sessionStorage.getItem(KEY_ACCESS_TOKEN) && $window.sessionStorage.getItem(KEY_REFRESH_TOKEN);
@@ -13,10 +14,15 @@ admin.app.service('oAuthSrv', ['$window', '$http', '$q', function ($window, $htt
             .success(function (data, status, headers, config) {
                 $window.sessionStorage.setItem(KEY_ACCESS_TOKEN, data.access_token);
                 $window.sessionStorage.setItem(KEY_REFRESH_TOKEN, data.refresh_token);
+                $window.sessionStorage.setItem(KEY_USERNAME, data.name);
 
                 deferred.resolve(data.name);
             })
             .error(function (data, status, headers, config) {
+                $window.sessionStorage.removeItem(KEY_ACCESS_TOKEN);
+                $window.sessionStorage.removeItem(KEY_REFRESH_TOKEN);
+                $window.sessionStorage.removeItem(KEY_USERNAME);
+
                 if (status === 404) {
                     deferred.reject(new SystemBadNetworkException());
                 } else {
@@ -30,5 +36,10 @@ admin.app.service('oAuthSrv', ['$window', '$http', '$q', function ($window, $htt
     this.signOut = function () {
         $window.sessionStorage.removeItem(KEY_ACCESS_TOKEN);
         $window.sessionStorage.removeItem(KEY_REFRESH_TOKEN);
+        $window.sessionStorage.removeItem(KEY_USERNAME);
     };
+
+    this.getUsername = function () {
+        return $window.sessionStorage.getItem(KEY_USERNAME) || '';
+    }
 }]);
