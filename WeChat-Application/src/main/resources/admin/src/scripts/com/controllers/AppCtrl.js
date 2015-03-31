@@ -7,6 +7,10 @@ admin.app.controller('AppCtrl', ['$scope', '$rootScope', '$location', 'oAuthSrv'
     };
 
     $scope.signIn = function (username, password) {
+        if (!username) {
+            return;
+        }
+
         $scope.status.logging = true;
         oAuthSrv.signIn(username, password).then(
             function (name) {
