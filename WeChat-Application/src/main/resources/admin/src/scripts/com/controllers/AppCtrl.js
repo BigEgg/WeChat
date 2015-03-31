@@ -14,6 +14,7 @@ admin.app.controller('AppCtrl', ['$scope', '$location', 'oAuthSrv', 'notify', fu
                 $scope.name = name;
             },
             function (e) {
+                $scope.status.logging = false;
                 if (e instanceof AuthorizeFailedException) {
                     notify.warning('oauth.signIn.failed');
                 } else if (e instanceof SystemBadNetworkException) {
