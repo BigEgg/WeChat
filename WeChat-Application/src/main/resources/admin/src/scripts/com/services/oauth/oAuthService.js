@@ -1,4 +1,4 @@
-admin.app.service('oAuthSrv', ['$window', '$http', '$q', function ($window, $http, $q) {
+admin.app.service('oAuthSrv', ['$window', '$http', '$q', '$timeout', function ($window, $http, $q, $timeout) {
     var KEY_ACCESS_TOKEN = "access_token";
     var KEY_REFRESH_TOKEN = "refresh_token";
     var KEY_USERNAME = "username";
@@ -9,6 +9,9 @@ admin.app.service('oAuthSrv', ['$window', '$http', '$q', function ($window, $htt
 
     this.signIn = function (username, password) {
         var deferred = $q.defer();
+        $timeout(function () {
+            deferred.reject(new TimeOutException());
+        }, 3000);
 
         $http.post('/api/oauth/admin', {username: username, password: password})
             .success(function (data, status, headers, config) {
@@ -24,7 +27,7 @@ admin.app.service('oAuthSrv', ['$window', '$http', '$q', function ($window, $htt
                 $window.sessionStorage.removeItem(KEY_USERNAME);
 
                 if (status === 404) {
-                    deferred.reject(new SystemBadNetworkException());
+                    deferred.reject(new BadNetworkException());
                 } else {
                     deferred.reject(new AuthorizeFailedException());
                 }

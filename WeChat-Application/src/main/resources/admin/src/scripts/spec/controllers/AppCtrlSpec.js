@@ -111,7 +111,7 @@ describe('App Controller Test', function () {
         it('when bad network', inject(function ($q, $rootScope, $httpBackend) {
             spyOn(oAuthSrv, 'signIn').and.callFake(function () {
                 var deferred = $q.defer();
-                deferred.reject(new SystemBadNetworkException());
+                deferred.reject(new BadNetworkException());
                 return deferred.promise;
             });
             spyOn(notify, 'danger');
