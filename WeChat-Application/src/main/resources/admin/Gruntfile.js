@@ -35,7 +35,6 @@ module.exports = function (grunt) {
         jshint: {
             all: [
                 'Gruntfile.js',
-                SRC_DIR + 'com/*.js',
                 SRC_DIR + 'com/**/*.js'
             ],
             options: {
@@ -56,19 +55,25 @@ module.exports = function (grunt) {
                 }
             }
         },
-        jasmine: {
-            module: {
-                src: 'src/scripts/com/**/*.js',
-                options: {
-                    specs: 'src/scripts/spec/**/*Spec.js',
-                    vendor: [
-                        'vendor/scripts/angular.min.js',
-                        'vendor/scripts/angular-route.min.js',
-                        'vendor/scripts/angular-translate.min.js',
-                        'vendor/scripts/angular-translate-loader-static-files.min.js',
-                        'vendor/scripts/spec/angular-mocks.js'
-                    ]
-                }
+        karma: {
+            options: {
+                frameworks: ['jasmine'],
+                singleRun: true,
+                browsers: ['PhantomJS'],
+                files: [
+                    'vendor/scripts/angular.min.js',
+                    'vendor/scripts/angular-route.min.js',
+                    'vendor/scripts/angular-translate.min.js',
+                    'vendor/scripts/angular-translate-loader-static-files.min.js',
+                    'vendor/scripts/spec/angular-mocks.js',
+                    'src/scripts/com/**/*.js'
+                ]
+            },
+            unit_test: {
+                files: [
+                    {src: 'src/scripts/spec/**/*.js'}
+                ],
+                browsers: ['PhantomJS']
             }
         }
     });
@@ -78,7 +83,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-karma');
 
-    grunt.registerTask('default', ['jshint', 'less', 'clean', 'concat', 'copy', 'jasmine']);
+    grunt.registerTask('default', ['jshint', 'less', 'clean', 'concat', 'copy', 'karma']);
+    grunt.registerTask('ut', ['jshint', 'karma:unit_test']);
+    grunt.registerTask('test', ['jshint', 'karma:unit_test']);
 };
