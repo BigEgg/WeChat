@@ -14,7 +14,7 @@ module.exports = function (grunt) {
         copy: {
             build: {
                 cwd: SRC_DIR,
-                src: ['**', 'scripts/main.js', '!scripts/**', '!styles/less/**'],
+                src: ['**', 'scripts/main.js', '!scripts/com/**/*.js', '!scripts/spec/**/*.js', '!styles/less/**'],
                 dest: BUILD_DIR,
                 expand: true
             }
@@ -62,11 +62,11 @@ module.exports = function (grunt) {
                 options: {
                     specs: 'src/scripts/spec/**/*Spec.js',
                     vendor: [
-                        "vendor/scripts/angular.min.js",
-                        "vendor/scripts/angular-route.min.js",
-                        "vendor/scripts/angular-translate.min.js",
-                        "vendor/scripts/angular-translate-loader-static-files.min.js",
-                        "vendor/scripts/spec/angular-mocks.js"
+                        'vendor/scripts/angular.min.js',
+                        'vendor/scripts/angular-route.min.js',
+                        'vendor/scripts/angular-translate.min.js',
+                        'vendor/scripts/angular-translate-loader-static-files.min.js',
+                        'vendor/scripts/spec/angular-mocks.js'
                     ]
                 }
             }
