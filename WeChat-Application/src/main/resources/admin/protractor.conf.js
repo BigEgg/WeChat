@@ -8,7 +8,7 @@ exports.config = {
         }
     },
 
-    restartBrowserBetweenTests: false,
+    restartBrowserBetweenTests: true,
 
     specs: ['src/scripts/e2e/**/*.js'],
 
