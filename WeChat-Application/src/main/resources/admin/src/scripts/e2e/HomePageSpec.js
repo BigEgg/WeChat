@@ -10,6 +10,22 @@ describe('When open the homepage', function () {
         });
     });
 
+    it('input should have 32 max-length', function () {
+        var usernameInput = element(by.model(constants.LOCATOR_LOGIN_USERNAME));
+        var passwordInput = element(by.model(constants.LOCATOR_LOGIN_PASSWORD));
+
+        usernameInput.sendKeys('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+        passwordInput.sendKeys('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+
+        usernameInput.getAttribute(constants.ATTRIBUTE_INPUT_VALUE).then(function (value) {
+            expect(value).toBe('abcdefghijklmnopqrstuvwxyzabcdef');
+        });
+        passwordInput.getAttribute(constants.ATTRIBUTE_INPUT_VALUE).then(function (value) {
+            expect(value).toBe('abcdefghijklmnopqrstuvwxyzabcdef');
+        });
+
+    });
+
     it('should enable the submit button if username had input', function () {
         var usernameInput = element(by.model(constants.LOCATOR_LOGIN_USERNAME));
         var signInButton = element(by.id(constants.LOCATOR_LOGIN_SUBMIT));

@@ -9,6 +9,7 @@ constants = {
     'ABS_URL_DASHBOARD_PAGE': '/dashboard',
 
     'ATTRIBUTE_CLASS': 'class',
+    'ATTRIBUTE_INPUT_VALUE': 'value',
 
     'LOCATOR_LOGIN_USERNAME': 'username',
     'LOCATOR_LOGIN_PASSWORD': 'password',
