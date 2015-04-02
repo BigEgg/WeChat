@@ -1,16 +1,13 @@
 describe('After logged in', function () {
-    var HOMEPAGE_URL = 'http://localhost:3000/admin/html/index.html#/';
-    var DASHBOARD_PAGE_URL = 'http://localhost:3000/admin/html/index.html#/dashboard';
-
     beforeEach(function () {
-        browser.get(HOMEPAGE_URL);
+        browser.get(constants.URL_HOMEPAGE);
 
-        var usernameInput = element(by.model('username'));
-        var passwordInput = element(by.model('password'));
-        var signInButton = element(by.id('loginSubmit'));
+        var usernameInput = element(by.model(constants.LOCATOR_LOGIN_USERNAME));
+        var passwordInput = element(by.model(constants.LOCATOR_LOGIN_PASSWORD));
+        var signInButton = element(by.id(constants.LOCATOR_LOGIN_SUBMIT));
 
-        usernameInput.sendKeys('BigEgg');
-        passwordInput.sendKeys('');
+        usernameInput.sendKeys(constants.LOGIN_USERNAME);
+        passwordInput.sendKeys(constants.LOGIN_PASSWORD);
         signInButton.click();
     });
 });

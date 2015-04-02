@@ -10,7 +10,10 @@ exports.config = {
 
     restartBrowserBetweenTests: true,
 
-    specs: ['src/scripts/e2e/**/*.js'],
+    specs: [
+        'src/scripts/e2e/constants.js',
+        'src/scripts/e2e/**/*Spec.js'
+    ],
 
     jasmineNodeOpts: {
         showColors: true,

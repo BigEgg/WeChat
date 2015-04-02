@@ -1,28 +1,28 @@
 describe('App generic test', function () {
-    var HOMEPAGE_URL = 'http://localhost:3000/admin/html/index.html#/';
-    var DASHBOARD_PAGE_URL = 'http://localhost:3000/admin/html/index.html#/dashboard';
-
     it('set title', function () {
-        browser.get(HOMEPAGE_URL);
+        browser.get(constants.URL_HOMEPAGE);
         expect(browser.getTitle()).toBe('ThoughtWorks WeChat Admin');
     });
 
     it('before sign in user cannot enter dashboard page', function () {
-        browser.get(DASHBOARD_PAGE_URL);
-        expect(browser.getLocationAbsUrl()).toBe('/');
+        browser.get(constants.URL_DASHBOARD_PAGE);
+        expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_HOMEPAGE);
     });
 
     it('after login home page should be dashboard page', function () {
-        browser.get(HOMEPAGE_URL);
+        browser.get(constants.URL_HOMEPAGE);
 
-        var usernameInput = element(by.model('username'));
-        var passwordInput = element(by.model('password'));
-        var signInButton = element(by.id('loginSubmit'));
+        var usernameInput = element(by.model(constants.LOCATOR_LOGIN_USERNAME));
+        var passwordInput = element(by.model(constants.LOCATOR_LOGIN_PASSWORD));
+        var signInButton = element(by.id(constants.LOCATOR_LOGIN_SUBMIT));
 
-        usernameInput.sendKeys('BigEgg');
-        passwordInput.sendKeys('');
+        usernameInput.sendKeys(constants.LOGIN_USERNAME);
+        passwordInput.sendKeys(constants.LOGIN_PASSWORD);
         signInButton.click();
 
-        expect(browser.getLocationAbsUrl()).toBe('/dashboard');
+        expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_DASHBOARD_PAGE);
+
+        browser.get(constants.URL_HOMEPAGE);
+        expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_DASHBOARD_PAGE);
     });
 });
