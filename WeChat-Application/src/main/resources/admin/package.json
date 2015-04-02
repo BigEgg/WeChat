@@ -12,6 +12,8 @@
     "grunt-contrib-jasmine": "^0.8.2",
     "grunt-contrib-jshint": "^0.11.1",
     "grunt-contrib-less": "^1.0.0",
+    "grunt-express-server": "^0.4.19",
+    "grunt-protractor-runner": "^2.0.0",
     "jasmine": "^2.2.1",
     "jshint-stylish": "^1.0.1"
   },

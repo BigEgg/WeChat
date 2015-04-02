@@ -14,7 +14,7 @@ module.exports = function (grunt) {
         copy: {
             build: {
                 cwd: SRC_DIR,
-                src: ['**', 'scripts/main.js', '!scripts/com/**/*.js', '!scripts/spec/**/*.js', '!styles/less/**'],
+                src: ['**', '!scripts/com/**/*.js', '!scripts/spec/**/*.js', '!styles/less/**'],
                 dest: BUILD_DIR,
                 expand: true
             }
@@ -69,6 +69,23 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        protractor: {
+            options: {
+                configFile: "protractor.conf.js",
+                keepAlive: false,
+                noColor: true
+            },
+            your_target: {}
+        },
+        express: {
+            options: {},
+            start: {
+                options: {
+                    background: true,
+                    script: 'server.js'
+                }
+            }
         }
     });
 
@@ -78,7 +95,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-protractor-runner');
 
-    grunt.registerTask('default', ['jshint', 'less', 'clean', 'concat', 'copy', 'jasmine']);
-    grunt.registerTask('test', ['jasmine']);
+    grunt.registerTask('default', ['jshint', 'jasmine', 'clean', 'less', 'concat', 'protractor', 'copy']);
+    grunt.registerTask('unit-test', ['jshint', 'jasmine']);
+    grunt.registerTask('e2e-test', ['jshint', 'protractor']);
+    grunt.registerTask('start-server', ['jshint', 'clean', 'less', 'concat', 'express']);
 };
