@@ -27,9 +27,20 @@
             <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown" ng-if="isLoggedIn()">
                     <a class="dropdown-toggle" data-toggle="dropdown">
+                        {{'index.navigator.dashboard' | translate}}<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a herf="/dashboard" translate="index.navigator.dashboard.general"></a></li>
+                        <li class="divider"></li>
+                        <li><a herf="#" translate="index.navigator.dashboard.user"></a></li>
+                        <li><a herf="#" translate="index.navigator.dashboard.message"></a></li>
+                        <li><a herf="#" translate="index.navigator.dashboard.api"></a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" ng-if="isLoggedIn()">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
                         {{'index.navigator.basicSetting' | translate}}<b class="caret"></b>
                     </a>
-                    <span class="dropdown-arrow"></span>
                     <ul class="dropdown-menu">
                         <li><a href="#" translate="index.navigator.basicSetting.wechat"></a></li>
                         <li class="divider"></li>

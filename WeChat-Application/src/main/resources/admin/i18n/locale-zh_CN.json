@@ -1,5 +1,10 @@
 {
   "index.navigator.menu": "菜单",
+  "index.navigator.dashboard": "公众号状态",
+  "index.navigator.dashboard.general": "基本信息",
+  "index.navigator.dashboard.user": "用户信息",
+  "index.navigator.dashboard.message": "消息状态",
+  "index.navigator.dashboard.api": "数据接口状态",
   "index.navigator.basicSetting": "基础设置",
   "index.navigator.basicSetting.wechat": "微信基本信息",
   "index.navigator.basicSetting.conversation": "系统默认对话",
