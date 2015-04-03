@@ -18,11 +18,11 @@ describe('App generic test', function () {
 
         usernameInput.sendKeys(constants.LOGIN_USERNAME);
         passwordInput.sendKeys(constants.LOGIN_PASSWORD);
-        signInButton.click();
+        signInButton.click().then(function () {
+            expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_DASHBOARD_PAGE);
 
-        expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_DASHBOARD_PAGE);
-
-        browser.get(constants.URL_HOMEPAGE);
-        expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_DASHBOARD_PAGE);
+            browser.get(constants.URL_HOMEPAGE);
+            expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_DASHBOARD_PAGE);
+        });
     });
 });

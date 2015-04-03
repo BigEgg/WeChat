@@ -43,9 +43,9 @@ describe('When open the homepage', function () {
 
         usernameInput.sendKeys('WrongUserName');
         passwordInput.sendKeys('');
-        signInButton.click();
-
-        expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_HOMEPAGE);
+        signInButton.click().then(function () {
+            expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_HOMEPAGE);
+        });
     });
 
     it('ensures user can log in', function () {
@@ -55,8 +55,8 @@ describe('When open the homepage', function () {
 
         usernameInput.sendKeys(constants.LOGIN_USERNAME);
         passwordInput.sendKeys(constants.LOGIN_PASSWORD);
-        signInButton.click();
-
-        expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_DASHBOARD_PAGE);
+        signInButton.click().then(function () {
+            expect(browser.getLocationAbsUrl()).toBe(constants.ABS_URL_DASHBOARD_PAGE);
+        });
     });
 });
