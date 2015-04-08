@@ -9,14 +9,12 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.thoughtworks.wechat_core.util.HashHelper.sha1Hash;
 
 @Singleton
 public class OAuthProvider {
@@ -35,9 +33,10 @@ public class OAuthProvider {
         checkNotNull(client);
 
         deleteExistOAuth(role, client);
+        LOGGER.info("[NewOAuth] Try delete exist OAuth based on the authenticate information.");
 
         final String accessToken = getAccessToken();
-        final String refreshToken = getToken(oAuthConfiguration.getoAuthRefreshTokenLength());
+        final String refreshToken = getRefreshToken();
         final OAuthInfo oAuthInfo = new OAuthInfo(
                 role,
                 accessToken,
@@ -88,6 +87,7 @@ public class OAuthProvider {
     }
 
     public void cleanUp() {
+        LOGGER.info("[CleanUp] Clear all OAuth information.");
         oAuthInfoMap.entrySet().stream()
                 .filter(entry -> !entry.getValue().getRefreshToken().isPresent())
                 .forEach(entry -> oAuthInfoMap.remove(entry.getKey()));
@@ -99,28 +99,28 @@ public class OAuthProvider {
             return value.getRole() == role && value.getClient() == client;
         }).findFirst();
         if (existOAuth.isPresent()) {
+            LOGGER.info("[DeleteExistOAuth] Find the exist OAuth information, delete it.");
             oAuthInfoMap.remove(existOAuth.get().getKey());
         }
     }
 
     private String getAccessToken() {
-        String accessToken = getToken(oAuthConfiguration.getoAuthAccessTokenLength());
+        String accessToken = getToken();
         while (oAuthInfoMap.containsKey(accessToken)) {
             LOGGER.warn("[GetAccessToken] Generate new access token: {}, but it already exist. Re-generate.", accessToken);
-            accessToken = getToken(oAuthConfiguration.getoAuthAccessTokenLength());
+            accessToken = getToken();
         }
         return accessToken;
     }
 
-    private String getToken(final int length) {
+    private String getRefreshToken() {
+        return getToken();
+    }
+
+    private String getToken() {
         final String uuid = UUID.randomUUID().toString();
-        String fullToken;
-        try {
-            fullToken = sha1Hash(uuid);
-        } catch (final NoSuchAlgorithmException ex) {
-            LOGGER.error("[GetToken] Cannot use SHA-1 algorithm to get the token.");
-            fullToken = uuid;
-        }
-        return fullToken.substring(0, length);
+        final String[] values = uuid.split("-");
+
+        return values[0];
     }
 }

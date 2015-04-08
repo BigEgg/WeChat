@@ -159,6 +159,7 @@
                     <exclude>admin/.gitignore</exclude>
                     <exclude>admin/Gruntfile.js</exclude>
                     <exclude>admin/package.json</exclude>
+                    <exclude>admin/protractor.jsn</exclude>
                     <exclude>admin/server.js</exclude>
                     <exclude>admin/vendor/scripts/spec/angular-mock.js</exclude>
                 </excludes>

@@ -27,9 +27,6 @@ public class OAuthProviderTest {
 
     @Before
     public void setUp() throws Exception {
-        when(configuration.getoAuthAccessTokenLength()).thenReturn(8);
-        when(configuration.getoAuthRefreshTokenLength()).thenReturn(16);
-
         injector = Guice.createInjector(binder -> {
             binder.bind(OAuthConfiguration.class).toInstance(configuration);
         });
@@ -53,10 +50,8 @@ public class OAuthProviderTest {
         assertThat(oAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
         assertThat(oAuthInfo.getAccessToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo.getAccessToken().get(), any(String.class));
-        assertThat(oAuthInfo.getAccessToken().get().length(), equalTo(configuration.getoAuthAccessTokenLength()));
         assertThat(oAuthInfo.getRefreshToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo.getRefreshToken().get(), any(String.class));
-        assertThat(oAuthInfo.getRefreshToken().get().length(), equalTo(configuration.getoAuthRefreshTokenLength()));
         assertThat(oAuthInfo.getClient() instanceof AdminUser, equalTo(true));
     }
 
@@ -72,10 +67,8 @@ public class OAuthProviderTest {
         assertThat(oAuthInfo2.getRole(), equalTo(AuthenticateRole.ADMIN));
         assertThat(oAuthInfo2.getAccessToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo2.getAccessToken().get(), not(equalTo(oAuthInfo.getAccessToken().get())));
-        assertThat(oAuthInfo2.getAccessToken().get().length(), equalTo(configuration.getoAuthAccessTokenLength()));
         assertThat(oAuthInfo2.getRefreshToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo2.getRefreshToken().get(), not(equalTo(oAuthInfo.getRefreshToken().get())));
-        assertThat(oAuthInfo2.getRefreshToken().get().length(), equalTo(configuration.getoAuthRefreshTokenLength()));
         assertThat(oAuthInfo2.getClient(), equalTo(oAuthInfo.getClient()));
     }
 
@@ -95,10 +88,8 @@ public class OAuthProviderTest {
         assertThat(newOAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
         assertThat(newOAuthInfo.getAccessToken().isPresent(), equalTo(true));
         assertThat(newOAuthInfo.getAccessToken().get(), any(String.class));
-        assertThat(newOAuthInfo.getAccessToken().get().length(), equalTo(configuration.getoAuthAccessTokenLength()));
         assertThat(newOAuthInfo.getRefreshToken().isPresent(), equalTo(true));
         assertThat(newOAuthInfo.getRefreshToken().get(), any(String.class));
-        assertThat(newOAuthInfo.getRefreshToken().get().length(), equalTo(configuration.getoAuthRefreshTokenLength()));
     }
 
     @Test

@@ -12,10 +12,6 @@ public class OAuthConfiguration {
     @NotEmpty
     private int oAuthRefreshTokenExpireSeconds;
 
-    private int oAuthAccessTokenLength = 8;
-
-    private int oAuthRefreshTokenLength = 16;
-
     @JsonProperty("access_token_expire_seconds")
     public int getoAuthAccessTokenExpireSeconds() {
         return oAuthAccessTokenExpireSeconds;
@@ -24,15 +20,5 @@ public class OAuthConfiguration {
     @JsonProperty("refresh_token_expire_seconds")
     public int getoAuthRefreshTokenExpireSeconds() {
         return oAuthRefreshTokenExpireSeconds;
-    }
-
-    @JsonProperty("refresh_token_length")
-    public int getoAuthAccessTokenLength() {
-        return oAuthAccessTokenLength;
-    }
-
-    @JsonProperty("refresh_token_length")
-    public int getoAuthRefreshTokenLength() {
-        return oAuthRefreshTokenLength;
     }
 }
