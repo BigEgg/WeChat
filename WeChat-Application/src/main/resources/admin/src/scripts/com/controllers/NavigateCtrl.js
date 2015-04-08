@@ -1,4 +1,4 @@
-admin.app.controller('AppCtrl', ['$scope', '$rootScope', '$location', 'oAuthSrv', 'notify', function ($scope, $rootScope, $location, oAuthSrv, notify) {
+admin.app.controller('NavigateCtrl', ['$scope', '$rootScope', '$location', 'oAuthSrv', 'notify', function ($scope, $rootScope, $location, oAuthSrv, notify) {
     $scope.status = $scope.status || {};
     $scope.status.logging = false;
 

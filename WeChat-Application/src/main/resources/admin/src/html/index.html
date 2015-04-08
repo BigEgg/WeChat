@@ -13,8 +13,8 @@
     <link rel="icon" href="../imgs/favicon32x32.png" sizes="32x32">
 </head>
 <body>
-<div class="col-xs-12" ng-controller="AppCtrl">
-    <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
+<div class="col-xs-12">
+    <nav class="navbar navbar-inverse navbar-embossed" role="navigation" ng-controller="NavigateCtrl">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
                 <span class="sr-only" translate="index.navigator.menu"></span>
@@ -88,7 +88,6 @@
 
     <div role="main" class="container">
         <div ng-view></div>
-
     </div>
 </div>
 

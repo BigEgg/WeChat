@@ -7,7 +7,6 @@ describe('OAuth Service Test', function () {
                 return deferred.promise;
             };
         });
-
         $translateProvider.useLoader('customLoader');
 
         $provide.factory('$location', function () {

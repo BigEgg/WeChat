@@ -7,7 +7,6 @@ describe('App Controller Test', function () {
                 return deferred.promise;
             };
         });
-
         $translateProvider.useLoader('customLoader');
 
         $provide.factory('$location', function () {
@@ -18,7 +17,7 @@ describe('App Controller Test', function () {
         });
     }));
 
-    var $scope, $location, oAuthSrv, notify, AppCtrl;
+    var $scope, $location, oAuthSrv, notify, NavigateCtrl;
 
     beforeEach(inject(function ($rootScope, $controller) {
         $scope = $rootScope.$new();
@@ -41,7 +40,7 @@ describe('App Controller Test', function () {
             }
         };
 
-        AppCtrl = $controller('AppCtrl', {$scope: $scope, $location: $location, oAuthSrv: oAuthSrv, notify: notify});
+        NavigateCtrl = $controller('NavigateCtrl', {$scope: $scope, $location: $location, oAuthSrv: oAuthSrv, notify: notify});
     }));
 
     it('should set initiate stats', inject(function ($rootScope) {
