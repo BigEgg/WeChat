@@ -74,7 +74,7 @@ public class WeChatApplication extends Application<WeChatApplicationConfiguratio
         final DAOModule daoModule = new DAOModule();
         daoModule.setAdminUserDAO(jdbi.onDemand(AdminUserDAO.class));
         daoModule.setConversationHistoryDAO(jdbi.onDemand(ConversationHistoryDAO.class));
-        daoModule.setEventLogDAO(jdbi.onDemand(EventLogDAO.class));
+        daoModule.setWeChatEventLogDAO(jdbi.onDemand(WeChatEventLogDAO.class));
         daoModule.setExpirableResourceDAO(jdbi.onDemand(ExpirableResourceDAO.class));
         daoModule.setLabelDAO(jdbi.onDemand(LabelDAO.class));
         daoModule.setMemberDAO(jdbi.onDemand(MemberDAO.class));

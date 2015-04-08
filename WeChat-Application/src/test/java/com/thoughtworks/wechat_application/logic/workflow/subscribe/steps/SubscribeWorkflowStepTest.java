@@ -6,7 +6,7 @@ import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.logic.workflow.BasicWorkflowContext;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStepResult;
 import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNotSupportMessageException;
-import com.thoughtworks.wechat_application.services.EventLogService;
+import com.thoughtworks.wechat_application.services.WeChatEventLogService;
 import com.thoughtworks.wechat_application.services.MemberService;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceKeys;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class SubscribeWorkflowStepTest {
     @Mock
-    private EventLogService eventLogService;
+    private WeChatEventLogService weChatEventLogService;
     @Mock
     private MemberService memberService;
     @Mock
@@ -42,7 +42,7 @@ public class SubscribeWorkflowStepTest {
     @Before
     public void setUp() throws Exception {
         injector = Guice.createInjector(binder -> {
-            binder.bind(EventLogService.class).toInstance(eventLogService);
+            binder.bind(WeChatEventLogService.class).toInstance(weChatEventLogService);
             binder.bind(MemberService.class).toInstance(memberService);
             binder.bind(AdminResourceService.class).toInstance(adminResourceService);
         });
@@ -58,15 +58,15 @@ public class SubscribeWorkflowStepTest {
 
     @Test
     public void testHandle() throws Exception {
-        when(eventLogService.member()).thenReturn(mock(EventLogService.MemberEventLogService.class));
+        when(weChatEventLogService.member()).thenReturn(mock(WeChatEventLogService.MemberEventLogService.class));
         when(adminResourceService.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE)).thenReturn(Optional.of(new OutboundTextMessage("Content")));
 
         final BasicWorkflowContext context = new BasicWorkflowContext();
         final WorkflowStepResult result = step.handle(createSubscribeEventEnvelop(), context);
 
         verify(memberService).subscribeMember("fromUser");
-        verify(eventLogService).member();
-        verify(eventLogService.member()).subscribe(any(Member.class), any(DateTime.class));
+        verify(weChatEventLogService).member();
+        verify(weChatEventLogService.member()).subscribe(any(Member.class), any(DateTime.class));
         verify(adminResourceService).getMessageResource(eq(AdminResourceKeys.SUBSCRIBE_RESPONSE));
         assertThat(result, equalTo(WorkflowStepResult.WORKFLOW_COMPLETE));
         assertThat(context.getConversationContent().isPresent(), equalTo(false));

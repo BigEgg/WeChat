@@ -29,7 +29,7 @@
             <column name="WeChatOpenId"/>
         </createIndex>
 
-        <createTable tableName="EventLog">
+        <createTable tableName="WeChatEventLog">
             <column name="Id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -48,8 +48,8 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint constraintName="FK_EventLog_MemberId_to_Member_Id"
-                                 baseTableName="EventLog"
+        <addForeignKeyConstraint constraintName="FK_WeChatEventLog_MemberId_to_Member_Id"
+                                 baseTableName="WeChatEventLog"
                                  baseColumnNames="MemberId"
                                  referencedTableName="Member"
                                  referencedColumnNames="Id"/>

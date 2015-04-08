@@ -7,7 +7,7 @@ import com.thoughtworks.wechat_application.logic.workflow.WorkflowContext;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStep;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStepResult;
 import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNotSupportMessageException;
-import com.thoughtworks.wechat_application.services.EventLogService;
+import com.thoughtworks.wechat_application.services.WeChatEventLogService;
 import com.thoughtworks.wechat_application.services.MemberService;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceKeys;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
@@ -25,15 +25,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Singleton
 public class SubscribeWorkflowStep implements WorkflowStep {
     private final static Logger LOGGER = LoggerFactory.getLogger(SubscribeWorkflowStep.class);
-    private EventLogService eventLogService;
+    private WeChatEventLogService weChatEventLogService;
     private MemberService memberService;
     private AdminResourceService adminResourceService;
 
     @Inject
     public SubscribeWorkflowStep(final MemberService memberService,
-                                 final EventLogService eventLogService,
+                                 final WeChatEventLogService weChatEventLogService,
                                  final AdminResourceService adminResourceService) {
-        this.eventLogService = eventLogService;
+        this.weChatEventLogService = weChatEventLogService;
         this.memberService = memberService;
         this.adminResourceService = adminResourceService;
     }
@@ -49,7 +49,7 @@ public class SubscribeWorkflowStep implements WorkflowStep {
         String memberOpenId = inboundMessageEnvelop.getFromUser();
         LOGGER.info("[Handle] Member(openid: {}) subscribe WeChat account.", memberOpenId);
         Member member = memberService.subscribeMember(memberOpenId);
-        eventLogService.member().subscribe(member, DateTime.now());
+        weChatEventLogService.member().subscribe(member, DateTime.now());
 
         Optional<OutboundMessage> responseMessage = adminResourceService.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
         context.setOutboundMessage(responseMessage);

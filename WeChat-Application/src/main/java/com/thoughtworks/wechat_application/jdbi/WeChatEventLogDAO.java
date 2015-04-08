@@ -6,8 +6,8 @@ import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 
 import java.sql.Timestamp;
 
-public interface EventLogDAO {
-    @SqlUpdate("INSERT INTO EventLog (MemberId, EventType, EventName, EventValue, HappenedTime)" +
+public interface WeChatEventLogDAO {
+    @SqlUpdate("INSERT INTO WeChatEventLog (MemberId, EventType, EventName, EventValue, HappenedTime)" +
             "   VALUES (:memberId, :eventType, :eventName, :eventValue, :happenedTime)")
     @GetGeneratedKeys
     long insertEventLog(@Bind("memberId") final long memberId,
@@ -16,7 +16,7 @@ public interface EventLogDAO {
                         @Bind("eventValue") final String eventValue,
                         @Bind("happenedTime") final Timestamp happenedTime);
 
-    @SqlUpdate("INSERT INTO EventLog (MemberId, EventType, EventName, HappenedTime)" +
+    @SqlUpdate("INSERT INTO WeChatEventLog (MemberId, EventType, EventName, HappenedTime)" +
             "   VALUES (:memberId, :eventType, :eventName, :happenedTime)")
     @GetGeneratedKeys
     long insertEventLog(@Bind("memberId") final long memberId,

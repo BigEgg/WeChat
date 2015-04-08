@@ -3,7 +3,7 @@ package com.thoughtworks.wechat_application.services;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.jdbi.core.Member;
-import com.thoughtworks.wechat_application.jdbi.EventLogDAO;
+import com.thoughtworks.wechat_application.jdbi.WeChatEventLogDAO;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,24 +20,24 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MemberEventLogServiceTest {
+public class MemberWeChatEventLogServiceTest {
     @Mock
-    private EventLogDAO eventLogDAO;
-    private EventLogService service;
+    private WeChatEventLogDAO weChatEventLogDAO;
+    private WeChatEventLogService service;
     private Injector injector;
 
     @Before
     public void setUp() throws Exception {
         injector = Guice.createInjector(binder -> {
-            binder.bind(EventLogDAO.class).toInstance(eventLogDAO);
+            binder.bind(WeChatEventLogDAO.class).toInstance(weChatEventLogDAO);
         });
 
-        service = injector.getInstance(EventLogService.class);
+        service = injector.getInstance(WeChatEventLogService.class);
     }
 
     @Test
     public void testInject_Singleton() throws Exception {
-        final EventLogService anotherService = injector.getInstance(EventLogService.class);
+        final WeChatEventLogService anotherService = injector.getInstance(WeChatEventLogService.class);
         assertThat(service, equalTo(anotherService));
     }
 
@@ -45,14 +45,14 @@ public class MemberEventLogServiceTest {
     public void testLogSubscribe() throws Exception {
         service.member().subscribe(createSubscribeMember(), DateTime.now());
 
-        verify(eventLogDAO).insertEventLog(eq(1L), eq("Member"), eq("Subscribe"), any(Timestamp.class));
+        verify(weChatEventLogDAO).insertEventLog(eq(1L), eq("Member"), eq("Subscribe"), any(Timestamp.class));
     }
 
     @Test
     public void testLogUnsubscribe() throws Exception {
         service.member().unsubscribe(createUnsubscribeMember(), DateTime.now());
 
-        verify(eventLogDAO).insertEventLog(eq(1L), eq("Member"), eq("Unsubscribe"), any(Timestamp.class));
+        verify(weChatEventLogDAO).insertEventLog(eq(1L), eq("Member"), eq("Unsubscribe"), any(Timestamp.class));
     }
 
     private Member createUnsubscribeMember() {

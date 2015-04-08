@@ -7,7 +7,7 @@ import com.thoughtworks.wechat_application.jdbi.*;
 public class DAOModule implements Module {
     private AdminUserDAO adminUserDAO;
     private ConversationHistoryDAO conversationHistoryDAO;
-    private EventLogDAO eventLogDAO;
+    private WeChatEventLogDAO weChatEventLogDAO;
     private ExpirableResourceDAO expirableResourceDAO;
     private LabelDAO labelDAO;
     private MemberDAO memberDAO;
@@ -17,7 +17,7 @@ public class DAOModule implements Module {
     public void configure(Binder binder) {
         binder.bind(AdminUserDAO.class).toInstance(adminUserDAO);
         binder.bind(ConversationHistoryDAO.class).toInstance(conversationHistoryDAO);
-        binder.bind(EventLogDAO.class).toInstance(eventLogDAO);
+        binder.bind(WeChatEventLogDAO.class).toInstance(weChatEventLogDAO);
         binder.bind(ExpirableResourceDAO.class).toInstance(expirableResourceDAO);
         binder.bind(LabelDAO.class).toInstance(labelDAO);
         binder.bind(MemberDAO.class).toInstance(memberDAO);
@@ -40,12 +40,12 @@ public class DAOModule implements Module {
         this.conversationHistoryDAO = conversationHistoryDAO;
     }
 
-    public EventLogDAO getEventLogDAO() {
-        return eventLogDAO;
+    public WeChatEventLogDAO getWeChatEventLogDAO() {
+        return weChatEventLogDAO;
     }
 
-    public void setEventLogDAO(EventLogDAO eventLogDAO) {
-        this.eventLogDAO = eventLogDAO;
+    public void setWeChatEventLogDAO(WeChatEventLogDAO weChatEventLogDAO) {
+        this.weChatEventLogDAO = weChatEventLogDAO;
     }
 
     public ExpirableResourceDAO getExpirableResourceDAO() {
