@@ -39,14 +39,22 @@
                 </li>
                 <li class="dropdown" ng-if="isLoggedIn()" id="menu_basic_settings">
                     <a class="dropdown-toggle" data-toggle="dropdown">
-                        {{'index.navigator.basicSetting' | translate}}<b class="caret"></b>
+                        {{'index.navigator.basicSettings' | translate}}<b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" translate="index.navigator.basicSetting.wechat"></a></li>
+                        <li><a href="#" translate="index.navigator.basicSettings.wechat"></a></li>
                         <li class="divider"></li>
-                        <li><a href="#" translate="index.navigator.basicSetting.conversation"></a></li>
-                        <li><a href="#" translate="index.navigator.basicSetting.menu"></a></li>
-                        <li><a href="#" translate="index.navigator.basicSetting.user"></a></li>
+                        <li><a href="#" translate="index.navigator.basicSettings.conversation"></a></li>
+                        <li><a href="#" translate="index.navigator.basicSettings.menu"></a></li>
+                        <li><a href="#" translate="index.navigator.basicSettings.user"></a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" ng-if="isLoggedIn()" id="menu_system_settings">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        {{'index.navigator.systemSettings' | translate}}<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" translate="index.navigator.systemSettings.admin"></a></li>
                     </ul>
                 </li>
                 <li><a href="#fakelink" translate="index.navigator.about"></a></li>
