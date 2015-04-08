@@ -25,7 +25,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-01">
             <ul class="nav navbar-nav navbar-left">
-                <li class="dropdown" ng-if="isLoggedIn()">
+                <li class="dropdown" ng-if="isLoggedIn()" id="menu_dashboard">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         {{'index.navigator.dashboard' | translate}}<b class="caret"></b>
                     </a>
@@ -37,7 +37,7 @@
                         <li><a herf="#" translate="index.navigator.dashboard.api"></a></li>
                     </ul>
                 </li>
-                <li class="dropdown" ng-if="isLoggedIn()">
+                <li class="dropdown" ng-if="isLoggedIn()" id="menu_basic_settings">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         {{'index.navigator.basicSetting' | translate}}<b class="caret"></b>
                     </a>
@@ -52,7 +52,7 @@
                 <li><a href="#fakelink" translate="index.navigator.about"></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-if="!isLoggedIn()">
+                <li ng-if="!isLoggedIn()" id="menu_signin_form">
                     <div class="navbar-form navbar-right">
                         <div class="form-group">
                             <div class="input-group">
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="dropdown" ng-if="isLoggedIn()">
+                <li class="dropdown" ng-if="isLoggedIn()" id="menu_user">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         {{getLoginUsername()}}<b class="caret"></b>
                     </a>
