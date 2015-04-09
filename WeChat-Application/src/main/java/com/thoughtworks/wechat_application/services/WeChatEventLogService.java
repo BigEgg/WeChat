@@ -11,21 +11,21 @@ import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimestam
 @Singleton
 public class WeChatEventLogService {
     private final WeChatEventLogDAO weChatEventLogDAO;
-    private final MemberEventLogService memberEventLogService;
+    private final MemberWeChatEventLogService memberWeChatEventLogService;
 
     @Inject
     public WeChatEventLogService(final WeChatEventLogDAO weChatEventLogDAO) {
         this.weChatEventLogDAO = weChatEventLogDAO;
 
-        memberEventLogService = new MemberEventLogService();
+        memberWeChatEventLogService = new MemberWeChatEventLogService();
     }
 
-    public MemberEventLogService member() {
-        return memberEventLogService;
+    public MemberWeChatEventLogService member() {
+        return memberWeChatEventLogService;
     }
 
 
-    public class MemberEventLogService {
+    public class MemberWeChatEventLogService {
         private final String EVENT_NAME = "Member";
         private final String SUBSCRIBE_EVENT = "Subscribe";
         private final String UNSUBSCRIBE_EVENT = "Unsubscribe";

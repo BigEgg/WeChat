@@ -87,6 +87,31 @@
             <column name="ClientSecret"/>
         </createIndex>
 
+        <createTable tableName="SystemEventLog">
+            <column name="Id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ClientId" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EventType" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EventName" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EventValue" type="varchar(255)"/>
+            <column name="HappenedTime" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="FK_SystemEventLog_ClientId_to_OAuthClient_Id"
+                                 baseTableName="SystemEventLog"
+                                 baseColumnNames="ClientId"
+                                 referencedTableName="OAuthClient"
+                                 referencedColumnNames="Id"/>
+
         <createTable tableName="Label">
             <column name="Id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>

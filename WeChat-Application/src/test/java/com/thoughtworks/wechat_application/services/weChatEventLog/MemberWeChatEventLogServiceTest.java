@@ -1,9 +1,10 @@
-package com.thoughtworks.wechat_application.services;
+package com.thoughtworks.wechat_application.services.weChatEventLog;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.jdbi.WeChatEventLogDAO;
+import com.thoughtworks.wechat_application.services.WeChatEventLogService;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;

@@ -58,7 +58,7 @@ public class SubscribeWorkflowStepTest {
 
     @Test
     public void testHandle() throws Exception {
-        when(weChatEventLogService.member()).thenReturn(mock(WeChatEventLogService.MemberEventLogService.class));
+        when(weChatEventLogService.member()).thenReturn(mock(WeChatEventLogService.MemberWeChatEventLogService.class));
         when(adminResourceService.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE)).thenReturn(Optional.of(new OutboundTextMessage("Content")));
 
         final BasicWorkflowContext context = new BasicWorkflowContext();
