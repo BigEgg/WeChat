@@ -7,7 +7,8 @@ admin.app.controller('NavigateCtrl', ['$scope', '$rootScope', '$location', 'oAut
     };
 
     $scope.signIn = function (username, password) {
-        if (!username) {
+        if ((username && username.length > 32)
+            || (password && password.length > 32)) {
             return;
         }
 

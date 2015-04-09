@@ -24,25 +24,25 @@ describe('OAuth Service Test', function () {
 
     it('should logged in after sign in success', inject(function ($httpBackend, $window, oAuthSrv) {
         $httpBackend
-            .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
-            .respond(200, {access_token: 'access', refresh_token: 'refresh', name: 'name'});
+            .expectPOST('/uas/oauth/accesstoken', {clientId: 'abc@abc.com', clientSecret: 'password'})
+            .respond(200, {access_token: 'access', refresh_token: 'refresh'});
 
         oAuthSrv.signIn('abc@abc.com', 'password').then(function (name) {
-            expect(name).toBe('name');
+            expect(name).toBe('abc');
         });
         $httpBackend.flush();
 
         expect($window.sessionStorage.getItem('access_token')).toBe('access');
         expect($window.sessionStorage.getItem('refresh_token')).toBe('refresh');
-        expect($window.sessionStorage.getItem('username')).toBe('name');
+        expect($window.sessionStorage.getItem('username')).toBe('abc');
         expect(oAuthSrv.isLoggedIn()).toBeTruthy();
-        expect(oAuthSrv.getUsername()).toBe('name');
+        expect(oAuthSrv.getUsername()).toBe('abc');
     }));
 
     it('should not logged in after sign out', inject(function ($httpBackend, oAuthSrv) {
         $httpBackend
-            .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
-            .respond(200, {access_token: 'access', refresh_token: 'refresh', name: 'name'});
+            .expectPOST('/uas/oauth/accesstoken', {clientId: 'abc@abc.com', clientSecret: 'password'})
+            .respond(200, {access_token: 'access', refresh_token: 'refresh'});
 
         oAuthSrv.signIn('abc@abc.com', 'password');
         $httpBackend.flush();
@@ -55,7 +55,7 @@ describe('OAuth Service Test', function () {
 
     it('should return time out exception if over 3 seconds', inject(function ($timeout, $httpBackend, $window, $rootScope, oAuthSrv) {
         $httpBackend
-            .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
+            .expectPOST('/uas/oauth/accesstoken', {clientId: 'abc@abc.com', clientSecret: 'password'})
             .respond(404);
 
         oAuthSrv.signIn('abc@abc.com', 'password').then(
@@ -71,7 +71,7 @@ describe('OAuth Service Test', function () {
 
     it('should return system bad network exception if bad network', inject(function ($httpBackend, $window, oAuthSrv) {
         $httpBackend
-            .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
+            .expectPOST('/uas/oauth/accesstoken', {clientId: 'abc@abc.com', clientSecret: 'password'})
             .respond(404);
 
         oAuthSrv.signIn('abc@abc.com', 'password').then(
@@ -86,7 +86,7 @@ describe('OAuth Service Test', function () {
 
     it('should return authorize failed exception if sign in failed', inject(function ($httpBackend, $window, oAuthSrv) {
         $httpBackend
-            .expectPOST('/api/oauth/admin', {username: 'abc@abc.com', password: 'password'})
+            .expectPOST('/uas/oauth/accesstoken', {clientId: 'abc@abc.com', clientSecret: 'password'})
             .respond(401);
 
         oAuthSrv.signIn('abc@abc.com', 'password').then(

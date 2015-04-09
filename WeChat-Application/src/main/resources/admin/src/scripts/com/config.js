@@ -8,7 +8,7 @@ admin.app.config(function ($routeProvider, $translateProvider) {
 
     $routeProvider
         .when('/', {
-            controller: 'AppCtrl',
+            controller: 'NavigateCtrl',
             templateUrl: '../html/views/home.html',
             publicAccess: true
         })

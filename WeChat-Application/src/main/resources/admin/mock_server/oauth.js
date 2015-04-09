@@ -1,9 +1,8 @@
 exports.admin = function (req, res) {
-    if (req.body.username === "BigEgg") {
+    if (req.body.clientId === "BigEgg") {
         res.send({
             access_token: "access",
             refresh_token: "refresh",
-            name: 'BigEgg'
         });
     } else {
         res.sendStatus(401);

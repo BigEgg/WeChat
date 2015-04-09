@@ -13,13 +13,14 @@ admin.app.service('oAuthSrv', ['$window', '$http', '$q', '$timeout', function ($
             deferred.reject(new TimeOutException());
         }, 3000);
 
-        $http.post('/api/oauth/admin', {username: username, password: password})
+        $http.post('/uas/oauth/accesstoken', {clientId: username, clientSecret: password})
             .success(function (data, status, headers, config) {
                 $window.sessionStorage.setItem(KEY_ACCESS_TOKEN, data.access_token);
                 $window.sessionStorage.setItem(KEY_REFRESH_TOKEN, data.refresh_token);
-                $window.sessionStorage.setItem(KEY_USERNAME, data.name);
+                var name = username.split('@')[0];
+                $window.sessionStorage.setItem(KEY_USERNAME, name);
 
-                deferred.resolve(data.name);
+                deferred.resolve(name);
             })
             .error(function (data, status, headers, config) {
                 $window.sessionStorage.removeItem(KEY_ACCESS_TOKEN);

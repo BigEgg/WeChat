@@ -11,6 +11,6 @@ app.use('/admin', express.static(__dirname + '/src'));
 app.use('/vendor', express.static(__dirname + '/vendor'));
 app.use('/i18n', express.static(__dirname + '/i18n'));
 
-app.post('/api/oauth/admin', oAuth.admin);
+app.post('/uas/oauth/accesstoken', oAuth.admin);
 
 app.listen(3000);
