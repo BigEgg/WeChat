@@ -70,6 +70,12 @@
             <column name="WeChatMemberId" type="bigint">
                 <constraints nullable="true"/>
             </column>
+            <column name="CreatedTime" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ModifiedTime" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createIndex tableName="OAuthClient" indexName="IX_OAuthClient_ClientId">

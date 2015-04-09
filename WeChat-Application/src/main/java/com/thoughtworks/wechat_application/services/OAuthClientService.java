@@ -7,6 +7,7 @@ import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.services.admin.passwordUtils.PasswordHelper;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimestamp;
 import static com.thoughtworks.wechat_core.util.precondition.ArgumentPrecondition.checkNotBlank;
 
 @Singleton
@@ -58,7 +60,7 @@ public class OAuthClientService {
         OAuthClient currentOAuthClient = OAuthClientDAO.getByClientId(clientId);
         if (currentOAuthClient == null) {
             String hashedPassword = passwordHelper.saltHash(clientSecret);
-            long adminId = OAuthClientDAO.create(clientId, hashedPassword, AuthenticateRole.ADMIN);
+            long adminId = OAuthClientDAO.create(clientId, hashedPassword, AuthenticateRole.ADMIN, toUnixTimestamp(DateTime.now()));
             LOGGER.info("[CreateAdmin] Create a new admin user(id: {}) with clientId: {}, clientSecret: {}, role: 'ADMIN'.", adminId, clientId, hashedPassword);
             return Optional.of(OAuthClientDAO.getByClientId(clientId));
         } else {
@@ -71,7 +73,7 @@ public class OAuthClientService {
         checkNotNull(OAuthClient);
         checkNotNull(member);
 
-        OAuthClientDAO.setMember(OAuthClient.getClientId(), member.getId());
+        OAuthClientDAO.setMember(OAuthClient.getClientId(), member.getId(), toUnixTimestamp(DateTime.now()));
         LOGGER.info("[SetMember] Set member(id: {}) to OAuthClient(clientId: {}) success.", member.getId(), OAuthClient.getClientId());
     }
 }

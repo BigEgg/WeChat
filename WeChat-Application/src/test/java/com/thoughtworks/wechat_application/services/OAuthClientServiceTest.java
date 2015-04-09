@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -96,7 +97,7 @@ public class OAuthClientServiceTest {
 
         final Optional<OAuthClient> adminUser = service.createAdmin("clientId", "clientSecret");
 
-        verify(oAuthClientDAO).create(eq("clientId"), eq("hashedClientSecret"), eq(AuthenticateRole.ADMIN));
+        verify(oAuthClientDAO).create(eq("clientId"), eq("hashedClientSecret"), eq(AuthenticateRole.ADMIN), any(Timestamp.class));
         verify(oAuthClientDAO, times(2)).getByClientId(eq("clientId"));
         assertThat(adminUser.isPresent(), equalTo(true));
         assertThat(adminUser.get().getId(), equalTo(1L));
@@ -112,7 +113,7 @@ public class OAuthClientServiceTest {
 
         final Optional<OAuthClient> adminUser = service.createAdmin("clientId", "password1");
 
-        verify(oAuthClientDAO, never()).create(anyString(), anyString(), anyObject());
+        verify(oAuthClientDAO, never()).create(anyString(), anyString(), anyObject(), any(Timestamp.class));
         verify(oAuthClientDAO).getByClientId(eq("clientId"));
         verify(passwordHelper, never()).saltHash(eq("clientSecret"));
         assertThat(adminUser.isPresent(), equalTo(false));
@@ -123,7 +124,7 @@ public class OAuthClientServiceTest {
         final OAuthClient OAuthClient = createAdmin();
         service.setMember(OAuthClient, createSubscribeMember());
 
-        verify(oAuthClientDAO).setMember(eq("clientId"), eq(1L));
+        verify(oAuthClientDAO).setMember(eq("clientId"), eq(1L), any(Timestamp.class));
     }
 
     private OAuthClient createAdmin() {

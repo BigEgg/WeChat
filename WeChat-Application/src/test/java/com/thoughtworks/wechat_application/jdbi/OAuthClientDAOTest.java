@@ -21,23 +21,23 @@ public class OAuthClientDAOTest extends AbstractDAOTest {
 
     @Test
     public void testCreateAdminUser() throws Exception {
-        long id = OAuthClientDAO.create("username1", "encryptPassword", AuthenticateRole.ADMIN);
+        long id = OAuthClientDAO.create("username1", "encryptPassword", AuthenticateRole.ADMIN, getHappenedTime());
         assertThat(id, equalTo(1L));
-        id = OAuthClientDAO.create("username2", "encryptPassword", AuthenticateRole.ADMIN);
+        id = OAuthClientDAO.create("username2", "encryptPassword", AuthenticateRole.ADMIN, getHappenedTime());
         assertThat(id, equalTo(2L));
     }
 
     @Test(expected = UnableToExecuteStatementException.class)
     public void testCreateAdminUser_WithSameUsername() throws Exception {
-        OAuthClientDAO.create("username", "encryptPassword1", AuthenticateRole.ADMIN);
-        OAuthClientDAO.create("username", "encryptPassword2", AuthenticateRole.ADMIN);
+        OAuthClientDAO.create("username", "encryptPassword1", AuthenticateRole.ADMIN, getHappenedTime());
+        OAuthClientDAO.create("username", "encryptPassword2", AuthenticateRole.ADMIN, getHappenedTime());
     }
 
     @Test
     public void testGet() throws Exception {
         final String clientId = "clientId";
         final String clientSecret = "clientSecret";
-        OAuthClientDAO.create(clientId, clientSecret, AuthenticateRole.ADMIN);
+        OAuthClientDAO.create(clientId, clientSecret, AuthenticateRole.ADMIN, getHappenedTime());
 
         final OAuthClient oAuthClient = OAuthClientDAO.getByClientId(clientId);
         assertThat(oAuthClient, notNullValue());
@@ -58,13 +58,13 @@ public class OAuthClientDAOTest extends AbstractDAOTest {
     public void testSetMember() throws Exception {
         final String clientId = "clientId";
         final String clientSecret = "clientSecret";
-        OAuthClientDAO.create(clientId, clientSecret, AuthenticateRole.ADMIN);
+        OAuthClientDAO.create(clientId, clientSecret, AuthenticateRole.ADMIN, getHappenedTime());
 
         OAuthClient oAuthClient = OAuthClientDAO.getByClientId(clientId);
         assertThat(oAuthClient.getWeChatMemberId().isPresent(), equalTo(false));
 
         final long memberId = memberDAO.createMember("OpenId1", getHappenedTime());
-        OAuthClientDAO.setMember(clientId, memberId);
+        OAuthClientDAO.setMember(clientId, memberId, getHappenedTime());
 
         oAuthClient = OAuthClientDAO.getByClientId(clientId);
         assertThat(oAuthClient.getWeChatMemberId().isPresent(), equalTo(true));
