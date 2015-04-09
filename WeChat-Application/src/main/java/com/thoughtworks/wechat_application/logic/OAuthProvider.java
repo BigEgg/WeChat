@@ -3,16 +3,13 @@ package com.thoughtworks.wechat_application.logic;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.wechat_application.configs.OAuthConfiguration;
-import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
+import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.models.oauth.OAuthInfo;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -25,20 +22,18 @@ public class OAuthProvider {
     @Inject
     public OAuthProvider(final OAuthConfiguration oAuthConfiguration) {
         this.oAuthConfiguration = oAuthConfiguration;
-
         this.oAuthInfoMap = new HashMap<>();
     }
 
-    public OAuthInfo newOAuth(final AuthenticateRole role, final Object client) {
+    public OAuthInfo newOAuth(final OAuthClient client) {
         checkNotNull(client);
 
-        deleteExistOAuth(role, client);
+        deleteExistOAuth(client);
         LOGGER.info("[NewOAuth] Try delete exist OAuth based on the authenticate information.");
 
         final String accessToken = getAccessToken();
         final String refreshToken = getRefreshToken();
         final OAuthInfo oAuthInfo = new OAuthInfo(
-                role,
                 accessToken,
                 refreshToken,
                 client,
@@ -46,7 +41,7 @@ public class OAuthProvider {
                 oAuthConfiguration.getoAuthRefreshTokenExpireSeconds(),
                 DateTime.now());
         oAuthInfoMap.put(accessToken, oAuthInfo);
-        LOGGER.info("[NewOAuth] Generate new OAuth tokens for role: {}, access token: {}, refresh token: {}.", role, accessToken, refreshToken);
+        LOGGER.info("[NewOAuth] Generate new OAuth tokens for client: {}, access token: {}, refresh token: {}.", client.getClientId(), accessToken, refreshToken);
         return oAuthInfo;
     }
 
@@ -71,32 +66,17 @@ public class OAuthProvider {
         }
     }
 
-    public AuthenticateRole getRole(final String accessToken) {
-        LOGGER.info("[GetRole] Try to get authenticate role with OAuth access token: {}.", accessToken);
-        if (oAuthInfoMap.containsKey(accessToken)) {
-            final OAuthInfo oAuthInfo = oAuthInfoMap.get(accessToken);
-            final boolean expired = !oAuthInfo.getAccessToken().isPresent();
-            LOGGER.info("[GetRole] Check access token: '{}' status, expired? {}.", accessToken, expired);
-            return expired
-                    ? AuthenticateRole.NONE
-                    : oAuthInfo.getRole();
-        } else {
-            LOGGER.info("[GetRole] Cannot find the access token: '{}'.", accessToken);
-            return AuthenticateRole.NONE;
-        }
-    }
-
     public void cleanUp() {
-        LOGGER.info("[CleanUp] Clear all OAuth information.");
+        LOGGER.info("[CleanUp] Clear all expired OAuth information.");
         oAuthInfoMap.entrySet().stream()
                 .filter(entry -> !entry.getValue().getRefreshToken().isPresent())
                 .forEach(entry -> oAuthInfoMap.remove(entry.getKey()));
     }
 
-    private void deleteExistOAuth(final AuthenticateRole role, final Object client) {
+    private void deleteExistOAuth(final OAuthClient client) {
         final Optional<Map.Entry<String, OAuthInfo>> existOAuth = oAuthInfoMap.entrySet().stream().filter(entry -> {
             final OAuthInfo value = entry.getValue();
-            return value.getRole() == role && value.getClient() == client;
+            return Objects.equals(value.getClient().getClientId(), client.getClientId());
         }).findFirst();
         if (existOAuth.isPresent()) {
             LOGGER.info("[DeleteExistOAuth] Find the exist OAuth information, delete it.");

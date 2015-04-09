@@ -1,35 +1,28 @@
 package com.thoughtworks.wechat_application.models.oauth;
 
-import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
+import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import org.joda.time.DateTime;
 
 import java.util.Optional;
 
 public class OAuthInfo {
-    private final AuthenticateRole role;
     private final String refreshToken;
-    private final Object client;
     private final DateTime refreshTokenExpireTime;
+    private final OAuthClient client;
     private String accessToken;
     private DateTime accessTokenExpireTime;
 
-    public OAuthInfo(final AuthenticateRole role,
-                     final String accessToken,
+    public OAuthInfo(final String accessToken,
                      final String refreshToken,
-                     final Object client,
+                     final OAuthClient client,
                      final int accessTokenExpireInSeconds,
                      final int refreshTokenExpireInSeconds,
                      final DateTime createTime) {
-        this.role = role;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.client = client;
         this.accessTokenExpireTime = createTime.plusSeconds(accessTokenExpireInSeconds);
         this.refreshTokenExpireTime = createTime.plusSeconds(refreshTokenExpireInSeconds);
-    }
-
-    public AuthenticateRole getRole() {
-        return role;
     }
 
     public Optional<String> getAccessToken() {
@@ -44,7 +37,7 @@ public class OAuthInfo {
                 : Optional.<String>empty();
     }
 
-    public Object getClient() {
+    public OAuthClient getClient() {
         return client;
     }
 

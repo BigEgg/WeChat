@@ -2,16 +2,16 @@ package com.thoughtworks.wechat_application.resources;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.thoughtworks.wechat_application.api.oauth.AdminLoginRequest;
-import com.thoughtworks.wechat_application.api.oauth.AdminLoginResponse;
 import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshRequest;
-import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshResponse;
+import com.thoughtworks.wechat_application.api.oauth.OAuthResponse;
+import com.thoughtworks.wechat_application.api.oauth.OAuthSignInRequest;
 import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.logic.OAuthProvider;
-import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import com.thoughtworks.wechat_application.models.oauth.OAuthInfo;
 import com.thoughtworks.wechat_application.services.OAuthClientService;
 import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -24,6 +24,7 @@ import java.util.Optional;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class OAuthResource {
+    private final Logger LOGGER = LoggerFactory.getLogger(OAuthResource.class);
     private final OAuthClientService OAuthClientService;
     private final OAuthProvider oAuthProvider;
 
@@ -36,25 +37,33 @@ public class OAuthResource {
 
     @POST
     @Path("/accesstoken")
-    public AdminLoginResponse admin(@NotNull AdminLoginRequest request) {
-        final String username = request.getUsername();
-        final Optional<OAuthClient> adminUser = OAuthClientService.SignIn(username, request.getPassword());
-        if (adminUser.isPresent()) {
-            final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, adminUser.get());
-            return new AdminLoginResponse(oAuthInfo.getAccessToken().get(), oAuthInfo.getRefreshToken().get(), username.split("@")[0]);
+    public OAuthResponse accessToken(@NotNull OAuthSignInRequest request) {
+        final String clientId = request.getClientId();
+        final String clientSecret = request.getClientSecret();
+
+        final Optional<OAuthClient> client = OAuthClientService.SignIn(clientId, clientSecret);
+        if (client.isPresent()) {
+            LOGGER.info("[AccessToken] Client with clientId: {} and clientSecret: {} authenticate success.", clientId, clientSecret);
+            final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(client.get());
+            return new OAuthResponse(oAuthInfo.getAccessToken().get(), oAuthInfo.getRefreshToken().get());
         } else {
+            LOGGER.info("[AccessToken] Client with clientId: {} and clientSecret: {} authenticate failed.", clientId, clientSecret);
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
 
     @POST
     @Path("/refresh")
-    public OAuthRefreshResponse refresh(@NotBlank final OAuthRefreshRequest request) {
-        final Optional<OAuthInfo> oAuthInfo = oAuthProvider.refreshAccessToken(request.getAccessToken(), request.getRefreshToken());
+    public OAuthResponse refresh(@NotBlank final OAuthRefreshRequest request) {
+        final String accessToken = request.getAccessToken();
+        final String refreshToken = request.getRefreshToken();
 
+        final Optional<OAuthInfo> oAuthInfo = oAuthProvider.refreshAccessToken(accessToken, refreshToken);
         if (oAuthInfo.isPresent()) {
-            return new OAuthRefreshResponse(oAuthInfo.get().getAccessToken().get(), oAuthInfo.get().getRefreshToken().get());
+            LOGGER.info("[Refresh] Client refresh access token with accessToken: {} and refreshToken: {} authenticate success.", accessToken, refreshToken);
+            return new OAuthResponse(oAuthInfo.get().getAccessToken().get(), oAuthInfo.get().getRefreshToken().get());
         } else {
+            LOGGER.info("[Refresh] Client refresh access token with accessToken: {} and refreshToken: {} authenticate failed.", accessToken, refreshToken);
             throw new WebApplicationException(Response.Status.FORBIDDEN);
         }
     }

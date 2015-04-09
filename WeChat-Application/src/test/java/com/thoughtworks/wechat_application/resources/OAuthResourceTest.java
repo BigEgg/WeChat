@@ -1,9 +1,8 @@
 package com.thoughtworks.wechat_application.resources;
 
-import com.thoughtworks.wechat_application.api.oauth.AdminLoginRequest;
-import com.thoughtworks.wechat_application.api.oauth.AdminLoginResponse;
 import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshRequest;
-import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshResponse;
+import com.thoughtworks.wechat_application.api.oauth.OAuthResponse;
+import com.thoughtworks.wechat_application.api.oauth.OAuthSignInRequest;
 import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.logic.OAuthProvider;
@@ -37,11 +36,11 @@ public class OAuthResourceTest extends ResourceTestBase {
     }
 
     private static OAuthInfo createOAuthInfo1(AuthenticateRole role) {
-        return new OAuthInfo(role, "access_token", "refresh_token", createAdmin(), 1000, 1000, DateTime.now());
+        return new OAuthInfo("access_token", "refresh_token", createAdmin(), 1000, 1000, DateTime.now());
     }
 
     private static OAuthInfo createOAuthInfo2(AuthenticateRole role) {
-        return new OAuthInfo(role, "access_token2", "refresh_token", createAdmin(), 1000, 1000, DateTime.now());
+        return new OAuthInfo("access_token2", "refresh_token", createAdmin(), 1000, 1000, DateTime.now());
     }
 
     @After
@@ -54,28 +53,27 @@ public class OAuthResourceTest extends ResourceTestBase {
     public void return_token_if_log_in_success() throws Exception {
         final OAuthClient admin = createAdmin();
         when(O_AUTH_CLIENT_SERVICE.SignIn("abc@abc.com", "password")).thenReturn(Optional.of(admin));
-        when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN, admin)).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
+        when(oAuthProvider.newOAuth(admin)).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
 
-        final AdminLoginRequest request = new AdminLoginRequest();
-        request.setUsername("abc@abc.com");
-        request.setPassword("password");
+        final OAuthSignInRequest request = new OAuthSignInRequest();
+        request.setClientId("abc@abc.com");
+        request.setClientSecret("password");
         final Response response = resources.client().target("/uas/oauth/accesstoken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
-        final AdminLoginResponse entity = getResponseEntity(response, AdminLoginResponse.class);
+        final OAuthResponse entity = getResponseEntity(response, OAuthResponse.class);
         assertThat(entity.getAccessToken()).isEqualTo("access_token");
         assertThat(entity.getRefreshToken()).isEqualTo("refresh_token");
-        assertThat(entity.getName()).isEqualTo("abc");
     }
 
     @Test
     public void return_token_if_log_in_failed() throws Exception {
         when(O_AUTH_CLIENT_SERVICE.SignIn("abc@abc.com", "password")).thenReturn(Optional.empty());
-        when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin())).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
+        when(oAuthProvider.newOAuth(createAdmin())).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
 
-        final AdminLoginRequest request = new AdminLoginRequest();
-        request.setUsername("abc@abc.com");
-        request.setPassword("password");
+        final OAuthSignInRequest request = new OAuthSignInRequest();
+        request.setClientId("abc@abc.com");
+        request.setClientSecret("password");
         final Response response = resources.client().target("/uas/oauth/accesstoken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.UNAUTHORIZED);
@@ -88,10 +86,11 @@ public class OAuthResourceTest extends ResourceTestBase {
         final OAuthRefreshRequest request = new OAuthRefreshRequest();
         request.setAccessToken("access_token");
         request.setRefreshToken("refresh_token");
-        final Response response = resources.client().target("/uas/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
+        final Response response = resources.client().target("/uas/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
-        final OAuthRefreshResponse entity = getResponseEntity(response, OAuthRefreshResponse.class);
+
+        final OAuthResponse entity = getResponseEntity(response, OAuthResponse.class);
         assertThat(entity.getAccessToken()).isEqualTo("access_token2");
         assertThat(entity.getRefreshToken()).isEqualTo("refresh_token");
     }
@@ -103,8 +102,8 @@ public class OAuthResourceTest extends ResourceTestBase {
         final OAuthRefreshRequest request = new OAuthRefreshRequest();
         request.setAccessToken("access_token");
         request.setRefreshToken("refresh_token");
-        final Response response = resources.client().target("/uas/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
+        final Response response = resources.client().target("/uas/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
     }
 }

@@ -15,9 +15,8 @@ public class OAuthInfoTest {
     @Test
     public void testGenerate() throws Exception {
         final OAuthClient admin = createAdmin();
-        final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", admin, 10, 10, DateTime.now());
+        final OAuthInfo oAuthInfo = new OAuthInfo("accessToken", "refreshToken", admin, 10, 10, DateTime.now());
 
-        assertThat(oAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
         assertThat(oAuthInfo.getAccessToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo.getAccessToken().get(), equalTo("accessToken"));
         assertThat(oAuthInfo.getRefreshToken().isPresent(), equalTo(true));
@@ -27,10 +26,9 @@ public class OAuthInfoTest {
 
     @Test
     public void testAccessTokenExpired() throws Exception {
-        final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", createAdmin(), 1, 10, DateTime.now());
+        final OAuthInfo oAuthInfo = new OAuthInfo("accessToken", "refreshToken", createAdmin(), 1, 10, DateTime.now());
 
         Thread.sleep(1000);
-        assertThat(oAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
         assertThat(oAuthInfo.getAccessToken().isPresent(), equalTo(false));
         assertThat(oAuthInfo.getRefreshToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo.getRefreshToken().get(), equalTo("refreshToken"));
@@ -38,10 +36,9 @@ public class OAuthInfoTest {
 
     @Test
     public void testRefreshTokenExpired() throws Exception {
-        final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", createAdmin(), 10, 1, DateTime.now());
+        final OAuthInfo oAuthInfo = new OAuthInfo("accessToken", "refreshToken", createAdmin(), 10, 1, DateTime.now());
 
         Thread.sleep(1000);
-        assertThat(oAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
         assertThat(oAuthInfo.getAccessToken().isPresent(), equalTo(false));
         assertThat(oAuthInfo.getRefreshToken().isPresent(), equalTo(false));
     }

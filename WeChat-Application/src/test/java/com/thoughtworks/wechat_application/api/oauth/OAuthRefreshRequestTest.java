@@ -12,7 +12,7 @@ public class OAuthRefreshRequestTest extends APITestBase {
         oAuthRefreshRequest.setAccessToken("access_token");
         oAuthRefreshRequest.setRefreshToken("refresh_token");
 
-        final OAuthRefreshRequest request = deserializeFixture("fixtures/api/oauth/OAuthRefreshRequest.json", OAuthRefreshRequest.class);
+        final OAuthRefreshRequest request = deserializeFixture("fixtures/uas/oauth/OAuthRefreshRequest.json", OAuthRefreshRequest.class);
         assertThat(request.getAccessToken()).isEqualTo(oAuthRefreshRequest.getAccessToken());
         assertThat(request.getRefreshToken()).isEqualTo(oAuthRefreshRequest.getRefreshToken());
     }

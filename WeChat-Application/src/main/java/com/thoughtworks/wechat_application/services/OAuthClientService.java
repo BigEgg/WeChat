@@ -38,14 +38,14 @@ public class OAuthClientService {
             String salt = passwordHelper.getSaltFromHashedPassword(oAuthClient.getHashedClientSecret());
             String hashedPassword = passwordHelper.saltHash(clientSecret, salt);
             if (oAuthClient.getHashedClientSecret().equals(hashedPassword)) {
-                LOGGER.info("[LogIn] Log in OAuthClient with clientId: {}, and clientSecret: {}, success.", clientId, hashedPassword);
+                LOGGER.info("[SignIn] Log in OAuthClient with clientId: {}, and clientSecret: {}, success.", clientId, hashedPassword);
                 return Optional.of(oAuthClient);
             } else {
-                LOGGER.info("[LogIn] Log in OAuthClient with clientId: {}, and clientSecret: {}, failed. Password not right.", clientId, hashedPassword);
+                LOGGER.info("[SignIn] Log in OAuthClient with clientId: {}, and clientSecret: {}, failed. Password not right.", clientId, hashedPassword);
                 return Optional.empty();
             }
         } else {
-            LOGGER.info("[LogIn] Log in OAuthClient with clientId: {}, failed. No such user.", clientId);
+            LOGGER.info("[SignIn] Log in OAuthClient with clientId: {}, failed. No such user.", clientId);
             return Optional.empty();
         }
     }
