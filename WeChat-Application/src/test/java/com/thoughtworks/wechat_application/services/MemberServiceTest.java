@@ -2,9 +2,8 @@ package com.thoughtworks.wechat_application.services;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.thoughtworks.wechat_application.jdbi.core.Label;
-import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.jdbi.MemberDAO;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +23,6 @@ import static org.mockito.Mockito.*;
 public class MemberServiceTest {
     @Mock
     private MemberDAO memberDAO;
-    @Mock
-    private LabelService labelService;
     private MemberService service;
     private Injector injector;
 
@@ -33,7 +30,6 @@ public class MemberServiceTest {
     public void setUp() throws Exception {
         injector = Guice.createInjector(binder -> {
             binder.bind(MemberDAO.class).toInstance(memberDAO);
-            binder.bind(LabelService.class).toInstance(labelService);
         });
 
         service = injector.getInstance(MemberService.class);
@@ -120,66 +116,11 @@ public class MemberServiceTest {
         verify(memberDAO, never()).updateSubscribed(anyLong(), anyBoolean(), any(Timestamp.class));
     }
 
-    @Test
-    public void testLinkMemberToLabel_NotLinked() throws Exception {
-        final Member member = createSubscribeMember();
-        final Label label = createLabel1();
-        when(labelService.getMemberLabels(member)).thenReturn(Optional.empty());
-
-        service.linkMemberToLabel(member, label);
-
-        verify(labelService).getMemberLabels(eq(member));
-        verify(memberDAO).linkMemberWithLabel(eq(member.getId()), eq(label.getId()), any(Timestamp.class));
-        verify(memberDAO, never()).updateMemberLabel(anyLong(), anyLong(), any(Timestamp.class));
-    }
-
-    @Test
-    public void testLinkMemberToLabel_Linked() throws Exception {
-        final Member member = createSubscribeMember();
-        when(labelService.getMemberLabels(member)).thenReturn(Optional.of(createLabel1()));
-
-        service.linkMemberToLabel(member, createLabel2());
-
-        verify(labelService).getMemberLabels(eq(member));
-        verify(memberDAO).updateMemberLabel(eq(member.getId()), eq(2L), any(Timestamp.class));
-        verify(memberDAO, never()).linkMemberWithLabel(anyLong(), anyLong(), any(Timestamp.class));
-    }
-
-    @Test
-    public void testDelinkMemberLabel_Linked() throws Exception {
-        final Member member = createSubscribeMember();
-        when(labelService.getMemberLabels(member)).thenReturn(Optional.of(createLabel1()));
-
-        service.delinkMemberLabel(member);
-
-        verify(labelService).getMemberLabels(eq(member));
-        verify(memberDAO).delinkMemberWithLabel(eq(member.getId()), eq(1L));
-    }
-
-    @Test
-    public void testDelinkMemberLabel_NotLinked() throws Exception {
-        final Member member = createSubscribeMember();
-        when(labelService.getMemberLabels(member)).thenReturn(Optional.empty());
-
-        service.delinkMemberLabel(member);
-
-        verify(labelService).getMemberLabels(eq(member));
-        verify(memberDAO, never()).delinkMemberWithLabel(anyLong(), anyLong());
-    }
-
     private Member createUnsubscribeMember() {
         return new Member(1L, "openId", false);
     }
 
     private Member createSubscribeMember() {
         return new Member(1L, "openId", true);
-    }
-
-    private Label createLabel1() {
-        return new Label(1, "Label1");
-    }
-
-    private Label createLabel2() {
-        return new Label(2, "Label2");
     }
 }

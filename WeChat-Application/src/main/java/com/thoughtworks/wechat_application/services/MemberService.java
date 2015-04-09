@@ -2,16 +2,14 @@ package com.thoughtworks.wechat_application.services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.thoughtworks.wechat_application.jdbi.core.Label;
-import com.thoughtworks.wechat_application.jdbi.core.Member;
 import com.thoughtworks.wechat_application.jdbi.MemberDAO;
+import com.thoughtworks.wechat_application.jdbi.core.Member;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.thoughtworks.wechat_core.util.DateTimeExtension.toUnixTimestamp;
 import static com.thoughtworks.wechat_core.util.precondition.ArgumentPrecondition.checkNotBlank;
 
@@ -19,12 +17,10 @@ import static com.thoughtworks.wechat_core.util.precondition.ArgumentPreconditio
 public class MemberService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MemberService.class);
     private MemberDAO memberDAO;
-    private LabelService labelService;
 
     @Inject
-    public MemberService(final MemberDAO memberDAO, final LabelService labelService) {
+    public MemberService(final MemberDAO memberDAO) {
         this.memberDAO = memberDAO;
-        this.labelService = labelService;
     }
 
     public Optional<Member> getMemberByOpenId(final String openId) {
@@ -62,34 +58,6 @@ public class MemberService {
         if (member != null && member.isSubscribed()) {
             memberDAO.updateSubscribed(member.getId(), false, toUnixTimestamp(DateTime.now()));
             LOGGER.info("[UnsubscribeMember] Mark member(id: {}, OpenId: {}) to unsubscribe.", member.getId(), openId);
-        }
-    }
-
-    public void linkMemberToLabel(final Member member, final Label label) {
-        checkNotNull(member);
-        checkNotNull(label);
-
-        LOGGER.info("[LinkMemberToLabel] Try link member(id: {}) to label(id: {}).", member.getId(), label.getId());
-        Optional<Label> currentLabel = labelService.getMemberLabels(member);
-        if (currentLabel.isPresent()) {
-            memberDAO.updateMemberLabel(member.getId(), label.getId(), toUnixTimestamp(DateTime.now()));
-            LOGGER.info("[LinkMemberToLabel] Member(id: {}) already have a label(id: {}), update it.", member.getId(), currentLabel.get().getId());
-        } else {
-            memberDAO.linkMemberWithLabel(member.getId(), label.getId(), toUnixTimestamp(DateTime.now()));
-            LOGGER.info("[LinkMemberToLabel] Link member(id: {}) to label success.", member.getId());
-        }
-    }
-
-    public void delinkMemberLabel(final Member member) {
-        checkNotNull(member);
-
-        LOGGER.info("[DelinkMemberLabel] Try delink member(id: {})'s label.", member.getId());
-        Optional<Label> currentLabel = labelService.getMemberLabels(member);
-        if (currentLabel.isPresent()) {
-            memberDAO.delinkMemberWithLabel(member.getId(), currentLabel.get().getId());
-            LOGGER.info("[DelinkMemberLabel] Delink member(id: {}) from label(id: {}).", member.getId(), currentLabel.get().getId());
-        } else {
-            LOGGER.info("[DelinkMemberLabel] Member(id: {}) don't have label. Skip.", member.getId());
         }
     }
 }

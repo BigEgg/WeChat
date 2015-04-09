@@ -3,10 +3,9 @@ package com.thoughtworks.wechat_application.services;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.configs.CacheConfiguration;
-import com.thoughtworks.wechat_application.jdbi.core.Label;
-import com.thoughtworks.wechat_application.jdbi.core.Member;
-import com.thoughtworks.wechat_application.jdbi.core.TextMessage;
 import com.thoughtworks.wechat_application.jdbi.LabelDAO;
+import com.thoughtworks.wechat_application.jdbi.core.Label;
+import com.thoughtworks.wechat_application.jdbi.core.TextMessage;
 import com.thoughtworks.wechat_application.utils.CacheManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -275,36 +274,6 @@ public class LabelServiceTest {
 
         verify(labelDAO).getAllLabel();
         verify(labelDAO).deleteLabel(1L);
-    }
-
-
-    @Test
-    public void testGetMemberLabels() throws Exception {
-        final Label label1 = createLabel1();
-        when(labelDAO.getMemberLabel(eq(1L))).thenReturn(label1);
-
-        final Member member = mock(Member.class);
-        when(member.getId()).thenReturn(1L);
-
-        final LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
-        final Optional<Label> memberLabels = service.getMemberLabels(member);
-
-        verify(labelDAO).getMemberLabel(eq(1L));
-        assertThat(memberLabels.isPresent(), equalTo(true));
-        assertThat(memberLabels.get().getId(), equalTo(1L));
-        assertThat(memberLabels.get().getTitle(), equalTo(label1.getTitle()));
-    }
-
-    @Test
-    public void testGetMemberLabels_NoLabel() throws Exception {
-        final Member member = mock(Member.class);
-        when(member.getId()).thenReturn(1L);
-
-        final LabelService service = new LabelService(labelDAO, configuration, new CacheManager());
-        final Optional<Label> memberLabels = service.getMemberLabels(member);
-
-        verify(labelDAO).getMemberLabel(eq(1L));
-        assertThat(memberLabels.isPresent(), equalTo(false));
     }
 
     @Test

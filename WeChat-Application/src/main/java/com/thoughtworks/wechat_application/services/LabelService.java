@@ -3,10 +3,9 @@ package com.thoughtworks.wechat_application.services;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.wechat_application.configs.CacheConfiguration;
-import com.thoughtworks.wechat_application.jdbi.core.Label;
-import com.thoughtworks.wechat_application.jdbi.core.Member;
-import com.thoughtworks.wechat_application.jdbi.core.TextMessage;
 import com.thoughtworks.wechat_application.jdbi.LabelDAO;
+import com.thoughtworks.wechat_application.jdbi.core.Label;
+import com.thoughtworks.wechat_application.jdbi.core.TextMessage;
 import com.thoughtworks.wechat_application.utils.CacheManager;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -76,14 +75,6 @@ public class LabelService {
         } else {
             LOGGER.info("[DeleteLabel] Not find the label(title: {}). Skip it.", title);
         }
-    }
-
-    public Optional<Label> getMemberLabels(final Member member) {
-        checkNotNull(member);
-
-        Optional<Label> label = Optional.ofNullable(labelDAO.getMemberLabel(member.getId()));
-        LOGGER.info("[GetMemberLabels] Try get member(id: {})'s label. Status: {}.", member.getId(), label.isPresent());
-        return label;
     }
 
     public List<Label> getTextMessageLabels(final TextMessage textMessage) {
