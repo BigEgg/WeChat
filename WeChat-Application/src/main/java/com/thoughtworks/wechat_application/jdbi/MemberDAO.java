@@ -25,7 +25,7 @@ public interface MemberDAO {
     long createMember(@Bind("openId") final String openId,
                       @Bind("createdTime") final Timestamp createdTime);
 
-    @SqlUpdate("UPDATE Member SET Subscribed = :subscribed WHERE Id = :id")
+    @SqlUpdate("UPDATE Member SET Subscribed = :subscribed, ModifiedTime = :modifiedTime WHERE Id = :id")
     void updateSubscribed(@Bind("id") final long id,
                           @Bind("subscribed") final boolean subscribed,
                           @Bind("modifiedTime") final Timestamp modifiedTime);
