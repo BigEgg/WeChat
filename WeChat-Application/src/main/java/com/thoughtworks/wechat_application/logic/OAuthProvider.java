@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.thoughtworks.wechat_core.util.precondition.ArgumentPrecondition.checkNotBlank;
 
 @Singleton
 public class OAuthProvider {
@@ -27,6 +28,7 @@ public class OAuthProvider {
 
     public OAuthInfo newOAuth(final OAuthClient client) {
         checkNotNull(client);
+        cleanUp();
 
         deleteExistOAuth(client);
         LOGGER.info("[NewOAuth] Try delete exist OAuth based on the authenticate information.");
@@ -46,6 +48,8 @@ public class OAuthProvider {
     }
 
     public Optional<OAuthInfo> refreshAccessToken(final String accessToken, final String refreshToken) {
+        cleanUp();
+
         LOGGER.info("[RefreshAccessToken] Try refresh access token with current access token: {}, and refresh token: {}.", accessToken, refreshToken);
         if (oAuthInfoMap.containsKey(accessToken)) {
             final OAuthInfo oAuthInfo = oAuthInfoMap.get(accessToken);
@@ -68,9 +72,26 @@ public class OAuthProvider {
 
     public void cleanUp() {
         LOGGER.info("[CleanUp] Clear all expired OAuth information.");
-        oAuthInfoMap.entrySet().stream()
-                .filter(entry -> !entry.getValue().getRefreshToken().isPresent())
-                .forEach(entry -> oAuthInfoMap.remove(entry.getKey()));
+        for (Map.Entry<String, OAuthInfo> entry : oAuthInfoMap.entrySet()) {
+            if (!entry.getValue().getRefreshToken().isPresent()) {
+                oAuthInfoMap.remove(entry.getKey());
+            }
+        }
+    }
+
+    public Optional<OAuthClient> getOAuthClient(final String accessToken) {
+        checkNotBlank(accessToken);
+        cleanUp();
+
+        LOGGER.info("[GetOAuthClient] Try get OAuth Client by access token: {}.", accessToken);
+        if (oAuthInfoMap.containsKey(accessToken)) {
+            final OAuthClient client = oAuthInfoMap.get(accessToken).getClient();
+            LOGGER.info("[GetOAuthClient] Find the OAuth Client(id: {}).", client.getId());
+            return Optional.of(client);
+        } else {
+            LOGGER.info("[GetOAuthClient] Cannot find the access token: {}.", accessToken);
+            return Optional.empty();
+        }
     }
 
     private void deleteExistOAuth(final OAuthClient client) {

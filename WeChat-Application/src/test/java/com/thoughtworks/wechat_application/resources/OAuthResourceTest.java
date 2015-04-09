@@ -34,7 +34,7 @@ public class OAuthResourceTest extends ResourceTestBase {
             .build();
 
     private static OAuthClient createAdmin() {
-        return new OAuthClient(1L, "username", "hashedPassword", AuthenticateRole.ADMIN, Optional.<Long>empty());
+        return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.ADMIN, Optional.<Long>empty());
     }
 
     private static OAuthInfo createOAuthInfo1() {
