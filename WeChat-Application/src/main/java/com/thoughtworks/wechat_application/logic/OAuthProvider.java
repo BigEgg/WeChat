@@ -3,7 +3,7 @@ package com.thoughtworks.wechat_application.logic;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.wechat_application.configs.OAuthConfiguration;
-import com.thoughtworks.wechat_application.models.oauth.AuthenticateRole;
+import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import com.thoughtworks.wechat_application.models.oauth.OAuthInfo;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;

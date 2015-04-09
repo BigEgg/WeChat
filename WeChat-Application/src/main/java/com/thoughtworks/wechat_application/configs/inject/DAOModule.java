@@ -5,7 +5,7 @@ import com.google.inject.Module;
 import com.thoughtworks.wechat_application.jdbi.*;
 
 public class DAOModule implements Module {
-    private AdminUserDAO adminUserDAO;
+    private OAuthClientDAO OAuthClientDAO;
     private ConversationHistoryDAO conversationHistoryDAO;
     private WeChatEventLogDAO weChatEventLogDAO;
     private ExpirableResourceDAO expirableResourceDAO;
@@ -15,7 +15,7 @@ public class DAOModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(AdminUserDAO.class).toInstance(adminUserDAO);
+        binder.bind(OAuthClientDAO.class).toInstance(OAuthClientDAO);
         binder.bind(ConversationHistoryDAO.class).toInstance(conversationHistoryDAO);
         binder.bind(WeChatEventLogDAO.class).toInstance(weChatEventLogDAO);
         binder.bind(ExpirableResourceDAO.class).toInstance(expirableResourceDAO);
@@ -24,12 +24,12 @@ public class DAOModule implements Module {
         binder.bind(TextMessageDAO.class).toInstance(textMessageDAO);
     }
 
-    public AdminUserDAO getAdminUserDAO() {
-        return adminUserDAO;
+    public OAuthClientDAO getOAuthClientDAO() {
+        return OAuthClientDAO;
     }
 
-    public void setAdminUserDAO(AdminUserDAO adminUserDAO) {
-        this.adminUserDAO = adminUserDAO;
+    public void setOAuthClientDAO(OAuthClientDAO OAuthClientDAO) {
+        this.OAuthClientDAO = OAuthClientDAO;
     }
 
     public ConversationHistoryDAO getConversationHistoryDAO() {

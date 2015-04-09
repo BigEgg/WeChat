@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_application.models.oauth;
+package com.thoughtworks.wechat_application.jdbi.core;
 
 public enum AuthenticateRole {
     NONE,

@@ -72,7 +72,7 @@ public class WeChatApplication extends Application<WeChatApplicationConfiguratio
         final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mysql");
 
         final DAOModule daoModule = new DAOModule();
-        daoModule.setAdminUserDAO(jdbi.onDemand(AdminUserDAO.class));
+        daoModule.setOAuthClientDAO(jdbi.onDemand(OAuthClientDAO.class));
         daoModule.setConversationHistoryDAO(jdbi.onDemand(ConversationHistoryDAO.class));
         daoModule.setWeChatEventLogDAO(jdbi.onDemand(WeChatEventLogDAO.class));
         daoModule.setExpirableResourceDAO(jdbi.onDemand(ExpirableResourceDAO.class));

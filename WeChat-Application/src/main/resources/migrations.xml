@@ -54,27 +54,31 @@
                                  referencedTableName="Member"
                                  referencedColumnNames="Id"/>
 
-        <createTable tableName="AdminUser">
+        <createTable tableName="OAuthClient">
             <column name="Id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="Username" type="varchar(32)">
+            <column name="ClientId" type="varchar(32)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="Password" type="varchar(128)">
+            <column name="ClientSecret" type="varchar(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="MemberId" type="bigint">
+            <column name="Role" type="char(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WeChatMemberId" type="bigint">
                 <constraints nullable="true"/>
             </column>
         </createTable>
 
-        <createIndex tableName="AdminUser" indexName="IX_AdminUser_Username">
-            <column name="Username"/>
+        <createIndex tableName="OAuthClient" indexName="IX_OAuthClient_ClientId">
+            <column name="ClientId"/>
         </createIndex>
 
-        <createIndex tableName="AdminUser" indexName="IX_AdminUser_MemberId">
-            <column name="MemberId"/>
+        <createIndex tableName="OAuthClient" indexName="IX_OAuthClient_ClientId_ClientSecret">
+            <column name="ClientId"/>
+            <column name="ClientSecret"/>
         </createIndex>
 
         <createTable tableName="Label">

@@ -3,8 +3,8 @@ package com.thoughtworks.wechat_application.logic;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.configs.OAuthConfiguration;
-import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
-import com.thoughtworks.wechat_application.models.oauth.AuthenticateRole;
+import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
+import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.models.oauth.OAuthInfo;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class OAuthProviderTest {
         assertThat(oAuthInfo.getAccessToken().get(), any(String.class));
         assertThat(oAuthInfo.getRefreshToken().isPresent(), equalTo(true));
         assertThat(oAuthInfo.getRefreshToken().get(), any(String.class));
-        assertThat(oAuthInfo.getClient() instanceof AdminUser, equalTo(true));
+        assertThat(oAuthInfo.getClient() instanceof OAuthClient, equalTo(true));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class OAuthProviderTest {
         when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(10);
         when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(10);
 
-        final AdminUser admin = createAdmin();
+        final OAuthClient admin = createAdmin();
         final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, admin);
         final OAuthInfo oAuthInfo2 = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, admin);
 
@@ -153,7 +153,7 @@ public class OAuthProviderTest {
         assertThat(role, equalTo(AuthenticateRole.NONE));
     }
 
-    private AdminUser createAdmin() {
-        return new AdminUser(1L, "username", "hashedPassword", Optional.<Long>empty());
+    private OAuthClient createAdmin() {
+        return new OAuthClient(1L, "username", "hashedPassword", AuthenticateRole.ADMIN, Optional.<Long>empty());
     }
 }

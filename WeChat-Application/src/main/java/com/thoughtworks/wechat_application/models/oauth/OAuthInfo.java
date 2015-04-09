@@ -1,5 +1,6 @@
 package com.thoughtworks.wechat_application.models.oauth;
 
+import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import org.joda.time.DateTime;
 
 import java.util.Optional;

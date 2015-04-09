@@ -1,6 +1,7 @@
 package com.thoughtworks.wechat_application.models.oauth;
 
-import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
+import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
+import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertThat;
 public class OAuthInfoTest {
     @Test
     public void testGenerate() throws Exception {
-        final AdminUser admin = createAdmin();
+        final OAuthClient admin = createAdmin();
         final OAuthInfo oAuthInfo = new OAuthInfo(AuthenticateRole.ADMIN, "accessToken", "refreshToken", admin, 10, 10, DateTime.now());
 
         assertThat(oAuthInfo.getRole(), equalTo(AuthenticateRole.ADMIN));
@@ -45,7 +46,7 @@ public class OAuthInfoTest {
         assertThat(oAuthInfo.getRefreshToken().isPresent(), equalTo(false));
     }
 
-    private AdminUser createAdmin() {
-        return new AdminUser(1L, "username", "hashedPassword", Optional.<Long>empty());
+    private OAuthClient createAdmin() {
+        return new OAuthClient(1L, "username", "hashedPassword", AuthenticateRole.ADMIN, Optional.<Long>empty());
     }
 }

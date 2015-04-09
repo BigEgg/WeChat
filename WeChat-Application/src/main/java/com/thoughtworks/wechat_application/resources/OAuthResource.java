@@ -6,11 +6,11 @@ import com.thoughtworks.wechat_application.api.oauth.AdminLoginRequest;
 import com.thoughtworks.wechat_application.api.oauth.AdminLoginResponse;
 import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshRequest;
 import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshResponse;
-import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
+import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.logic.OAuthProvider;
-import com.thoughtworks.wechat_application.models.oauth.AuthenticateRole;
+import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import com.thoughtworks.wechat_application.models.oauth.OAuthInfo;
-import com.thoughtworks.wechat_application.services.admin.AdminUserService;
+import com.thoughtworks.wechat_application.services.OAuthClientService;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -20,25 +20,25 @@ import javax.ws.rs.core.Response;
 import java.util.Optional;
 
 @Singleton
-@Path("/api/oauth")
+@Path("/uas/oauth")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class OAuthResource {
-    private final AdminUserService adminUserService;
+    private final OAuthClientService OAuthClientService;
     private final OAuthProvider oAuthProvider;
 
     @Inject
-    public OAuthResource(final AdminUserService adminUserService,
+    public OAuthResource(final OAuthClientService OAuthClientService,
                          final OAuthProvider oAuthProvider) {
-        this.adminUserService = adminUserService;
+        this.OAuthClientService = OAuthClientService;
         this.oAuthProvider = oAuthProvider;
     }
 
     @POST
-    @Path("/admin")
+    @Path("/accesstoken")
     public AdminLoginResponse admin(@NotNull AdminLoginRequest request) {
         final String username = request.getUsername();
-        final Optional<AdminUser> adminUser = adminUserService.logIn(username, request.getPassword());
+        final Optional<OAuthClient> adminUser = OAuthClientService.SignIn(username, request.getPassword());
         if (adminUser.isPresent()) {
             final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(AuthenticateRole.ADMIN, adminUser.get());
             return new AdminLoginResponse(oAuthInfo.getAccessToken().get(), oAuthInfo.getRefreshToken().get(), username.split("@")[0]);

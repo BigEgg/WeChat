@@ -4,11 +4,11 @@ import com.thoughtworks.wechat_application.api.oauth.AdminLoginRequest;
 import com.thoughtworks.wechat_application.api.oauth.AdminLoginResponse;
 import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshRequest;
 import com.thoughtworks.wechat_application.api.oauth.OAuthRefreshResponse;
-import com.thoughtworks.wechat_application.jdbi.core.AdminUser;
+import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
+import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.logic.OAuthProvider;
-import com.thoughtworks.wechat_application.models.oauth.AuthenticateRole;
 import com.thoughtworks.wechat_application.models.oauth.OAuthInfo;
-import com.thoughtworks.wechat_application.services.admin.AdminUserService;
+import com.thoughtworks.wechat_application.services.OAuthClientService;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -24,16 +24,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 public class OAuthResourceTest extends ResourceTestBase {
-    private static final AdminUserService adminUserService = mock(AdminUserService.class);
+    private static final OAuthClientService O_AUTH_CLIENT_SERVICE = mock(OAuthClientService.class);
     private static final OAuthProvider oAuthProvider = mock(OAuthProvider.class);
 
     @ClassRule
     public static final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new OAuthResource(adminUserService, oAuthProvider))
+            .addResource(new OAuthResource(O_AUTH_CLIENT_SERVICE, oAuthProvider))
             .build();
 
-    private static AdminUser createAdmin() {
-        return new AdminUser(1L, "username", "hashedPassword", Optional.<Long>empty());
+    private static OAuthClient createAdmin() {
+        return new OAuthClient(1L, "username", "hashedPassword", AuthenticateRole.ADMIN, Optional.<Long>empty());
     }
 
     private static OAuthInfo createOAuthInfo1(AuthenticateRole role) {
@@ -46,20 +46,20 @@ public class OAuthResourceTest extends ResourceTestBase {
 
     @After
     public void tearDown() throws Exception {
-        reset(adminUserService);
+        reset(O_AUTH_CLIENT_SERVICE);
         reset(oAuthProvider);
     }
 
     @Test
     public void return_token_if_log_in_success() throws Exception {
-        final AdminUser admin = createAdmin();
-        when(adminUserService.logIn("abc@abc.com", "password")).thenReturn(Optional.of(admin));
+        final OAuthClient admin = createAdmin();
+        when(O_AUTH_CLIENT_SERVICE.SignIn("abc@abc.com", "password")).thenReturn(Optional.of(admin));
         when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN, admin)).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
 
         final AdminLoginRequest request = new AdminLoginRequest();
         request.setUsername("abc@abc.com");
         request.setPassword("password");
-        final Response response = resources.client().target("/api/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+        final Response response = resources.client().target("/uas/oauth/accesstoken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
         final AdminLoginResponse entity = getResponseEntity(response, AdminLoginResponse.class);
@@ -70,13 +70,13 @@ public class OAuthResourceTest extends ResourceTestBase {
 
     @Test
     public void return_token_if_log_in_failed() throws Exception {
-        when(adminUserService.logIn("abc@abc.com", "password")).thenReturn(Optional.empty());
+        when(O_AUTH_CLIENT_SERVICE.SignIn("abc@abc.com", "password")).thenReturn(Optional.empty());
         when(oAuthProvider.newOAuth(AuthenticateRole.ADMIN, createAdmin())).thenReturn(createOAuthInfo1(AuthenticateRole.ADMIN));
 
         final AdminLoginRequest request = new AdminLoginRequest();
         request.setUsername("abc@abc.com");
         request.setPassword("password");
-        final Response response = resources.client().target("/api/oauth/admin").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+        final Response response = resources.client().target("/uas/oauth/accesstoken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.UNAUTHORIZED);
     }
@@ -88,7 +88,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         final OAuthRefreshRequest request = new OAuthRefreshRequest();
         request.setAccessToken("access_token");
         request.setRefreshToken("refresh_token");
-        final Response response = resources.client().target("/api/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+        final Response response = resources.client().target("/uas/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
         final OAuthRefreshResponse entity = getResponseEntity(response, OAuthRefreshResponse.class);
@@ -103,7 +103,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         final OAuthRefreshRequest request = new OAuthRefreshRequest();
         request.setAccessToken("access_token");
         request.setRefreshToken("refresh_token");
-        final Response response = resources.client().target("/api/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+        final Response response = resources.client().target("/uas/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
     }
