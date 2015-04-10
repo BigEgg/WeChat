@@ -2,6 +2,7 @@ package com.thoughtworks.wechat_application.resources.admin;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.thoughtworks.wechat_application.api.admin.wechat.ServerInfoResponse;
 import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.logic.OAuthProvider;
@@ -35,9 +36,9 @@ public class WeChatSettingsResource {
     }
 
     @GET
-    @Path("/entrypoint")
-    public String getWeChatEntryPoint(@Context final HttpServletRequest request,
-                                      @QueryParam("access_token") final String accessToken) {
+    @Path("/server")
+    public ServerInfoResponse getServerInformation(@Context final HttpServletRequest request,
+                                                   @QueryParam("access_token") final String accessToken) {
         checkAccessToken(accessToken);
 
         StringBuilder url = new StringBuilder();
@@ -55,7 +56,7 @@ public class WeChatSettingsResource {
         final String entryPointPath = UriBuilder.fromResource(WeChatEntryPointResource.class).build().toASCIIString();
         url.append(entryPointPath);
 
-        return url.toString();
+        return new ServerInfoResponse(url.toString(), adminResourceService.getAppToken());
     }
 
     private void checkAccessToken(final String accessToken) {

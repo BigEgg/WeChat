@@ -1,5 +1,6 @@
 package com.thoughtworks.wechat_application.resources.admin;
 
+import com.thoughtworks.wechat_application.api.admin.wechat.ServerInfoResponse;
 import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.logic.OAuthProvider;
@@ -42,21 +43,25 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
     @Test
     public void return_wechat_entry_point_if_access_token_valid() throws Exception {
         when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createAdmin()));
+        when(adminResourceService.getAppToken()).thenReturn("abcdefghijklmn");
 
-        final Response response = resource.client().target("/api/admin/wechat/entrypoint").queryParam("access_token", "accessToken").request().get();
+        final Response response = resource.client().target("/api/admin/wechat/server").queryParam("access_token", "accessToken").request().get();
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
 
-        final String url = getResponseJson(response);
-        assertThat(url).isEqualTo("/wechat");
+        final ServerInfoResponse serverInfo = getResponseEntity(response, ServerInfoResponse.class);
+        assertThat(serverInfo).isNotNull();
+        assertThat(serverInfo.getEntryPoint()).isEqualTo("/wechat");
+        assertThat(serverInfo.getAppToken()).isEqualTo("abcdefghijklmn");
 
         verify(oAuthProvider).getOAuthClient(eq("accessToken"));
+        verify(adminResourceService).getAppToken();
     }
 
     @Test
     public void throw_forbidden_if_access_token_failed() throws Exception {
         when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.<OAuthClient>empty());
 
-        final Response response = resource.client().target("/api/admin/wechat/entrypoint").queryParam("access_token", "accessToken").request().get();
+        final Response response = resource.client().target("/api/admin/wechat/server").queryParam("access_token", "accessToken").request().get();
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
     }
 
@@ -64,7 +69,7 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
     public void throw_forbidden_if_access_token_not_admin() throws Exception {
         when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createVendor()));
 
-        final Response response = resource.client().target("/api/admin/wechat/entrypoint").queryParam("access_token", "accessToken").request().get();
+        final Response response = resource.client().target("/api/admin/wechat/server").queryParam("access_token", "accessToken").request().get();
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
     }
 }

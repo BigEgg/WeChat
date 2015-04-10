@@ -8,7 +8,7 @@ import com.thoughtworks.wechat_application.logic.workflow.WorkflowStepResult;
 import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNotSupportMessageException;
 import com.thoughtworks.wechat_application.services.WeChatEventLogService;
 import com.thoughtworks.wechat_application.services.MemberService;
-import com.thoughtworks.wechat_application.services.admin.AdminResourceKeys;
+import com.thoughtworks.wechat_application.services.admin.AdminResourceKey;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessage;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
@@ -59,7 +59,7 @@ public class SubscribeWorkflowStepTest {
     @Test
     public void testHandle() throws Exception {
         when(weChatEventLogService.member()).thenReturn(mock(WeChatEventLogService.MemberWeChatEventLogService.class));
-        when(adminResourceService.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE)).thenReturn(Optional.of(new OutboundTextMessage("Content")));
+        when(adminResourceService.getMessageResource(AdminResourceKey.SUBSCRIBE_RESPONSE)).thenReturn(Optional.of(new OutboundTextMessage("Content")));
 
         final BasicWorkflowContext context = new BasicWorkflowContext();
         final WorkflowStepResult result = step.handle(createSubscribeEventEnvelop(), context);
@@ -67,7 +67,7 @@ public class SubscribeWorkflowStepTest {
         verify(memberService).subscribeMember("fromUser");
         verify(weChatEventLogService).member();
         verify(weChatEventLogService.member()).subscribe(any(Member.class), any(DateTime.class));
-        verify(adminResourceService).getMessageResource(eq(AdminResourceKeys.SUBSCRIBE_RESPONSE));
+        verify(adminResourceService).getMessageResource(eq(AdminResourceKey.SUBSCRIBE_RESPONSE));
         assertThat(result, equalTo(WorkflowStepResult.WORKFLOW_COMPLETE));
         assertThat(context.getConversationContent().isPresent(), equalTo(false));
         assertThat(context.getSaveConversationContent(), equalTo(false));

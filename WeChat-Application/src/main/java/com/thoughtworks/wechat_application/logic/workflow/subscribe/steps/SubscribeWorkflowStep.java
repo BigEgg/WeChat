@@ -9,7 +9,7 @@ import com.thoughtworks.wechat_application.logic.workflow.WorkflowStepResult;
 import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNotSupportMessageException;
 import com.thoughtworks.wechat_application.services.WeChatEventLogService;
 import com.thoughtworks.wechat_application.services.MemberService;
-import com.thoughtworks.wechat_application.services.admin.AdminResourceKeys;
+import com.thoughtworks.wechat_application.services.admin.AdminResourceKey;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.inbound.event.InboundSubscribeEvent;
@@ -51,7 +51,7 @@ public class SubscribeWorkflowStep implements WorkflowStep {
         Member member = memberService.subscribeMember(memberOpenId);
         weChatEventLogService.member().subscribe(member, DateTime.now());
 
-        Optional<OutboundMessage> responseMessage = adminResourceService.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
+        Optional<OutboundMessage> responseMessage = adminResourceService.getMessageResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
         context.setOutboundMessage(responseMessage);
         LOGGER.info("[Handle] Set subscribe response message. Have message? {}.", responseMessage.isPresent());
 

@@ -12,7 +12,12 @@ import com.thoughtworks.wechat_core.messages.outbound.messages.OutboundTextMessa
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
+
+import static com.thoughtworks.wechat_core.util.HashHelper.sha1Hash;
 
 @Singleton
 public class AdminResourceService {
@@ -32,14 +37,19 @@ public class AdminResourceService {
     }
 
     public String getAppToken() {
-        return getCachedResources(AdminResourceKeys.WECHAT_APP_TOKEN);
+        final String appToken = getCachedResources(AdminResourceKey.WECHAT_APP_TOKEN);
+        if (Objects.equals(appToken, "")) {
+            LOGGER.info("[GetAppToken] Don't have App Token now, Create a new one.");
+            setResource(AdminResourceKey.WECHAT_APP_TOKEN, createNewAppToken());
+        }
+        return getCachedResources(AdminResourceKey.WECHAT_APP_TOKEN);
     }
 
     public String getAppSecret() {
-        return getCachedResources(AdminResourceKeys.WECHAT_APP_SECRET);
+        return getCachedResources(AdminResourceKey.WECHAT_APP_SECRET);
     }
 
-    public String getResource(final AdminResourceKeys key) {
+    public String getResource(final AdminResourceKey key) {
         final String keyString = key.toString();
         LOGGER.info("[GetResource] Try get admin resource: {}.", keyString);
         final Optional<ExpirableResource> resource = expirableResourceService.getResource(keyString, RESOURCE_TYPE);
@@ -59,7 +69,11 @@ public class AdminResourceService {
         }
     }
 
-    public Optional<OutboundMessage> getMessageResource(final AdminResourceKeys key) {
+    public void setResource(final AdminResourceKey key, final String value) {
+        expirableResourceService.setResource(key.toString(), RESOURCE_TYPE, value, 0);
+    }
+
+    public Optional<OutboundMessage> getMessageResource(final AdminResourceKey key) {
         final String content = getResource(key);
         if (content.equals("")) {
             return Optional.empty();
@@ -79,12 +93,22 @@ public class AdminResourceService {
         }
     }
 
-    private String getCachedResources(AdminResourceKeys resourceKey) {
+    private String getCachedResources(AdminResourceKey resourceKey) {
         final Optional<String> result = cacheManager.get(resourceKey.toString(), String.class);
         if (!result.isPresent()) {
             final String appToken = getResource(resourceKey);
             cacheManager.put(resourceKey.toString(), appToken);
         }
         return cacheManager.get(resourceKey.toString(), String.class).get();
+    }
+
+    private String createNewAppToken() {
+        final int APP_TOKEN_LENGTH = 16;
+        final String uuid = UUID.randomUUID().toString();
+        try {
+            return sha1Hash(uuid).substring(0, APP_TOKEN_LENGTH);
+        } catch (NoSuchAlgorithmException e) {
+            return uuid.replace("-", "").substring(0, APP_TOKEN_LENGTH);
+        }
     }
 }

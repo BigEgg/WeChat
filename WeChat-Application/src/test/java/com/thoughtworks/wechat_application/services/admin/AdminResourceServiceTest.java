@@ -52,7 +52,7 @@ public class AdminResourceServiceTest {
         when(expirableResourceService.getResource("SUBSCRIBE_RESPONSE", "Admin")).thenReturn(Optional.<ExpirableResource>empty());
         when(expirableResourceService.setResource("SUBSCRIBE_RESPONSE", "Admin", "", 0)).thenReturn(createNeverExpiredResource(""));
 
-        final String resource = service.getResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
+        final String resource = service.getResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
 
         verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq(""), eq(0));
@@ -64,7 +64,7 @@ public class AdminResourceServiceTest {
         when(expirableResourceService.getResource("SUBSCRIBE_RESPONSE", "Admin")).thenReturn(Optional.of(createExpiredResource("content")));
         when(expirableResourceService.setResource("SUBSCRIBE_RESPONSE", "Admin", "content", 0)).thenReturn(createNeverExpiredResource("content"));
 
-        final String resource = service.getResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
+        final String resource = service.getResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
 
         verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq("content"), eq(0));
@@ -75,7 +75,7 @@ public class AdminResourceServiceTest {
     public void testGetResource_Exist() throws Exception {
         when(expirableResourceService.getResource("SUBSCRIBE_RESPONSE", "Admin")).thenReturn(Optional.of(createNeverExpiredResource("content")));
 
-        final String resource = service.getResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
+        final String resource = service.getResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
 
         verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService, never()).setResource(anyString(), anyString(), anyString(), anyInt());
@@ -87,7 +87,7 @@ public class AdminResourceServiceTest {
         when(expirableResourceService.getResource("SUBSCRIBE_RESPONSE", "Admin")).thenReturn(Optional.<ExpirableResource>empty());
         when(expirableResourceService.setResource("SUBSCRIBE_RESPONSE", "Admin", "", 0)).thenReturn(createNeverExpiredResource(""));
 
-        final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
+        final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
 
         verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq(""), eq(0));
@@ -100,7 +100,7 @@ public class AdminResourceServiceTest {
         when(expirableResourceService.getResource("SUBSCRIBE_RESPONSE", "Admin")).thenReturn(Optional.of(createExpiredResource("content")));
         when(expirableResourceService.setResource("SUBSCRIBE_RESPONSE", "Admin", "content", 0)).thenReturn(createNeverExpiredResource("content"));
 
-        final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
+        final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
 
         verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService).setResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"), eq("content"), eq(0));
@@ -112,7 +112,7 @@ public class AdminResourceServiceTest {
     public void testGetMessageResource_NotMessage() throws Exception {
         when(expirableResourceService.getResource("SUBSCRIBE_RESPONSE", "Admin")).thenReturn(Optional.of(createNeverExpiredResource("content")));
 
-        final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
+        final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
 
         verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService, never()).setResource(anyString(), anyString(), anyString(), anyInt());
@@ -125,7 +125,7 @@ public class AdminResourceServiceTest {
         when(expirableResourceService.getResource("SUBSCRIBE_RESPONSE", "Admin")).thenReturn(Optional.of(createNeverExpiredResource("text:title")));
         when(textMessageService.getTextMessageByTitle("title")).thenReturn(Optional.of(createTextMessage()));
 
-        final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKeys.SUBSCRIBE_RESPONSE);
+        final Optional<OutboundMessage> message = service.getMessageResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
 
         verify(expirableResourceService).getResource(eq("SUBSCRIBE_RESPONSE"), eq("Admin"));
         verify(expirableResourceService, never()).setResource(anyString(), anyString(), anyString(), anyInt());
