@@ -7,18 +7,60 @@
 
         <p translate="basicSettings.weChat.developerId.description"></p>
 
-        <div class="form-group">
-            <input type="text" class="form-control"
-                   placeholder="{{'basicSettings.weChat.developerId.appId' | translate}}">
-            <input type="text" class="form-control"
-                   placeholder="{{'basicSettings.weChat.developerId.appSecret' | translate}}">
-        </div>
+        <div class="form-horizontal col-xs-offset-1 col-xs-9">
+            <div class="form-group">
+                <label for="inputAppId" class="control-label col-xs-3"
+                       translate="basicSettings.weChat.developerId.appId"></label>
 
-        <p>
-            <small>remark</small>
-        </p>
+                <div class="col-xs-9">
+                    <input id="inputAppId" type="text" class="form-control"
+                           placeholder="{{'basicSettings.weChat.developerId.appId' | translate}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAppSecret" class="control-label col-xs-3"
+                       translate="basicSettings.weChat.developerId.appSecret"></label>
+
+                <div class="col-xs-9">
+                    <input id="inputAppSecret" type="text" class="form-control"
+                           placeholder="{{'basicSettings.weChat.developerId.appSecret' | translate}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-9 remark">
+                    <small translate="basicSettings.weChat.developerId.remark"></small>
+                </div>
+                <div class="col-xs-3">
+                    <a class="btn btn-block btn-lg btn-primary settingSubmitButton"
+                       translate="basicSettings.weChat.developerId.submit"></a>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
-        <p translate="basicSettings.weChat.server"></p>
+        <p><strong translate="basicSettings.weChat.server"></strong></p>
+
+        <p translate="basicSettings.weChat.server.description"></p>
+
+        <div class="form-horizontal col-xs-offset-1 col-xs-9">
+            <div class="form-group">
+                <label class="control-label col-xs-3"
+                       translate="basicSettings.weChat.server.url"></label>
+                <span class="col-xs-9 settingInfo">http://</span>
+            </div>
+            <div class="form-group">
+                <label for="inputAppSecret" class="control-label col-xs-3"
+                       translate="basicSettings.weChat.server.token"></label>
+                <label class="col-xs-7 settingInfo">token</label>
+
+                <div class="col-xs-2">
+                    <a class="btn btn-block btn-lg btn-danger settingSubmitButton"
+                       translate="basicSettings.weChat.server.changeToken"></a>
+                </div>
+            </div>
+            <div class="form-group remark">
+                <small translate="basicSettings.weChat.server.remark"></small>
+            </div>
+        </div>
     </div>
 </div>

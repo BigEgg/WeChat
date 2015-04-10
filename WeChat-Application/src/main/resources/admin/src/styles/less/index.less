@@ -1,4 +1,6 @@
+@navigatorHeight: 53px;
 @footerHeight: 80px;
+@bodyPadding: 15px;
 
 html {
   position: relative;
@@ -6,13 +8,19 @@ html {
 }
 
 body {
-  margin-bottom: @footerHeight;
+  margin-top: @navigatorHeight + @bodyPadding;
+  margin-bottom: @footerHeight + @bodyPadding;
 }
 
 #loginSubmit {
   margin-left: 5px;
   margin-right: 5px;
   min-width: 50px;
+}
+
+.navigator {
+  padding-right: 21px;
+  padding-left: 21px;
 }
 
 .footer {
