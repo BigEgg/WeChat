@@ -6,7 +6,7 @@
   "index.navigator.dashboard.message": "消息状态",
   "index.navigator.dashboard.api": "数据接口状态",
   "index.navigator.basicSettings": "基础设置",
-  "index.navigator.basicSettings.wechat": "微信基本设置",
+  "index.navigator.basicSettings.wechat": "微信基本信息",
   "index.navigator.basicSettings.conversation": "系统默认对话",
   "index.navigator.basicSettings.menu": "公众号菜单",
   "index.navigator.basicSettings.user": "用户管理",
@@ -27,5 +27,11 @@
   "error.route.unAuthorize": "嘿。不要使坏，乖乖登陆哦。",
   "error.system.bad.network": "无法连接到服务器，请检查网络。",
   "error.system.timeout": "连接超时了，请检查下网络哦。",
-  "error.unknown": "我也不知道为什么，但就是挂了。。。"
+  "error.unknown": "我也不知道为什么，但就是挂了。。。",
+  "basicSettings.weChat.title": "微信基本信息",
+  "basicSettings.weChat.developerId": "开发者ID",
+  "basicSettings.weChat.developerId.description": "请填写服务号微信公众平台后台开发者中心的相应信息。",
+  "basicSettings.weChat.developerId.appId": "AppID(应用ID)",
+  "basicSettings.weChat.developerId.appSecret": "AppSecret(应用密钥)",
+  "basicSettings.weChat.server": "服务器配置"
 }

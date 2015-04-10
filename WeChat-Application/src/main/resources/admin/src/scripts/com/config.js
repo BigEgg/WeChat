@@ -16,6 +16,13 @@ admin.app.config(function ($routeProvider, $translateProvider) {
             controller: 'DashboardCtrl',
             templateUrl: '../html/views/dashboard.html'
         })
+        .when('/basicsettings', {
+            redirectTo: '/basicSettings/weChat'
+        })
+        .when('/basicsettings/wechat', {
+            controller: 'BasicSettingsWeChatCtrl',
+            templateUrl: '../html/views/basicSettings/weChat.html'
+        })
         .otherwise({
             redirectTo: '/'
         });
