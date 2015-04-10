@@ -56,6 +56,5 @@ admin.app.factory('notify', function ($filter) {
     };
 
     return notify;
-})
-;
+});
 

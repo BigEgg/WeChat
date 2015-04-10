@@ -77,6 +77,7 @@ describe('OAuth Service Test', function () {
         oAuthSrv.signIn('abc@abc.com', 'password').then(
             null,
             function (e) {
+                console.log(e);
                 expect(e instanceof BadNetworkException).toBeTruthy();
                 expect(oAuthSrv.getUsername()).toBe('');
             }
