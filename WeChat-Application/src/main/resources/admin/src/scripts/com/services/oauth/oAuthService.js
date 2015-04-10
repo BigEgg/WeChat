@@ -20,7 +20,7 @@ admin.app.service('oAuthSrv', ['$window', '$q', 'apiHelper', function ($window, 
                 deferred.resolve(name);
             },
             function (ex) {
-                if (ex instanceof TimeOutException) {
+                if (ex instanceof Error) {
                     deferred.reject(ex);
                 }
 
@@ -28,11 +28,7 @@ admin.app.service('oAuthSrv', ['$window', '$q', 'apiHelper', function ($window, 
                 $window.sessionStorage.removeItem(KEY_REFRESH_TOKEN);
                 $window.sessionStorage.removeItem(KEY_USERNAME);
 
-                if (ex === 404) {
-                    deferred.reject(new BadNetworkException());
-                } else {
-                    deferred.reject(new AuthorizeFailedException());
-                }
+                deferred.reject(new AuthorizeFailedException());
             }
         );
 

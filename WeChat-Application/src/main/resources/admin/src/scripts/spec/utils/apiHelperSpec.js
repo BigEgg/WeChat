@@ -29,7 +29,7 @@ describe('OAuth Service Test', function () {
                 function (data, status, headers, config) {
                     success = true;
                 },
-                function (data, status, headers, config) {
+                function (ex) {
                     error = true;
                 }
             );
@@ -50,8 +50,8 @@ describe('OAuth Service Test', function () {
                 function (data, status, headers, config) {
                     success = true;
                 },
-                function (data, status, headers, config) {
-                    expect(data instanceof TimeOutException).toBeTruthy();
+                function (ex) {
+                    expect(ex instanceof TimeOutException).toBeTruthy();
                     error = true;
                 }
             );
@@ -74,7 +74,8 @@ describe('OAuth Service Test', function () {
                 function (data, status, headers, config) {
                     success = true;
                 },
-                function (data, status, headers, config) {
+                function (ex) {
+                    expect(ex instanceof BadNetworkException).toBeTruthy();
                     error = true;
                 }
             );
@@ -97,7 +98,7 @@ describe('OAuth Service Test', function () {
                 function (data, status, headers, config) {
                     success = true;
                 },
-                function (data, status, headers, config) {
+                function (ex) {
                     error = true;
                 }
             );
@@ -118,8 +119,8 @@ describe('OAuth Service Test', function () {
                 function (data, status, headers, config) {
                     success = true;
                 },
-                function (data, status, headers, config) {
-                    expect(data instanceof TimeOutException).toBeTruthy();
+                function (ex) {
+                    expect(ex instanceof TimeOutException).toBeTruthy();
                     error = true;
                 }
             );
@@ -142,7 +143,8 @@ describe('OAuth Service Test', function () {
                 function (data, status, headers, config) {
                     success = true;
                 },
-                function (data, status, headers, config) {
+                function (ex) {
+                    expect(ex instanceof BadNetworkException).toBeTruthy();
                     error = true;
                 }
             );

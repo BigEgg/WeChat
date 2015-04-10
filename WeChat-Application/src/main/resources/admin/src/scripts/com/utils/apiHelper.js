@@ -12,7 +12,11 @@ admin.app.factory('apiHelper', ['$http', '$window', '$q', '$timeout', function (
                 deferred.resolve(data, status, headers, config);
             })
             .error(function (data, status, headers, config) {
-                deferred.reject(data, status, headers, config);
+                if (status === 404) {
+                    deferred.reject(new BadNetworkException());
+                } else {
+                    deferred.reject(status);
+                }
             });
 
         return deferred.promise;
@@ -29,7 +33,11 @@ admin.app.factory('apiHelper', ['$http', '$window', '$q', '$timeout', function (
                 deferred.resolve(data, status, headers, config);
             })
             .error(function (data, status, headers, config) {
-                deferred.reject(status);
+                if (status === 404) {
+                    deferred.reject(new BadNetworkException());
+                } else {
+                    deferred.reject(status);
+                }
             });
 
         return deferred.promise;

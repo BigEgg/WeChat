@@ -53,38 +53,6 @@ describe('OAuth Service Test', function () {
         expect(oAuthSrv.getUsername()).toBe('');
     }));
 
-    it('should return time out exception if over 3 seconds', inject(function ($timeout, $httpBackend, $window, $rootScope, oAuthSrv) {
-        $httpBackend
-            .expectPOST('/uas/oauth/accesstoken', {clientId: 'abc@abc.com', clientSecret: 'password'})
-            .respond(404);
-
-        oAuthSrv.signIn('abc@abc.com', 'password').then(
-            null,
-            function (e) {
-                expect(e instanceof TimeOutException).toBeTruthy();
-                expect(oAuthSrv.getUsername()).toBe('');
-            }
-        );
-        $timeout.flush(3001);
-        $httpBackend.flush();
-    }));
-
-    it('should return system bad network exception if bad network', inject(function ($httpBackend, $window, oAuthSrv) {
-        $httpBackend
-            .expectPOST('/uas/oauth/accesstoken', {clientId: 'abc@abc.com', clientSecret: 'password'})
-            .respond(404);
-
-        oAuthSrv.signIn('abc@abc.com', 'password').then(
-            null,
-            function (e) {
-                console.log(e);
-                expect(e instanceof BadNetworkException).toBeTruthy();
-                expect(oAuthSrv.getUsername()).toBe('');
-            }
-        );
-        $httpBackend.flush();
-    }));
-
     it('should return authorize failed exception if sign in failed', inject(function ($httpBackend, $window, oAuthSrv) {
         $httpBackend
             .expectPOST('/uas/oauth/accesstoken', {clientId: 'abc@abc.com', clientSecret: 'password'})
