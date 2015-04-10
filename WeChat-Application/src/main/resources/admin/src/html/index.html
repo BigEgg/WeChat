@@ -13,90 +13,92 @@
     <link rel="icon" href="../imgs/favicon32x32.png" sizes="32x32">
 </head>
 <body>
-<div class="col-xs-12">
-    <nav class="navbar navbar-inverse navbar-embossed" role="navigation" ng-controller="NavigateCtrl">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
-                <span class="sr-only" translate="index.navigator.menu"></span>
-            </button>
-            <a class="navbar-brand" href="#">
-                <img src="../imgs/tw-logo-white.png" height="25px"/>
-            </a>
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse-01">
-            <ul class="nav navbar-nav navbar-left">
-                <li class="dropdown" ng-if="isLoggedIn()" id="menu_dashboard">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        {{'index.navigator.dashboard' | translate}}<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a herf="/dashboard" translate="index.navigator.dashboard.general"></a></li>
-                        <li class="divider"></li>
-                        <li><a herf="#" translate="index.navigator.dashboard.user"></a></li>
-                        <li><a herf="#" translate="index.navigator.dashboard.message"></a></li>
-                        <li><a herf="#" translate="index.navigator.dashboard.api"></a></li>
-                    </ul>
-                </li>
-                <li class="dropdown" ng-if="isLoggedIn()" id="menu_basic_settings">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        {{'index.navigator.basicSettings' | translate}}<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" translate="index.navigator.basicSettings.wechat"></a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" translate="index.navigator.basicSettings.conversation"></a></li>
-                        <li><a href="#" translate="index.navigator.basicSettings.menu"></a></li>
-                        <li><a href="#" translate="index.navigator.basicSettings.user"></a></li>
-                    </ul>
-                </li>
-                <li class="dropdown" ng-if="isLoggedIn()" id="menu_system_settings">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        {{'index.navigator.systemSettings' | translate}}<b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" translate="index.navigator.systemSettings.admin"></a></li>
-                    </ul>
-                </li>
-                <li><a href="#fakelink" translate="index.navigator.about"></a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li ng-if="!isLoggedIn()" id="menu_signin_form">
-                    <div class="navbar-form navbar-right">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input class="form-control" id="username" type="text" ng-model="username"
-                                       bind-key="signIn(username, password)" key="13" maxlength="32"
-                                       placeholder="{{'index.navigator.signIn.username' | translate}}">
-                            </div>
-                            <div class="input-group">
-                                <input class="form-control" id="password" type="password" ng-model="password"
-                                       bind-key="signIn(username, password)" key="13" maxlength="32"
-                                       placeholder="{{'index.navigator.signIn.password' | translate}}">
-                            </div>
-                            <button type="submit" class="btn disabled" ng-click="signIn(username, password)"
-                                    ng-class="{disabled: !username || status.logging}" id="loginSubmit"
-                                    translate="index.navigator.signIn.submit"></button>
-                        </div>
-                    </div>
-                </li>
-                <li class="dropdown" ng-if="isLoggedIn()" id="menu_user">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        {{getLoginUsername()}}<b class="caret"></b>
-                    </a>
-                    <span class="dropdown-arrow"></span>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" translate="index.navigator.user.bind"></a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" ng-click="signOut()" translate="index.navigator.user.signOut"></a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <div role="main" class="container">
-        <div ng-view></div>
+<nav class="navbar navbar-inverse navbar-embossed navbar-fixed-top" role="navigation" ng-controller="NavigateCtrl">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+            <span class="sr-only" translate="index.navigator.menu"></span>
+        </button>
+        <a class="navbar-brand" href="#/">
+            <img src="../imgs/tw-logo-white.png" height="25px"/>
+        </a>
     </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse-01">
+        <ul class="nav navbar-nav navbar-left">
+            <li class="dropdown" ng-if="isLoggedIn()" id="menu_dashboard">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    {{'index.navigator.dashboard' | translate}}<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#/dashboard" translate="index.navigator.dashboard.general"></a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="#/" translate="index.navigator.dashboard.user"></a></li>
+                    <li><a href="#/" translate="index.navigator.dashboard.message"></a></li>
+                    <li><a href="#/" translate="index.navigator.dashboard.api"></a></li>
+                </ul>
+            </li>
+            <li class="dropdown" ng-if="isLoggedIn()" id="menu_basic_settings">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    {{'index.navigator.basicSettings' | translate}}<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#/basicsettings/wechat" translate="index.navigator.basicSettings.wechat"></a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="#/" translate="index.navigator.basicSettings.conversation"></a></li>
+                    <li><a href="#/" translate="index.navigator.basicSettings.menu"></a></li>
+                    <li><a href="#/" translate="index.navigator.basicSettings.user"></a></li>
+                </ul>
+            </li>
+            <li class="dropdown" ng-if="isLoggedIn()" id="menu_system_settings">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    {{'index.navigator.systemSettings' | translate}}<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#/" translate="index.navigator.systemSettings.admin"></a></li>
+                </ul>
+            </li>
+            <li><a href="#/" translate="index.navigator.about"></a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li ng-if="!isLoggedIn()" id="menu_signin_form">
+                <div class="navbar-form navbar-right">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input class="form-control" id="username" type="text" ng-model="username"
+                                   bind-key="signIn(username, password)" key="13" maxlength="32"
+                                   placeholder="{{'index.navigator.signIn.username' | translate}}">
+                        </div>
+                        <div class="input-group">
+                            <input class="form-control" id="password" type="password" ng-model="password"
+                                   bind-key="signIn(username, password)" key="13" maxlength="32"
+                                   placeholder="{{'index.navigator.signIn.password' | translate}}">
+                        </div>
+                        <button type="submit" class="btn disabled" ng-click="signIn(username, password)"
+                                ng-class="{disabled: !username || status.logging}" id="loginSubmit"
+                                translate="index.navigator.signIn.submit"></button>
+                    </div>
+                </div>
+            </li>
+            <li class="dropdown" ng-if="isLoggedIn()" id="menu_user">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    {{getLoginUsername()}}<b class="caret"></b>
+                </a>
+                <span class="dropdown-arrow"></span>
+                <ul class="dropdown-menu">
+                    <li><a href="#" translate="index.navigator.user.bind"></a></li>
+                    <li class="divider"></li>
+                    <li><a href="#" ng-click="signOut()" translate="index.navigator.user.signOut"></a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div ng-view autoscroll="true"></div>
 </div>
 
 <footer class="footer">
