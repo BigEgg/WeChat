@@ -1,10 +1,6 @@
-admin.app.service('oAuthSrv', ['$window', '$q', 'apiHelper', function ($window, $q, apiHelper) {
-    var KEY_ACCESS_TOKEN = "access_token";
-    var KEY_REFRESH_TOKEN = "refresh_token";
-    var KEY_USERNAME = "username";
-
+admin.app.service('oAuthSrv', ['$q', 'oAuthHelper', 'apiHelper', function ($q, oAuthHelper, apiHelper) {
     this.isLoggedIn = function () {
-        return $window.sessionStorage.getItem(KEY_ACCESS_TOKEN) && $window.sessionStorage.getItem(KEY_REFRESH_TOKEN);
+        return oAuthHelper.getAccessToken() && oAuthHelper.getRefreshToken();
     };
 
     this.signIn = function (username, password) {
@@ -12,10 +8,11 @@ admin.app.service('oAuthSrv', ['$window', '$q', 'apiHelper', function ($window, 
 
         apiHelper.post('/uas/oauth/accesstoken', {clientId: username, clientSecret: password}).then(
             function (data, status, headers, config) {
-                $window.sessionStorage.setItem(KEY_ACCESS_TOKEN, data.access_token);
-                $window.sessionStorage.setItem(KEY_REFRESH_TOKEN, data.refresh_token);
+                oAuthHelper.setAccessToken(data.access_token);
+                oAuthHelper.setRefreshToken(data.refresh_token);
+
                 var name = username.split('@')[0];
-                $window.sessionStorage.setItem(KEY_USERNAME, name);
+                oAuthHelper.setUsername(name);
 
                 deferred.resolve(name);
             },
@@ -24,10 +21,7 @@ admin.app.service('oAuthSrv', ['$window', '$q', 'apiHelper', function ($window, 
                     deferred.reject(ex);
                 }
 
-                $window.sessionStorage.removeItem(KEY_ACCESS_TOKEN);
-                $window.sessionStorage.removeItem(KEY_REFRESH_TOKEN);
-                $window.sessionStorage.removeItem(KEY_USERNAME);
-
+                oAuthHelper.clearData()
                 deferred.reject(new AuthorizeFailedException());
             }
         );
@@ -36,12 +30,10 @@ admin.app.service('oAuthSrv', ['$window', '$q', 'apiHelper', function ($window, 
     };
 
     this.signOut = function () {
-        $window.sessionStorage.removeItem(KEY_ACCESS_TOKEN);
-        $window.sessionStorage.removeItem(KEY_REFRESH_TOKEN);
-        $window.sessionStorage.removeItem(KEY_USERNAME);
+        oAuthHelper.clearData();
     };
 
     this.getUsername = function () {
-        return $window.sessionStorage.getItem(KEY_USERNAME) || '';
+        return oAuthHelper.getUsername();
     }
 }]);

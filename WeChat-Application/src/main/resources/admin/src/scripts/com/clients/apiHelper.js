@@ -9,7 +9,7 @@ admin.app.factory('apiHelper', ['$http', '$window', '$q', '$timeout', function (
 
         $http.get(url)
             .success(function (data, status, headers, config) {
-                deferred.resolve(data, status, headers, config);
+                deferred.resolve(data);
             })
             .error(function (data, status, headers, config) {
                 if (status === 404) {
@@ -41,6 +41,15 @@ admin.app.factory('apiHelper', ['$http', '$window', '$q', '$timeout', function (
             });
 
         return deferred.promise;
+    };
+
+    ApiHelper.addParameterToURL = function (url, key, value) {
+        key = encodeURI(key);
+        value = encodeURI(value);
+
+        var param = key + "=" + value;
+        url += (url.split('?')[1] ? '&' : '?') + param;
+        return url;
     };
 
     return ApiHelper;

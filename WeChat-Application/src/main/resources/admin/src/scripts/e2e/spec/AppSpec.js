@@ -1,4 +1,4 @@
-ddescribe('App generic test', function () {
+describe('App generic test', function () {
     var homepage = require('../pages/Homepage.js');
     var dashboardPage = require('../pages/dashboard/DashboardPage.js');
     var constants = require('../constants.js');
