@@ -1,28 +1,4 @@
-admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', function ($q, apiHelper) {
-    var refreshAccessToken = function (access_token, refresh_token) {
-        var deferred = $q.defer();
-
-        apiHelper.post('/uas/oauth/refresh', {
-            refresh_token: refresh_token,
-            access_token: access_token
-        }).then(
-            function (data, status, headers, config) {
-                deferred.resolve(data.access_token);
-            },
-            function (error) {
-                if (error === 403) {
-                    deferred.reject(new AuthenticateFailedException());
-                } else if (error instanceof Error) {
-                    deferred.reject(error);
-                } else {
-                    deferred.reject(new UnknownException());
-                }
-            }
-        );
-
-        return deferred.promise;
-    };
-
+admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', function ($q, apiHelper, OAuthClient) {
     var addAccessToken = function (url, access_token) {
         return apiHelper.addParameterToURL(url, "access_token", access_token);
     };
@@ -42,7 +18,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', function ($q, apiHelper)
             },
             function (ex) {
                 if (ex === 403) {
-                    refreshAccessToken(access_token, refresh_token).then(
+                    OAuthClient.refreshAccessToken(access_token, refresh_token).then(
                         function (accessToken) {
                             var urlWithNewAccessToken = addAccessToken(url, accessToken);
                             apiHelper.get(urlWithNewAccessToken).then(
@@ -87,7 +63,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', function ($q, apiHelper)
             },
             function (ex) {
                 if (ex === 403) {
-                    refreshAccessToken(access_token, refresh_token).then(
+                    OAuthClient.refreshAccessToken(access_token, refresh_token).then(
                         function (accessToken) {
                             var urlWithNewAccessToken = addAccessToken(url, accessToken);
                             apiHelper.post(urlWithNewAccessToken, data).then(

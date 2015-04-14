@@ -8,7 +8,7 @@ admin.app.factory('apiHelper', ['$http', '$window', '$q', '$timeout', function (
         }, 3000);
 
         $http.get(url)
-            .success(function (data, status, headers, config) {
+            .success(function (data) {
                 deferred.resolve(data);
             })
             .error(function (data, status, headers, config) {
@@ -30,7 +30,7 @@ admin.app.factory('apiHelper', ['$http', '$window', '$q', '$timeout', function (
 
         $http.post(url, data)
             .success(function (data, status, headers, config) {
-                deferred.resolve(data, status, headers, config);
+                deferred.resolve(data);
             })
             .error(function (data, status, headers, config) {
                 if (status === 404) {
