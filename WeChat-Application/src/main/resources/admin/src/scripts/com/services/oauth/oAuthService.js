@@ -1,28 +1,24 @@
-admin.app.service('oAuthSrv', ['$q', 'oAuthHelper', 'apiHelper', function ($q, oAuthHelper, apiHelper) {
+admin.app.service('oAuthSrv', ['$q', 'oAuthRepository', 'oAuthClient', function ($q, oAuthRepository, oAuthClient) {
     this.isLoggedIn = function () {
-        return oAuthHelper.getAccessToken() && oAuthHelper.getRefreshToken();
+        return oAuthRepository.getAccessToken() && oAuthRepository.getRefreshToken();
     };
 
     this.signIn = function (username, password) {
         var deferred = $q.defer();
 
-        apiHelper.post('/uas/oauth/accesstoken', {clientId: username, clientSecret: password}).then(
-            function (data, status, headers, config) {
-                oAuthHelper.setAccessToken(data.access_token);
-                oAuthHelper.setRefreshToken(data.refresh_token);
+        oAuthClient.getAccessToken(username, password).then(
+            function (data) {
+                oAuthRepository.setAccessToken(data.access_token);
+                oAuthRepository.setRefreshToken(data.refresh_token);
 
                 var name = username.split('@')[0];
-                oAuthHelper.setUsername(name);
+                oAuthRepository.setUsername(name);
 
                 deferred.resolve(name);
             },
-            function (ex) {
-                if (ex instanceof Error) {
-                    deferred.reject(ex);
-                }
-
-                oAuthHelper.clearData()
-                deferred.reject(new AuthorizeFailedException());
+            function (error) {
+                oAuthRepository.clearData();
+                deferred.reject(error);
             }
         );
 
@@ -30,10 +26,10 @@ admin.app.service('oAuthSrv', ['$q', 'oAuthHelper', 'apiHelper', function ($q, o
     };
 
     this.signOut = function () {
-        oAuthHelper.clearData();
+        oAuthRepository.clearData();
     };
 
     this.getUsername = function () {
-        return oAuthHelper.getUsername();
+        return oAuthRepository.getUsername();
     }
 }]);
