@@ -1,5 +1,5 @@
 describe('OAuth API Helper Test', function () {
-    var mockApiHelper, mockOAuthClient;
+    var mockApiHelper, mockOAuthClient, mockOAuthRepository;
 
     beforeEach(angular.mock.module('adminApp', function ($provide, $translateProvider) {
         ignoreTranslate($provide, $translateProvider);
@@ -22,11 +22,85 @@ describe('OAuth API Helper Test', function () {
             }
         };
         $provide.value('oAuthClient', mockOAuthClient);
+
+        mockOAuthRepository = {
+            getAccessToken: function () {
+            },
+            setAccessToken: function (accessToken) {
+            },
+            getRefreshToken: function () {
+            },
+            setRefreshToken: function (refreshToken) {
+            },
+            getUsername: function () {
+            },
+            setUsername: function (username) {
+            },
+            clearData: function () {
+            }
+        };
+        $provide.value('oAuthRepository', mockOAuthRepository);
     }));
+
+    describe('When no access token', function () {
+        describe('for GET method', function () {
+            it('should throw Authenticate Failed error', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('');
+
+                var onSuccess = false;
+                var onError = false;
+                oAuthApiHelper.get('/api/test').then(
+                    function (data) {
+                        onSuccess = true;
+                    },
+                    function (error) {
+                        expect(error instanceof AuthenticateFailedException).toBeTruthy();
+                        onError = true;
+                    }
+                );
+
+                $rootScope.$apply();
+                expect(onSuccess).toBeFalsy();
+                expect(onError).toBeTruthy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
+            }));
+        });
+
+        describe('for POST method', function () {
+            it('should success when success', inject(function ($rootScope, $q, oAuthApiHelper) {
+                it('should throw Authenticate Failed error', inject(function ($rootScope, $q, oAuthApiHelper) {
+                    spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('');
+                    spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('');
+
+                    var onSuccess = false;
+                    var onError = false;
+                    oAuthApiHelper.post('/api/test', {test: 'value'}).then(
+                        function (data) {
+                            onSuccess = true;
+                        },
+                        function (error) {
+                            expect(error instanceof AuthenticateFailedException).toBeTruthy();
+                            onError = true;
+                        }
+                    );
+
+                    $rootScope.$apply();
+                    expect(onSuccess).toBeFalsy();
+                    expect(onError).toBeTruthy();
+                    expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                    expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
+                }));
+            }));
+        });
+    });
 
     describe('When access token valid', function () {
         describe('for GET method', function () {
             it('should success when success', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
                 spyOn(mockApiHelper, 'addParameterToURL').and.returnValue('/api/test?access_token=access');
                 spyOn(mockApiHelper, 'get').and.callFake(function (url) {
                     if (url === '/api/test?access_token=access') {
@@ -38,10 +112,9 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.get('access', 'refresh', '/api/test').then(
+                oAuthApiHelper.get('/api/test').then(
                     function (data) {
-                        expect(data.data.test).toBe('value');
-                        expect(data.access_token).toBe('');
+                        expect(data.test).toBe('value');
                         onSuccess = true;
                     },
                     function (error) {
@@ -52,11 +125,15 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeTruthy();
                 expect(onError).toBeFalsy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.get).toHaveBeenCalledWith('/api/test?access_token=access');
             }));
 
             it('should error if get error', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
                 spyOn(mockApiHelper, 'addParameterToURL').and.returnValue('/api/test?access_token=access');
                 spyOn(mockApiHelper, 'get').and.callFake(function (url) {
                     if (url === '/api/test?access_token=access') {
@@ -68,7 +145,7 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.get('access', 'refresh', '/api/test').then(
+                oAuthApiHelper.get('/api/test').then(
                     function (data) {
                         onSuccess = true;
                     },
@@ -81,6 +158,8 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeFalsy();
                 expect(onError).toBeTruthy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.get).toHaveBeenCalledWith('/api/test?access_token=access');
             }));
@@ -88,6 +167,8 @@ describe('OAuth API Helper Test', function () {
 
         describe('for POST method', function () {
             it('should success when success', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
                 spyOn(mockApiHelper, 'addParameterToURL').and.returnValue('/api/test?access_token=access');
                 spyOn(mockApiHelper, 'post').and.callFake(function (url) {
                     if (url === '/api/test?access_token=access') {
@@ -99,10 +180,9 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.post('access', 'refresh', '/api/test', {test: 'value'}).then(
+                oAuthApiHelper.post('/api/test', {test: 'value'}).then(
                     function (data) {
-                        expect(data.data.test).toBe('value');
-                        expect(data.access_token).toBe('');
+                        expect(data.test).toBe('value');
                         onSuccess = true;
                     },
                     function (error) {
@@ -113,11 +193,15 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeTruthy();
                 expect(onError).toBeFalsy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.post).toHaveBeenCalledWith('/api/test?access_token=access', {test: 'value'});
             }));
 
             it('should error if get error', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
                 spyOn(mockApiHelper, 'addParameterToURL').and.returnValue('/api/test?access_token=access');
                 spyOn(mockApiHelper, 'post').and.callFake(function (url) {
                     if (url === '/api/test?access_token=access') {
@@ -129,7 +213,7 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.post('access', 'refresh', '/api/test', {test: 'value'}).then(
+                oAuthApiHelper.post('/api/test', {test: 'value'}).then(
                     function (data) {
                         onSuccess = true;
                     },
@@ -142,6 +226,8 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeFalsy();
                 expect(onError).toBeTruthy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.post).toHaveBeenCalledWith('/api/test?access_token=access', {test: 'value'});
             }));
@@ -151,6 +237,9 @@ describe('OAuth API Helper Test', function () {
     describe('when access token invalid and can refresh token', function () {
         describe('for GET method', function () {
             it('should success when success', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
+                spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
                         return '/api/test?access_token=access'
@@ -181,10 +270,9 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.get('access', 'refresh', '/api/test').then(
+                oAuthApiHelper.get('/api/test').then(
                     function (data) {
-                        expect(data.data.test).toBe('value');
-                        expect(data.access_token).toBe('new_access');
+                        expect(data.test).toBe('value');
                         onSuccess = true;
                     },
                     function (error) {
@@ -195,6 +283,9 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeTruthy();
                 expect(onError).toBeFalsy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.setAccessToken).toHaveBeenCalledWith('new_access');
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'new_access');
                 expect(mockApiHelper.get).toHaveBeenCalledWith('/api/test?access_token=access');
@@ -203,6 +294,9 @@ describe('OAuth API Helper Test', function () {
             }));
 
             it('should error if get error', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
+                spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
                         return '/api/test?access_token=access'
@@ -233,13 +327,12 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.get('access', 'refresh', '/api/test').then(
+                oAuthApiHelper.get('/api/test').then(
                     function (data) {
                         onSuccess = true;
                     },
                     function (error) {
-                        expect(error.error).toBe(500);
-                        expect(error.access_token).toBe('new_access');
+                        expect(error).toBe(500);
                         onError = true;
                     }
                 );
@@ -247,6 +340,9 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeFalsy();
                 expect(onError).toBeTruthy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.setAccessToken).toHaveBeenCalledWith('new_access');
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'new_access');
                 expect(mockApiHelper.get).toHaveBeenCalledWith('/api/test?access_token=access');
@@ -257,6 +353,9 @@ describe('OAuth API Helper Test', function () {
 
         describe('for POST method', function () {
             it('should success when success', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
+                spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
                         return '/api/test?access_token=access'
@@ -287,10 +386,9 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.post('access', 'refresh', '/api/test', {test: 'value'}).then(
+                oAuthApiHelper.post('/api/test', {test: 'value'}).then(
                     function (data) {
-                        expect(data.data.test).toBe('value');
-                        expect(data.access_token).toBe('new_access');
+                        expect(data.test).toBe('value');
                         onSuccess = true;
                     },
                     function (error) {
@@ -301,6 +399,9 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeTruthy();
                 expect(onError).toBeFalsy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.setAccessToken).toHaveBeenCalledWith('new_access');
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'new_access');
                 expect(mockApiHelper.post).toHaveBeenCalledWith('/api/test?access_token=access', {test: 'value'});
@@ -309,6 +410,9 @@ describe('OAuth API Helper Test', function () {
             }));
 
             it('should error if get error', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
+                spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
                         return '/api/test?access_token=access'
@@ -339,13 +443,12 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.post('access', 'refresh', '/api/test', {test: 'value'}).then(
+                oAuthApiHelper.post('/api/test', {test: 'value'}).then(
                     function (data) {
                         onSuccess = true;
                     },
                     function (error) {
-                        expect(error.error).toBe(500);
-                        expect(error.access_token).toBe('new_access');
+                        expect(error).toBe(500);
                         onError = true;
                     }
                 );
@@ -353,6 +456,9 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeFalsy();
                 expect(onError).toBeTruthy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.setAccessToken).toHaveBeenCalledWith('new_access');
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'new_access');
                 expect(mockApiHelper.post).toHaveBeenCalledWith('/api/test?access_token=access', {test: 'value'});
@@ -365,6 +471,9 @@ describe('OAuth API Helper Test', function () {
     describe('when both access token and refresh token are invalid ', function () {
         describe('for GET method', function () {
             it('should throw authenticate failed error', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
+                spyOn(mockOAuthRepository, 'clearData');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
                         return '/api/test?access_token=access'
@@ -387,7 +496,7 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.get('access', 'refresh', '/api/test').then(
+                oAuthApiHelper.get('/api/test').then(
                     function (data) {
                         onSuccess = true;
                     },
@@ -400,6 +509,9 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeFalsy();
                 expect(onError).toBeTruthy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.clearData).toHaveBeenCalled();
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.get).toHaveBeenCalledWith('/api/test?access_token=access');
                 expect(mockOAuthClient.refreshAccessToken).toHaveBeenCalledWith('access', 'refresh');
@@ -408,6 +520,9 @@ describe('OAuth API Helper Test', function () {
 
         describe('for POST method', function () {
             it('should throw authenticate failed error', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('refresh');
+                spyOn(mockOAuthRepository, 'clearData');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
                         return '/api/test?access_token=access'
@@ -430,7 +545,7 @@ describe('OAuth API Helper Test', function () {
 
                 var onSuccess = false;
                 var onError = false;
-                oAuthApiHelper.post('access', 'refresh', '/api/test', {test: 'value'}).then(
+                oAuthApiHelper.post('/api/test', {test: 'value'}).then(
                     function (data) {
                         onSuccess = true;
                     },
@@ -443,6 +558,9 @@ describe('OAuth API Helper Test', function () {
                 $rootScope.$apply();
                 expect(onSuccess).toBeFalsy();
                 expect(onError).toBeTruthy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.clearData).toHaveBeenCalled();
                 expect(mockApiHelper.addParameterToURL).toHaveBeenCalledWith('/api/test', 'access_token', 'access');
                 expect(mockApiHelper.post).toHaveBeenCalledWith('/api/test?access_token=access', {test: 'value'});
                 expect(mockOAuthClient.refreshAccessToken).toHaveBeenCalledWith('access', 'refresh');

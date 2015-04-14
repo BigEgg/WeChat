@@ -29,7 +29,7 @@ admin.app.factory('oAuthClient', ['$q', 'apiHelper', function ($q, apiHelper) {
             refresh_token: refresh_token,
             access_token: access_token
         }).then(
-            function (data, status, headers, config) {
+            function (data) {
                 deferred.resolve(data.access_token);
             },
             function (error) {

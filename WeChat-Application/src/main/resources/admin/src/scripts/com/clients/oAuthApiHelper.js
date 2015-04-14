@@ -1,48 +1,48 @@
-admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', function ($q, apiHelper, OAuthClient) {
+admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRepository', function ($q, apiHelper, OAuthClient, oAuthRepository) {
     var addAccessToken = function (url, access_token) {
         return apiHelper.addParameterToURL(url, "access_token", access_token);
     };
 
     var OAuthApiHelper = {};
 
-    OAuthApiHelper.get = function (access_token, refresh_token, url) {
+    OAuthApiHelper.get = function (url) {
         var deferred = $q.defer();
+
+        var access_token = oAuthRepository.getAccessToken();
+        var refresh_token = oAuthRepository.getRefreshToken();
+        if (!access_token || !refresh_token) {
+            deferred.reject(new AuthenticateFailedException());
+            return deferred.promise;
+        }
 
         var urlWithAccessToken = addAccessToken(url, access_token);
         apiHelper.get(urlWithAccessToken).then(
             function (data) {
-                deferred.resolve({
-                    data: data,
-                    access_token: ''
-                });
+                deferred.resolve(data);
             },
-            function (ex) {
-                if (ex === 403) {
+            function (error) {
+                if (error === 403) {
                     OAuthClient.refreshAccessToken(access_token, refresh_token).then(
-                        function (accessToken) {
-                            var urlWithNewAccessToken = addAccessToken(url, accessToken);
+                        function (new_access_token) {
+                            oAuthRepository.setAccessToken(new_access_token);
+                            var urlWithNewAccessToken = addAccessToken(url, new_access_token);
                             apiHelper.get(urlWithNewAccessToken).then(
                                 function (data) {
-                                    deferred.resolve({
-                                        data: data,
-                                        access_token: accessToken
-                                    });
+                                    deferred.resolve(data);
                                 },
                                 function (error) {
-                                    deferred.reject({
-                                        error: error,
-                                        access_token: accessToken
-                                    });
+                                    deferred.reject(error);
                                 }
                             );
                         },
                         function (error) {
+                            oAuthRepository.clearData();
                             deferred.reject(error);
                         }
                     )
                 }
                 else {
-                    deferred.reject(ex)
+                    deferred.reject(error)
                 }
             }
         );
@@ -50,45 +50,44 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', function 
         return deferred.promise;
     };
 
-    OAuthApiHelper.post = function (access_token, refresh_token, url, data) {
+    OAuthApiHelper.post = function (url, data) {
         var deferred = $q.defer();
+
+        var access_token = oAuthRepository.getAccessToken();
+        var refresh_token = oAuthRepository.getRefreshToken();
+        if (!access_token || !refresh_token) {
+            deferred.reject(new AuthenticateFailedException());
+            return deferred.promise;
+        }
 
         var urlWithAccessToken = addAccessToken(url, access_token);
         apiHelper.post(urlWithAccessToken, data).then(
-            function (data, status, headers, config) {
-                deferred.resolve({
-                    data: data,
-                    access_token: ''
-                });
+            function (data) {
+                deferred.resolve(data);
             },
-            function (ex) {
-                if (ex === 403) {
+            function (error) {
+                if (error === 403) {
                     OAuthClient.refreshAccessToken(access_token, refresh_token).then(
-                        function (accessToken) {
-                            var urlWithNewAccessToken = addAccessToken(url, accessToken);
+                        function (new_access_token) {
+                            var urlWithNewAccessToken = addAccessToken(url, new_access_token);
+                            oAuthRepository.setAccessToken(new_access_token);
                             apiHelper.post(urlWithNewAccessToken, data).then(
-                                function (data, status, headers, config) {
-                                    deferred.resolve({
-                                        data: data,
-                                        access_token: accessToken
-                                    });
+                                function (data) {
+                                    deferred.resolve(data);
                                 },
                                 function (error) {
-                                    deferred.reject({
-                                        error: error,
-                                        access_token: accessToken
-                                    });
-
+                                    deferred.reject(error);
                                 }
                             );
                         },
                         function (error) {
+                            oAuthRepository.clearData();
                             deferred.reject(error);
                         }
                     )
                 }
                 else {
-                    deferred.reject(ex)
+                    deferred.reject(error)
                 }
             }
         );
