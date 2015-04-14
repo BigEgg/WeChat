@@ -1,20 +1,7 @@
-describe('App Controller Test', function () {
+describe('Navigate Controller Test', function () {
     beforeEach(module('adminApp', function ($provide, $translateProvider) {
-        $provide.factory('customLoader', function ($q) {
-            return function () {
-                var deferred = $q.defer();
-                deferred.resolve({});
-                return deferred.promise;
-            };
-        });
-        $translateProvider.useLoader('customLoader');
-
-        $provide.factory('$location', function () {
-            return {
-                path: function (url) {
-                }
-            }
-        });
+        ignoreTranslate($provide, $translateProvider);
+        ignoreRoute($provide);
     }));
 
     var $scope, $location, oAuthSrv, notify, NavigateCtrl;
@@ -40,10 +27,15 @@ describe('App Controller Test', function () {
             }
         };
 
-        NavigateCtrl = $controller('NavigateCtrl', {$scope: $scope, $location: $location, oAuthSrv: oAuthSrv, notify: notify});
+        NavigateCtrl = $controller('NavigateCtrl', {
+            $scope: $scope,
+            $location: $location,
+            oAuthSrv: oAuthSrv,
+            notify: notify
+        });
     }));
 
-    it('should set initiate stats', inject(function ($rootScope) {
+    it('should set initiate stats', inject(function () {
         expect($scope.status).toBeDefined();
         expect($scope.status.logging).toBeFalsy();
     }));
