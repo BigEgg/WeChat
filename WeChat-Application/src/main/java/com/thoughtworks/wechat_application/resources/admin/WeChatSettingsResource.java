@@ -56,7 +56,7 @@ public class WeChatSettingsResource {
         final String entryPointPath = UriBuilder.fromResource(WeChatEntryPointResource.class).build().toASCIIString();
         url.append(entryPointPath);
 
-        return new ServerInfoResponse(url.toString(), adminResourceService.getAppToken());
+        return new ServerInfoResponse(url.toString(), adminResourceService.getAppToken(), adminResourceService.getConnectionStatus());
     }
 
     private void checkAccessToken(final String accessToken) {

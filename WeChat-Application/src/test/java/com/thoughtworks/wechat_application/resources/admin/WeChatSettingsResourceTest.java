@@ -44,6 +44,7 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
     public void return_wechat_entry_point_if_access_token_valid() throws Exception {
         when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createAdmin()));
         when(adminResourceService.getAppToken()).thenReturn("abcdefghijklmn");
+        when(adminResourceService.getConnectionStatus()).thenReturn(true);
 
         final Response response = resource.client().target("/api/admin/wechat/server").queryParam("access_token", "accessToken").request().get();
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -52,6 +53,7 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
         assertThat(serverInfo).isNotNull();
         assertThat(serverInfo.getEntryPoint()).isEqualTo("/wechat");
         assertThat(serverInfo.getAppToken()).isEqualTo("abcdefghijklmn");
+        assertThat(serverInfo.isConnected()).isEqualTo(true);
 
         verify(oAuthProvider).getOAuthClient(eq("accessToken"));
         verify(adminResourceService).getAppToken();

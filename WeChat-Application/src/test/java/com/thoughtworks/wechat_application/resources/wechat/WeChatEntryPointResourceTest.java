@@ -5,14 +5,14 @@ import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowEngine;
 import com.thoughtworks.wechat_application.resources.exceptions.WeChatMessageAuthenticationException;
 import com.thoughtworks.wechat_application.resources.exceptions.WebApplicationNotAcceptableException;
+import com.thoughtworks.wechat_application.services.admin.AdminResourceKey;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(Enclosed.class)
 public class WeChatEntryPointResourceTest {
@@ -69,6 +69,8 @@ public class WeChatEntryPointResourceTest {
         @Test
         public void should_return_echo_string() throws Exception {
             resource.weChatVerify(signature, timestamp, nonce, echoString);
+
+            verify(adminResourceService).setResource(eq(AdminResourceKey.WECHAT_CONNECTION_STATUS), eq("true"));
         }
     }
 

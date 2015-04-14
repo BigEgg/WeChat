@@ -7,13 +7,16 @@ public class ServerInfoResponse {
     private String entryPoint;
     @JsonProperty("token")
     private String appToken;
+    @JsonProperty("connected")
+    private boolean isConnected;
 
     public ServerInfoResponse() {
     }
 
-    public ServerInfoResponse(String entryPoint, String appToken) {
+    public ServerInfoResponse(String entryPoint, String appToken, boolean isConnected) {
         this.entryPoint = entryPoint;
         this.appToken = appToken;
+        this.isConnected = isConnected;
     }
 
     public String getEntryPoint() {
@@ -22,5 +25,9 @@ public class ServerInfoResponse {
 
     public String getAppToken() {
         return appToken;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
     }
 }

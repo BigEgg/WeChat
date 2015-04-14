@@ -49,6 +49,10 @@ public class AdminResourceService {
         return getCachedResources(AdminResourceKey.WECHAT_APP_SECRET);
     }
 
+    public boolean getConnectionStatus() {
+        return Boolean.parseBoolean(getCachedResources(AdminResourceKey.WECHAT_CONNECTION_STATUS));
+    }
+
     public String getResource(final AdminResourceKey key) {
         final String keyString = key.toString();
         LOGGER.info("[GetResource] Try get admin resource: {}.", keyString);
