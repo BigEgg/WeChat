@@ -53,7 +53,7 @@ describe('OAuth Client Test', function () {
             spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
                 if (url === '/uas/oauth/accesstoken' && data.clientId === 'username' && data.clientSecret === 'password') {
                     var deferred = $q.defer();
-                    deferred.reject(404);
+                    deferred.reject(401);
                     return deferred.promise;
                 }
             });

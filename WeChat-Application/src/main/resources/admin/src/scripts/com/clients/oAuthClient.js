@@ -9,7 +9,7 @@ admin.app.factory('oAuthClient', ['$q', 'apiHelper', function ($q, apiHelper) {
                 deferred.resolve(data);
             },
             function (error) {
-                if (error === 404) {
+                if (error === 401) {
                     deferred.reject(new AuthorizeFailedException());
                 } else if (error instanceof Error) {
                     deferred.reject(error);
