@@ -21,7 +21,7 @@ admin.app.controller('NavigateCtrl', ['$scope', '$rootScope', '$location', 'oAut
             function (e) {
                 $scope.status.logging = false;
                 if (e instanceof AuthorizeFailedException) {
-                    notify.warning('oauth.signIn.failed');
+                    notify.warning(e.message);
                 } else {
                     notify.danger(e.message);
                 }
