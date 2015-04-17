@@ -1,4 +1,4 @@
-describe('WeChat Basic Setting Client Test', function () {
+describe('WeChat Basic Settings Client Test', function () {
     var mockOAuthApiHelper;
 
     beforeEach(angular.mock.module('adminApp', function ($provide, $translateProvider) {
