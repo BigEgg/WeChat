@@ -46,12 +46,19 @@
             <div class="form-group">
                 <label class="control-label col-xs-3"
                        translate="basicSettings.weChat.server.url"></label>
-                <span class="col-xs-9 settingInfo">http://</span>
+
+                <div class="col-xs-9">
+                    <span class="fui-check-circle" style="color: #2ECC71"
+                          ng-if="wechatServerStatus.connectionStatus"></span>
+                    <span class="fui-cross-circle" style="color: #E74C3C"
+                          ng-if="!wechatServerStatus.connectionStatus"></span>
+                    <span class="settingInfo">{{weChatServerStatus.entryPoint}}</span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="inputAppSecret" class="control-label col-xs-3"
                        translate="basicSettings.weChat.server.token"></label>
-                <label class="col-xs-7 settingInfo">token</label>
+                <label class="col-xs-7 settingInfo">{{weChatServerStatus.appToken}}</label>
 
                 <div class="col-xs-2">
                     <a class="btn btn-block btn-lg btn-danger settingSubmitButton"
