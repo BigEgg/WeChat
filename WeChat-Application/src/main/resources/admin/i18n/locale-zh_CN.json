@@ -40,6 +40,7 @@
   "basicSettings.weChat.server.description": "请将下面内容填写到微信公众平台后台开发者中心里。",
   "basicSettings.weChat.server.url": "URL(服务器地址)",
   "basicSettings.weChat.server.token": "Token(令牌)",
+  "basicSettings.weChat.server.refreshStatus": "刷新状态",
   "basicSettings.weChat.server.changeToken": "更新令牌",
   "basicSettings.weChat.server.remark": "在这里的信息是微信服务器和客户端之间通讯用的，一定记得要填写到<a href='https://mp.weixin.qq.com'>微信公众平台</a>哦。"
 }
