@@ -14,6 +14,7 @@ app.use('/i18n', express.static(__dirname + '/i18n'));
 
 app.post('/uas/oauth/accesstoken', oAuth.accessToken);
 
-app.get('/api/admin/wechat/server', WeChatSettings.entryPoint);
+app.get('/api/admin/wechat/server', WeChatSettings.serverInfo);
+app.get('/api/admin/wechat/developer', WeChatSettings.developerInfo);
 
 app.listen(3000);

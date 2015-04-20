@@ -14,7 +14,8 @@
 
                 <div class="col-xs-9">
                     <input id="inputAppId" type="text" class="form-control"
-                           placeholder="{{'basicSettings.weChat.developerId.appId' | translate}}">
+                           placeholder="{{'basicSettings.weChat.developerId.appId' | translate}}"
+                           ng-model="weChatDeveloperInfo.appId">
                 </div>
             </div>
             <div class="form-group">
@@ -23,7 +24,8 @@
 
                 <div class="col-xs-9">
                     <input id="inputAppSecret" type="text" class="form-control"
-                           placeholder="{{'basicSettings.weChat.developerId.appSecret' | translate}}">
+                           placeholder="{{'basicSettings.weChat.developerId.appSecret' | translate}}"
+                           ng-model="weChatDeveloperInfo.appSecret">
                 </div>
             </div>
             <div class="form-group">

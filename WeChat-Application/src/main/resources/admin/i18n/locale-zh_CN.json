@@ -28,7 +28,7 @@
   "error.system.bad.network": "无法连接到服务器，请检查网络。",
   "error.system.timeout": "连接超时了，请检查下网络哦。",
   "error.unknown": "我也不知道为什么，但就是挂了。。。",
-  "oauth.authenticate.failed": "要重新登验证下哦。",
+  "oauth.authenticate.failed": "要重新登陆验证下哦。",
   "basicSettings.weChat.title": "微信基本信息",
   "basicSettings.weChat.developerId": "开发者ID",
   "basicSettings.weChat.developerId.description": "请填写服务号微信公众平台后台开发者中心的相应信息。",
