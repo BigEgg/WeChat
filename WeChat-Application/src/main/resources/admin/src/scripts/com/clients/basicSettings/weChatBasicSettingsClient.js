@@ -1,7 +1,7 @@
 admin.app.factory('weChatBasicSettingsClient', ['$q', 'oAuthApiHelper', function ($q, oAuthApiHelper) {
     var WeChatBasicSettingsClient = {};
 
-    WeChatBasicSettingsClient.getWeChatServerStatus = function () {
+    WeChatBasicSettingsClient.getServerStatus = function () {
         var deferred = $q.defer();
 
         oAuthApiHelper.get('/api/admin/wechat/server').then(

@@ -1,8 +1,8 @@
 admin.app.service('weChatBasicSettingsSrv', ['$q', 'weChatBasicSettingsClient', function ($q, weChatBasicSettingsClient)  {
-    this.getWeChatServerStatus = function () {
+    this.getServerStatus = function () {
         var deferred = $q.defer();
 
-        weChatBasicSettingsClient.getWeChatServerStatus().then(
+        weChatBasicSettingsClient.getServerStatus().then(
             function (data) {
                 deferred.resolve(data);
             },

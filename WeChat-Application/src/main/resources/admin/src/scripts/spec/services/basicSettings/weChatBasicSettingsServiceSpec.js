@@ -6,7 +6,7 @@ describe('WeChat Basic Settings Service Test', function () {
             ignoreRoute($provide);
 
             mockWeChatBasicSettingsClient = {
-                getWeChatServerStatus: function () {
+                getServerStatus: function () {
                 }
             };
             $provide.value('weChatBasicSettingsClient', mockWeChatBasicSettingsClient);
@@ -15,7 +15,7 @@ describe('WeChat Basic Settings Service Test', function () {
 
     describe('when get WeChat server status', function () {
         it('return status when success', inject(function ($rootScope, $q, weChatBasicSettingsSrv) {
-            spyOn(mockWeChatBasicSettingsClient, 'getWeChatServerStatus').and.callFake(function () {
+            spyOn(mockWeChatBasicSettingsClient, 'getServerStatus').and.callFake(function () {
                 var deferred = $q.defer();
                 deferred.resolve({
                     entry_point: 'http://localhost:3000/wechat',
@@ -27,7 +27,7 @@ describe('WeChat Basic Settings Service Test', function () {
 
             var onSuccess = false;
             var onFailed = false;
-            weChatBasicSettingsSrv.getWeChatServerStatus().then(
+            weChatBasicSettingsSrv.getServerStatus().then(
                 function (data) {
                     expect(data.entry_point).toBe('http://localhost:3000/wechat');
                     expect(data.token).toBe('ABCDE_TOKEN');
@@ -42,11 +42,11 @@ describe('WeChat Basic Settings Service Test', function () {
             $rootScope.$apply();
             expect(onSuccess).toBeTruthy();
             expect(onFailed).toBeFalsy();
-            expect(mockWeChatBasicSettingsClient.getWeChatServerStatus).toHaveBeenCalled();
+            expect(mockWeChatBasicSettingsClient.getServerStatus).toHaveBeenCalled();
         }));
 
         it('return error when failed', inject(function ($rootScope, $q, weChatBasicSettingsSrv) {
-            spyOn(mockWeChatBasicSettingsClient, 'getWeChatServerStatus').and.callFake(function () {
+            spyOn(mockWeChatBasicSettingsClient, 'getServerStatus').and.callFake(function () {
                 var deferred = $q.defer();
                 deferred.reject(new UnknownException());
                 return deferred.promise;
@@ -54,7 +54,7 @@ describe('WeChat Basic Settings Service Test', function () {
 
             var onSuccess = false;
             var onFailed = false;
-            weChatBasicSettingsSrv.getWeChatServerStatus().then(
+            weChatBasicSettingsSrv.getServerStatus().then(
                 function (data) {
                     onSuccess = true;
                 },
@@ -67,7 +67,7 @@ describe('WeChat Basic Settings Service Test', function () {
             $rootScope.$apply();
             expect(onSuccess).toBeFalsy();
             expect(onFailed).toBeTruthy();
-            expect(mockWeChatBasicSettingsClient.getWeChatServerStatus).toHaveBeenCalled();
+            expect(mockWeChatBasicSettingsClient.getServerStatus).toHaveBeenCalled();
         }));
     });
 });

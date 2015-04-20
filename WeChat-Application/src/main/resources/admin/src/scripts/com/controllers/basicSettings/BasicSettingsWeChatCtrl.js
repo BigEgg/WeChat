@@ -10,7 +10,7 @@ admin.app.controller('BasicSettingsWeChatCtrl', ['$scope', 'notify', 'weChatBasi
 
     $scope.getServerStatus = function () {
         $scope.status.statusGetting = true;
-        weChatBasicSettingsSrv.getWeChatServerStatus().then(
+        weChatBasicSettingsSrv.getServerStatus().then(
             function (data) {
                 $scope.status.loading = false;
                 $scope.status.statusGetting = false;

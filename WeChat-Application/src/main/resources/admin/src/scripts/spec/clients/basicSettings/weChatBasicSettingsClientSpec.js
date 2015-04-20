@@ -31,7 +31,7 @@ describe('WeChat Basic Settings Client Test', function () {
 
             var onSuccess = false;
             var onFailed = false;
-            weChatBasicSettingsClient.getWeChatServerStatus().then(
+            weChatBasicSettingsClient.getServerStatus().then(
                 function (data) {
                     expect(data.entry_point).toBe('http://localhost:3000/wechat');
                     expect(data.token).toBe('ABCDE_TOKEN');
@@ -60,7 +60,7 @@ describe('WeChat Basic Settings Client Test', function () {
 
             var onSuccess = false;
             var onFailed = false;
-            weChatBasicSettingsClient.getWeChatServerStatus().then(
+            weChatBasicSettingsClient.getServerStatus().then(
                 function (data) {
                     onSuccess = true;
                 },
