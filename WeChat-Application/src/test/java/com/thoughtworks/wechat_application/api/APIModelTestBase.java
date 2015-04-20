@@ -5,7 +5,7 @@ import io.dropwizard.jackson.Jackson;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 
-public abstract class APITestBase {
+public abstract class APIModelTestBase {
     protected static ObjectMapper MAPPER = Jackson.newObjectMapper();
 
     protected static <T> T deserializeFixture(final String fileName, final Class<T> clazz) throws Exception {

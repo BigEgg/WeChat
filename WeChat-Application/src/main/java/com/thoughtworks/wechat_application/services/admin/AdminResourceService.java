@@ -49,6 +49,10 @@ public class AdminResourceService {
         return getCachedResources(AdminResourceKey.WECHAT_APP_SECRET);
     }
 
+    public String getAppId() {
+        return getCachedResources(AdminResourceKey.WECHAT_APP_ID);
+    }
+
     public boolean getConnectionStatus() {
         return Boolean.parseBoolean(getCachedResources(AdminResourceKey.WECHAT_CONNECTION_STATUS));
     }

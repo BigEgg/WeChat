@@ -1,11 +1,11 @@
 package com.thoughtworks.wechat_application.api.oauth;
 
-import com.thoughtworks.wechat_application.api.APITestBase;
+import com.thoughtworks.wechat_application.api.APIModelTestBase;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OAuthSignInRequestTest extends APITestBase {
+public class OAuthSignInRequestTest extends APIModelTestBase {
     @Test
     public void deserializeFromJSON() throws Exception {
         final OAuthSignInRequest request = new OAuthSignInRequest();
