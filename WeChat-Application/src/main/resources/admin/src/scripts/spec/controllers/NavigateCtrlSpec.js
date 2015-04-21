@@ -68,7 +68,7 @@ describe('Navigate Controller Test', function () {
     });
 
     describe('should handle both sign in success and error', function () {
-        it('when sign in success', inject(function ($q, $rootScope, $httpBackend) {
+        it('when sign in success', inject(function ($q, $rootScope) {
             spyOn(oAuthSrv, 'signIn').and.callFake(function () {
                 var deferred = $q.defer();
                 deferred.resolve('name');
@@ -84,7 +84,7 @@ describe('Navigate Controller Test', function () {
             expect($location.path).toHaveBeenCalledWith('/dashboard');
         }));
 
-        it('when authorize failed', inject(function ($q, $rootScope, $httpBackend) {
+        it('when authorize failed', inject(function ($q, $rootScope) {
             spyOn(oAuthSrv, 'signIn').and.callFake(function () {
                 var deferred = $q.defer();
                 deferred.reject(new AuthorizeFailedException());
@@ -99,7 +99,7 @@ describe('Navigate Controller Test', function () {
             expect(notify.warning).toHaveBeenCalled();
         }));
 
-        it('when bad network', inject(function ($q, $rootScope, $httpBackend) {
+        it('when bad network', inject(function ($q, $rootScope) {
             spyOn(oAuthSrv, 'signIn').and.callFake(function () {
                 var deferred = $q.defer();
                 deferred.reject(new BadNetworkException());

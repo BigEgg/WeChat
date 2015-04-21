@@ -19,7 +19,7 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
                 $scope.status.statusGetting = false;
                 $scope.weChatServerStatus.entryPoint = data.entry_point;
                 $scope.weChatServerStatus.appToken = data.token;
-                $scope.weChatServerStatus.connectionStatus = data.connection;
+                $scope.weChatServerStatus.connectionStatus = data.connected;
             },
             function (error) {
                 $scope.status.statusGetting = false;
@@ -47,10 +47,10 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
                 $scope.getServerStatus();
             },
             function (error) {
+                $scope.status.loading = false;
                 if (error instanceof AuthenticateFailedException) {
                     notify.danger(error.message);
-                }
-                else {
+                } else {
                     notify.warning(error.message);
                 }
             }

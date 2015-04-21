@@ -68,8 +68,7 @@ module.exports = function (grunt) {
                         'vendor/scripts/angular-translate-loader-static-files.min.js',
                         'vendor/scripts/spec/angular-mocks.js'
                     ],
-                    helpers: 'src/scripts/spec/helper/*.js',
-                    summary: true
+                    helpers: 'src/scripts/spec/helper/*.js'
                 }
             }
         },

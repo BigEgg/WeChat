@@ -1,4 +1,4 @@
-exports.serverInfo = function (req, res) {
+exports.serverStatus = function (req, res) {
     if (req.query.access_token === 'access') {
         res.send({
             entry_point: 'http://localhost:3000/wechat',
