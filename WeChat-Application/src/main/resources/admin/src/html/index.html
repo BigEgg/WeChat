@@ -69,12 +69,12 @@
                     <div class="form-group">
                         <div class="input-group">
                             <input class="form-control" id="username" type="text" ng-model="username"
-                                   bind-key="signIn(username, password)" key="13" maxlength="32"
+                                   ui-keyup="{'enter':'signIn(username, password)'}" maxlength="32"
                                    placeholder="{{'index.navigator.signIn.username' | translate}}">
                         </div>
                         <div class="input-group">
                             <input class="form-control" id="password" type="password" ng-model="password"
-                                   bind-key="signIn(username, password)" key="13" maxlength="32"
+                                   ui-keyup="{'enter':'signIn(username, password)'}" maxlength="32"
                                    placeholder="{{'index.navigator.signIn.password' | translate}}">
                         </div>
                         <button type="submit" class="btn disabled" ng-click="signIn(username, password)"
@@ -114,13 +114,13 @@
 <div id="scripts">
     <script src="../../vendor/scripts/jquery.min.js"></script>
     <script src="../../vendor/scripts/flat-ui.min.js"></script>
-    <script src="../../vendor/scripts/underscore-min.js"></script>
     <script src="../../vendor/scripts/bootstrap-notify.min.js"></script>
 
     <script src="../../vendor/scripts/angular.min.js"></script>
     <script src="../../vendor/scripts/angular-route.min.js"></script>
     <script src="../../vendor/scripts/angular-translate.min.js"></script>
     <script src="../../vendor/scripts/angular-translate-loader-static-files.min.js"></script>
+    <script src="../../vendor/scripts/ui-utils.min.js"></script>
 
     <script src="../scripts/main.js"></script>
 </div>

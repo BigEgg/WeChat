@@ -1,6 +1,6 @@
 "use strict";
 var admin = admin || {};
-admin.app = angular.module('adminApp', ['ngRoute', 'pascalprecht.translate']);
+admin.app = angular.module('adminApp', ['ngRoute', 'pascalprecht.translate', 'ui.utils']);
 
 admin.app.run(function ($rootScope, $location, oAuthSrv, $route, notify) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
