@@ -62,6 +62,7 @@ module.exports = function (grunt) {
                     specs: 'src/scripts/spec/**/*Spec.js',
                     vendor: [
                         'vendor/scripts/angular.min.js',
+                        'vendor/scripts/ui-utils.min.js',
                         'vendor/scripts/angular-route.min.js',
                         'vendor/scripts/angular-translate.min.js',
                         'vendor/scripts/angular-translate-loader-static-files.min.js',
