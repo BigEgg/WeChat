@@ -1,4 +1,4 @@
-admin.app.controller('BasicSettingsWeChatCtrl', ['$scope', 'notify', 'weChatBasicSettingsSrv', function ($scope, notify, weChatBasicSettingsSrv) {
+admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasicSettingsSrv', function ($scope, notify, weChatBasicSettingsSrv) {
     $scope.weChatDeveloperInfo = {};
     $scope.weChatDeveloperInfo.appId = '';
     $scope.weChatDeveloperInfo.appSecret = '';

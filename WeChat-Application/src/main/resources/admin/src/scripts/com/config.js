@@ -20,7 +20,7 @@ admin.app.config(function ($routeProvider, $translateProvider) {
             redirectTo: '/basicSettings/weChat'
         })
         .when('/basicsettings/wechat', {
-            controller: 'BasicSettingsWeChatCtrl',
+            controller: 'WeChatBasicSettingsCtrl',
             templateUrl: '../html/views/basicSettings/weChat.html'
         })
         .otherwise({
