@@ -31,7 +31,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="#/dashboard" translate="index.navigator.dashboard.general"></a>
+                        <a href="#/dashboard" id="menu_dashboard_general" translate="index.navigator.dashboard.general"></a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="#/" translate="index.navigator.dashboard.user"></a></li>
@@ -45,7 +45,8 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="#/basicsettings/wechat" translate="index.navigator.basicSettings.wechat"></a>
+                        <a href="#/basicsettings/wechat" id="menu_basic_settings_wechat"
+                           translate="index.navigator.basicSettings.wechat"></a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="#/" translate="index.navigator.basicSettings.conversation"></a></li>
@@ -84,14 +85,15 @@
                 </div>
             </li>
             <li class="dropdown" ng-if="isLoggedIn()" id="menu_user">
-                <a class="dropdown-toggle" data-toggle="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" id="menu_user_username">
                     {{getLoginUsername()}}<b class="caret"></b>
                 </a>
                 <span class="dropdown-arrow"></span>
                 <ul class="dropdown-menu">
                     <li><a href="#" translate="index.navigator.user.bind"></a></li>
                     <li class="divider"></li>
-                    <li><a href="#" ng-click="signOut()" translate="index.navigator.user.signOut"></a></li>
+                    <li><a href="#" id="menu_user_signOut" ng-click="signOut()"
+                           translate="index.navigator.user.signOut"></a></li>
                 </ul>
             </li>
         </ul>

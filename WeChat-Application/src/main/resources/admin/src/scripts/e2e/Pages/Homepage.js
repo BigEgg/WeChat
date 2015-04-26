@@ -20,16 +20,13 @@ var Homepage = function () {
             passwordInput.sendKeys(password);
         };
         this.signIn = function () {
-            var signInButton = element(by.id(LOCATOR_LOGIN_SUBMIT));
-            return signInButton.click();
+            return element(by.id(LOCATOR_LOGIN_SUBMIT)).click();
         };
     };
 
     var Status = function () {
         this.isSignInFormPresent = function () {
-            var form = element(by.id(LOCATOR_LOGIN_FORM));
-
-            return form.isPresent();
+            return element(by.id(LOCATOR_LOGIN_FORM)).isPresent();
         };
         this.isSignInButtonDisabled = function () {
             var signInButton = element(by.id(LOCATOR_LOGIN_SUBMIT));

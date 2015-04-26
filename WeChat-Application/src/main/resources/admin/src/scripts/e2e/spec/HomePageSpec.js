@@ -2,7 +2,7 @@ describe('When open the homepage', function () {
     var constants = require('../constants.js');
     var homepage = require('../pages/Homepage.js');
     var loggedInHomepage = require('../pages/LoggedInHomepage.js');
-    var dashboardPage = require('../pages/dashboard/DashboardPage.js');
+    var generalDashboardPage = require('../pages/dashboard/DashboardPage.js');
 
     beforeEach(function () {
         homepage.actions.navigate();
@@ -11,7 +11,9 @@ describe('When open the homepage', function () {
     it('should disable the submit button if no username input', function () {
         expect(homepage.status.isSignInFormPresent()).toBeTruthy();
         expect(homepage.status.isSignInButtonDisabled()).toBeTruthy();
-        expect(loggedInHomepage.status.isLoggedInMenuPresent()).toBeFalsy();
+        expect(loggedInHomepage.status.isDashboardMenuPresent()).toBeFalsy();
+        expect(loggedInHomepage.status.isBasicSettingsMenuPresent()).toBeFalsy();
+        expect(loggedInHomepage.status.isUserMenuPresent()).toBeFalsy();
     });
 
     it('input should have 32 max-length', function () {
@@ -41,8 +43,11 @@ describe('When open the homepage', function () {
         homepage.actions.fillSignInInfo(constants.LOGIN_USERNAME, constants.LOGIN_PASSWORD);
         homepage.actions.signIn();
 
-        expect(dashboardPage.status.isInThisPage()).toBeTruthy();
+        expect(generalDashboardPage.status.isInThisPage()).toBeTruthy();
         expect(homepage.status.isSignInFormPresent()).toBeFalsy();
-        expect(loggedInHomepage.status.isLoggedInMenuPresent()).toBeTruthy();
+        expect(loggedInHomepage.properties.getLoggedInUsername()).toBe(constants.USERNAME);
+        expect(loggedInHomepage.status.isDashboardMenuPresent()).toBeTruthy();
+        expect(loggedInHomepage.status.isBasicSettingsMenuPresent()).toBeTruthy();
+        expect(loggedInHomepage.status.isUserMenuPresent()).toBeTruthy();
     });
 });

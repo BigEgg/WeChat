@@ -82,9 +82,15 @@ module.exports = function (grunt) {
         },
         express: {
             options: {},
-            start: {
+            test: {
                 options: {
-                    background: true,
+                    delay: 400,
+                    script: 'server.js'
+                }
+            },
+            server: {
+                options: {
+                    port: 8080,
                     script: 'server.js'
                 }
             }
@@ -103,6 +109,6 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['jshint', 'jasmine', 'clean', 'less', 'concat', 'protractor', 'copy']);
     grunt.registerTask('compile', ['jshint', 'jasmine', 'clean', 'less', 'concat', 'copy']);
     grunt.registerTask('unit-test', ['jshint', 'jasmine']);
-    grunt.registerTask('e2e-test', ['jshint', 'jasmine', 'clean', 'less', 'concat', 'protractor']);
-    grunt.registerTask('start-server', ['jshint', 'clean', 'less', 'concat', 'express']);
+    grunt.registerTask('e2e-test', ['jshint', 'jasmine', 'clean', 'less', 'concat', 'express:test', 'protractor']);
+    grunt.registerTask('start-server', ['jshint', 'clean', 'less', 'concat', 'express:server']);
 };
