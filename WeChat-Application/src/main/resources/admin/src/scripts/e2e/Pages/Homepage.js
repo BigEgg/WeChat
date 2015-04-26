@@ -37,7 +37,7 @@ var Homepage = function () {
         };
         this.isInThisPage = function () {
             return browser.getLocationAbsUrl().then(function (url) {
-                return url === '/';
+                return url === '/' || url === '';
             });
         };
     };

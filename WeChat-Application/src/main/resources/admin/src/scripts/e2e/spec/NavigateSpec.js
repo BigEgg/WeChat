@@ -27,5 +27,17 @@ describe('Test the navigate', function () {
             loggedInHomepage.actions.clickGeneralDashboardMenu();
             expect(generalDashboardPage.status.isInThisPage()).toBeTruthy();
         });
+
+
+        it('ensures user can sign out', function () {
+            var homepage = require('../pages/Homepage.js');
+
+            expect(homepage.status.isInThisPage()).toBeFalsy();
+            loggedInHomepage.actions.signOut();
+
+            browser.getLocationAbsUrl().then(function (url) {
+                expect(homepage.status.isInThisPage()).toBeTruthy();
+            });
+        });
     });
 });

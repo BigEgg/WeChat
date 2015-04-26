@@ -39,7 +39,7 @@ describe('When open the homepage', function () {
         expect(homepage.status.isInThisPage()).toBeTruthy();
     });
 
-    it('ensures user can log in', function () {
+    it('ensures user can sign in', function () {
         homepage.actions.fillSignInInfo(constants.LOGIN_USERNAME, constants.LOGIN_PASSWORD);
         homepage.actions.signIn();
 

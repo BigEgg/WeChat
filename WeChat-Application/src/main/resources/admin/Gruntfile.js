@@ -76,7 +76,7 @@ module.exports = function (grunt) {
             options: {
                 configFile: "protractor.conf.js",
                 keepAlive: false,
-                noColor: true
+                noColor: false
             },
             your_target: {}
         },
@@ -90,7 +90,6 @@ module.exports = function (grunt) {
             },
             server: {
                 options: {
-                    port: 8080,
                     script: 'server.js'
                 }
             }

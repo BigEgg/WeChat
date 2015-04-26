@@ -1,6 +1,4 @@
 var LoggedInHomepage = function () {
-    var LOCATOR_LOGIN_FORM = 'menu_signin_form';
-
     var LOCATOR_MENU_DASHBOARD = 'menu_dashboard';
     var LOCATOR_MENU_DASHBOARD_GENERAL = 'menu_dashboard_general';
 
@@ -19,6 +17,10 @@ var LoggedInHomepage = function () {
         this.clickGeneralDashboardMenu = function () {
             element(by.id(LOCATOR_MENU_DASHBOARD)).click();
             element(by.id(LOCATOR_MENU_DASHBOARD_GENERAL)).click();
+        }
+        this.signOut = function () {
+            element(by.id(LOCATOR_MENU_USER)).click();
+            element(by.id(LOCATOR_MENU_USER_SIGN_OUT)).click();
         }
     };
 
