@@ -49,8 +49,18 @@ public class AdminResourceService {
         return getCachedResources(AdminResourceKey.WECHAT_APP_SECRET);
     }
 
+    public void setAppSecret(final String appSecret) {
+        cacheManager.expire(AdminResourceKey.WECHAT_APP_SECRET.toString());
+        setResource(AdminResourceKey.WECHAT_APP_SECRET, appSecret);
+    }
+
     public String getAppId() {
         return getCachedResources(AdminResourceKey.WECHAT_APP_ID);
+    }
+
+    public void setAppId(final String appId) {
+        cacheManager.expire(AdminResourceKey.WECHAT_APP_SECRET.toString());
+        setResource(AdminResourceKey.WECHAT_APP_SECRET, appId);
     }
 
     public boolean getConnectionStatus() {

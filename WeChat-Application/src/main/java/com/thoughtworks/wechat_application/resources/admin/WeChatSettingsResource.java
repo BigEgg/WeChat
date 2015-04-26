@@ -3,6 +3,7 @@ package com.thoughtworks.wechat_application.resources.admin;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.wechat_application.api.admin.wechat.DeveloperInfoResponse;
+import com.thoughtworks.wechat_application.api.admin.wechat.NewDeveloperInfoRequest;
 import com.thoughtworks.wechat_application.api.admin.wechat.ServerInfoResponse;
 import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -67,6 +69,18 @@ public class WeChatSettingsResource {
 
         return new DeveloperInfoResponse(adminResourceService.getAppId(), adminResourceService.getAppSecret());
     }
+
+    @POST
+    @Path("/developer")
+    public DeveloperInfoResponse setDeveloperInfo(@QueryParam("access_token") final String accessToken,
+                                                  @NotNull final NewDeveloperInfoRequest newDeveloperInfoRequest) {
+        checkAccessToken(accessToken);
+
+        adminResourceService.setAppId(newDeveloperInfoRequest.getAppId());
+        adminResourceService.setAppSecret(newDeveloperInfoRequest.getAppSecret());
+        return new DeveloperInfoResponse(adminResourceService.getAppId(), adminResourceService.getAppSecret());
+    }
+
 
     private void checkAccessToken(final String accessToken) {
         final Optional<OAuthClient> oAuthClient = oAuthProvider.getOAuthClient(accessToken);
