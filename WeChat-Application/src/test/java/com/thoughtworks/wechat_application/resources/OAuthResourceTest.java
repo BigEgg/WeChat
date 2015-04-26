@@ -59,9 +59,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         when(oAuthProvider.newOAuth(admin)).thenReturn(createOAuthInfo1());
         when(eventLogService.oAuth()).thenReturn(mock(SystemEventLogService.OAuthSystemEventLogService.class));
 
-        final OAuthSignInRequest request = new OAuthSignInRequest();
-        request.setClientId("abc@abc.com");
-        request.setClientSecret("password");
+        final OAuthSignInRequest request = deserializeFixture("fixtures/uas/oauth/OAuthSignInRequest.json", OAuthSignInRequest.class);
         final Response response = resources.client().target("/uas/oauth/accesstoken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
 
@@ -78,9 +76,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         when(oAuthClientService.SignIn("abc@abc.com", "password")).thenReturn(Optional.empty());
         when(oAuthProvider.newOAuth(createAdmin())).thenReturn(createOAuthInfo1());
 
-        final OAuthSignInRequest request = new OAuthSignInRequest();
-        request.setClientId("abc@abc.com");
-        request.setClientSecret("password");
+        final OAuthSignInRequest request = deserializeFixture("fixtures/uas/oauth/OAuthSignInRequest.json", OAuthSignInRequest.class);
         final Response response = resources.client().target("/uas/oauth/accesstoken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
 
@@ -94,10 +90,7 @@ public class OAuthResourceTest extends ResourceTestBase {
         when(oAuthProvider.refreshAccessToken("access_token", "refresh_token")).thenReturn(Optional.of(createOAuthInfo2()));
         when(eventLogService.oAuth()).thenReturn(mock(SystemEventLogService.OAuthSystemEventLogService.class));
 
-        final OAuthRefreshRequest request = new OAuthRefreshRequest();
-        request.setAccessToken("access_token");
-        request.setRefreshToken("refresh_token");
-
+        final OAuthRefreshRequest request = deserializeFixture("fixtures/uas/oauth/OAuthRefreshRequest.json", OAuthRefreshRequest.class);
         final Response response = resources.client().target("/uas/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
 
@@ -113,10 +106,7 @@ public class OAuthResourceTest extends ResourceTestBase {
     public void return_token_if_refresh_not_valid() throws Exception {
         when(oAuthProvider.refreshAccessToken("access_token", "refresh_token")).thenReturn(Optional.<OAuthInfo>empty());
 
-        final OAuthRefreshRequest request = new OAuthRefreshRequest();
-        request.setAccessToken("access_token");
-        request.setRefreshToken("refresh_token");
-
+        final OAuthRefreshRequest request = deserializeFixture("fixtures/uas/oauth/OAuthRefreshRequest.json", OAuthRefreshRequest.class);
         final Response response = resources.client().target("/uas/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
 
