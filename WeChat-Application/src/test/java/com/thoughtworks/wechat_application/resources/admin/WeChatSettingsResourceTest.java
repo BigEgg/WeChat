@@ -70,7 +70,7 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.<OAuthClient>empty());
 
             final Response response = resource.client().target("/api/admin/wechat/server").queryParam("access_token", "accessToken").request().get();
-            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
+            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.INTERNAL_SERVER_ERROR);
         }
 
         @Test
@@ -78,7 +78,7 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createVendor()));
 
             final Response response = resource.client().target("/api/admin/wechat/server").queryParam("access_token", "accessToken").request().get();
-            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
+            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -129,7 +129,7 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.<OAuthClient>empty());
 
             final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request().get();
-            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
+            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.INTERNAL_SERVER_ERROR);
         }
 
         @Test
@@ -137,7 +137,7 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createVendor()));
 
             final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request().get();
-            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
+            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 }

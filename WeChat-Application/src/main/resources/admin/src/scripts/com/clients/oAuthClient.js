@@ -6,12 +6,14 @@ admin.app.factory('oAuthClient', ['$q', 'apiHelper', function ($q, apiHelper) {
 
         apiHelper.post('/uas/oauth/accesstoken', {clientId: clientId, clientSecret: clientSecret}).then(
             function (data) {
-                deferred.resolve(data);
+                if (data.access_token && data.refresh_token) {
+                    deferred.resolve(data);
+                } else {
+                    deferred.reject(new AuthenticateFailedException());
+                }
             },
             function (error) {
-                if (error === 401) {
-                    deferred.reject(new AuthorizeFailedException());
-                } else if (error instanceof Error) {
+                if (error instanceof Error) {
                     deferred.reject(error);
                 } else {
                     deferred.reject(new UnknownException());
@@ -30,12 +32,14 @@ admin.app.factory('oAuthClient', ['$q', 'apiHelper', function ($q, apiHelper) {
             access_token: access_token
         }).then(
             function (data) {
-                deferred.resolve(data.access_token);
+                if (data.access_token && data.refresh_token) {
+                    deferred.resolve(data.access_token);
+                } else {
+                    deferred.reject(new AuthorizeFailedException());
+                }
             },
             function (error) {
-                if (error === 403) {
-                    deferred.reject(new AuthenticateFailedException());
-                } else if (error instanceof Error) {
+                if (error instanceof Error) {
                     deferred.reject(error);
                 } else {
                     deferred.reject(new UnknownException());

@@ -72,7 +72,7 @@ public class WeChatSettingsResource {
         final Optional<OAuthClient> oAuthClient = oAuthProvider.getOAuthClient(accessToken);
         if (!oAuthClient.isPresent() || oAuthClient.get().getRole() != AuthenticateRole.ADMIN) {
             LOGGER.warn("[CheckAccessToken] The access token '{}' is not valid.", accessToken);
-            throw new WebApplicationException(Response.Status.FORBIDDEN);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 }

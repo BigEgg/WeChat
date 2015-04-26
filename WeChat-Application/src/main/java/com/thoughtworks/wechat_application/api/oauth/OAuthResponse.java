@@ -9,6 +9,7 @@ public class OAuthResponse {
     private String refreshToken;
 
     public OAuthResponse() {
+        this("", "");
     }
 
     public OAuthResponse(final String accessToken, final String refreshToken) {

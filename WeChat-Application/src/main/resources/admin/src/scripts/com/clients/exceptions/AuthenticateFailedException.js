@@ -1,6 +1,6 @@
 function AuthenticateFailedException(message) {
     this.name = 'AuthenticateFailedException';
-    this.message = 'oauth.authenticate.failed';
+    this.message = 'error.oauth.signIn.failed';
 }
 AuthenticateFailedException.prototype = new Error();
 AuthenticateFailedException.prototype.constructor = AuthenticateFailedException;

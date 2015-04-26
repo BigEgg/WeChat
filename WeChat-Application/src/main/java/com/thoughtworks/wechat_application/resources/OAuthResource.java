@@ -16,9 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.Optional;
 
 @Singleton
@@ -56,7 +58,7 @@ public class OAuthResource {
             return new OAuthResponse(oAuthInfo.getAccessToken().get(), oAuthInfo.getRefreshToken().get());
         } else {
             LOGGER.info("[AccessToken] Client with clientId: {} and clientSecret: {} authenticate failed.", clientId, clientSecret);
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+            return new OAuthResponse();
         }
     }
 
@@ -75,7 +77,7 @@ public class OAuthResource {
             return new OAuthResponse(oAuthInfo.getAccessToken().get(), oAuthInfo.getRefreshToken().get());
         } else {
             LOGGER.info("[Refresh] Client refresh access token with accessToken: {} and refreshToken: {} authenticate failed.", accessToken, refreshToken);
-            throw new WebApplicationException(Response.Status.FORBIDDEN);
+            return new OAuthResponse();
         }
     }
 }

@@ -69,29 +69,27 @@ describe('OAuth API Helper Test', function () {
         });
 
         describe('for POST method', function () {
-            it('should success when success', inject(function ($rootScope, $q, oAuthApiHelper) {
-                it('should throw Authenticate Failed error', inject(function ($rootScope, $q, oAuthApiHelper) {
-                    spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('');
-                    spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('');
+            it('should throw Authenticate Failed error', inject(function ($rootScope, $q, oAuthApiHelper) {
+                spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('');
+                spyOn(mockOAuthRepository, 'getRefreshToken').and.returnValue('');
 
-                    var onSuccess = false;
-                    var onError = false;
-                    oAuthApiHelper.post('/api/test', {test: 'value'}).then(
-                        function (data) {
-                            onSuccess = true;
-                        },
-                        function (error) {
-                            expect(error instanceof AuthenticateFailedException).toBeTruthy();
-                            onError = true;
-                        }
-                    );
+                var onSuccess = false;
+                var onError = false;
+                oAuthApiHelper.post('/api/test', {test: 'value'}).then(
+                    function (data) {
+                        onSuccess = true;
+                    },
+                    function (error) {
+                        expect(error instanceof AuthenticateFailedException).toBeTruthy();
+                        onError = true;
+                    }
+                );
 
-                    $rootScope.$apply();
-                    expect(onSuccess).toBeFalsy();
-                    expect(onError).toBeTruthy();
-                    expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
-                    expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
-                }));
+                $rootScope.$apply();
+                expect(onSuccess).toBeFalsy();
+                expect(onError).toBeTruthy();
+                expect(mockOAuthRepository.getAccessToken).toHaveBeenCalled();
+                expect(mockOAuthRepository.getRefreshToken).toHaveBeenCalled();
             }));
         });
     });
@@ -138,7 +136,7 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockApiHelper, 'get').and.callFake(function (url) {
                     if (url === '/api/test?access_token=access') {
                         var deferred = $q.defer();
-                        deferred.reject(500);
+                        deferred.reject(403);
                         return deferred.promise;
                     }
                 });
@@ -150,7 +148,7 @@ describe('OAuth API Helper Test', function () {
                         onSuccess = true;
                     },
                     function (error) {
-                        expect(error).toBe(500);
+                        expect(error instanceof UnknownException).toBeTruthy();
                         onError = true;
                     }
                 );
@@ -206,7 +204,7 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockApiHelper, 'post').and.callFake(function (url) {
                     if (url === '/api/test?access_token=access') {
                         var deferred = $q.defer();
-                        deferred.reject(500);
+                        deferred.reject(403);
                         return deferred.promise;
                     }
                 });
@@ -218,7 +216,7 @@ describe('OAuth API Helper Test', function () {
                         onSuccess = true;
                     },
                     function (error) {
-                        expect(error).toBe(500);
+                        expect(error instanceof UnknownException).toBeTruthy();
                         onError = true;
                     }
                 );
@@ -251,7 +249,7 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockApiHelper, 'get').and.callFake(function (url) {
                     if (url === '/api/test?access_token=access') {
                         var deferred = $q.defer();
-                        deferred.reject(403);
+                        deferred.reject(500);
                         return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
@@ -308,12 +306,12 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockApiHelper, 'get').and.callFake(function (url) {
                     if (url === '/api/test?access_token=access') {
                         var deferred = $q.defer();
-                        deferred.reject(403);
+                        deferred.reject(500);
                         return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
                         var deferred = $q.defer();
-                        deferred.reject(500);
+                        deferred.reject(404);
                         return deferred.promise;
                     }
                 });
@@ -332,7 +330,7 @@ describe('OAuth API Helper Test', function () {
                         onSuccess = true;
                     },
                     function (error) {
-                        expect(error).toBe(500);
+                        expect(error instanceof UnknownException).toBeTruthy();
                         onError = true;
                     }
                 );
@@ -367,7 +365,7 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
                     if (url === '/api/test?access_token=access') {
                         var deferred = $q.defer();
-                        deferred.reject(403);
+                        deferred.reject(500);
                         return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
@@ -424,12 +422,12 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
                     if (url === '/api/test?access_token=access') {
                         var deferred = $q.defer();
-                        deferred.reject(403);
+                        deferred.reject(500);
                         return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
                         var deferred = $q.defer();
-                        deferred.reject(500);
+                        deferred.reject(403);
                         return deferred.promise;
                     }
                 });
@@ -448,7 +446,7 @@ describe('OAuth API Helper Test', function () {
                         onSuccess = true;
                     },
                     function (error) {
-                        expect(error).toBe(500);
+                        expect(error instanceof UnknownException).toBeTruthy();
                         onError = true;
                     }
                 );
@@ -482,14 +480,14 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockApiHelper, 'get').and.callFake(function (url) {
                     if (url === '/api/test?access_token=access') {
                         var deferred = $q.defer();
-                        deferred.reject(403);
+                        deferred.reject(500);
                         return deferred.promise;
                     }
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
                         var deferred = $q.defer();
-                        deferred.reject(new AuthenticateFailedException());
+                        deferred.reject(new AuthorizeFailedException());
                         return deferred.promise;
                     }
                 });
@@ -501,7 +499,7 @@ describe('OAuth API Helper Test', function () {
                         onSuccess = true;
                     },
                     function (error) {
-                        expect(error instanceof AuthenticateFailedException).toBeTruthy();
+                        expect(error instanceof AuthorizeFailedException).toBeTruthy();
                         onError = true;
                     }
                 );
@@ -531,14 +529,14 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
                     if (url === '/api/test?access_token=access') {
                         var deferred = $q.defer();
-                        deferred.reject(403);
+                        deferred.reject(500);
                         return deferred.promise;
                     }
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
                         var deferred = $q.defer();
-                        deferred.reject(new AuthenticateFailedException());
+                        deferred.reject(new AuthorizeFailedException());
                         return deferred.promise;
                     }
                 });
@@ -550,7 +548,7 @@ describe('OAuth API Helper Test', function () {
                         onSuccess = true;
                     },
                     function (error) {
-                        expect(error instanceof AuthenticateFailedException).toBeTruthy();
+                        expect(error instanceof AuthorizeFailedException).toBeTruthy();
                         onError = true;
                     }
                 );

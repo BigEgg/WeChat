@@ -82,7 +82,11 @@ public class OAuthResourceTest extends ResourceTestBase {
         request.setClientId("abc@abc.com");
         request.setClientSecret("password");
         final Response response = resources.client().target("/uas/oauth/accesstoken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
-        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.UNAUTHORIZED);
+        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
+
+        final OAuthResponse entity = getResponseEntity(response, OAuthResponse.class);
+        assertThat(entity.getAccessToken()).isEqualTo("");
+        assertThat(entity.getRefreshToken()).isEqualTo("");
     }
 
     @Test
@@ -114,6 +118,10 @@ public class OAuthResourceTest extends ResourceTestBase {
         request.setRefreshToken("refresh_token");
 
         final Response response = resources.client().target("/uas/oauth/refresh").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
-        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.FORBIDDEN);
+        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
+
+        final OAuthResponse entity = getResponseEntity(response, OAuthResponse.class);
+        assertThat(entity.getAccessToken()).isEqualTo("");
+        assertThat(entity.getRefreshToken()).isEqualTo("");
     }
 }

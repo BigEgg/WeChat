@@ -21,7 +21,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                 deferred.resolve(data);
             },
             function (error) {
-                if (error === 403) {
+                if (error === 500) {
                     OAuthClient.refreshAccessToken(access_token, refresh_token).then(
                         function (new_access_token) {
                             oAuthRepository.setAccessToken(new_access_token);
@@ -31,7 +31,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                                     deferred.resolve(data);
                                 },
                                 function (error) {
-                                    deferred.reject(error);
+                                    deferred.reject(new UnknownException());
                                 }
                             );
                         },
@@ -42,7 +42,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                     )
                 }
                 else {
-                    deferred.reject(error)
+                    deferred.reject(new UnknownException());
                 }
             }
         );
@@ -66,7 +66,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                 deferred.resolve(data);
             },
             function (error) {
-                if (error === 403) {
+                if (error === 500) {
                     OAuthClient.refreshAccessToken(access_token, refresh_token).then(
                         function (new_access_token) {
                             var urlWithNewAccessToken = addAccessToken(url, new_access_token);
@@ -76,7 +76,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                                     deferred.resolve(data);
                                 },
                                 function (error) {
-                                    deferred.reject(error);
+                                    deferred.reject(new UnknownException());
                                 }
                             );
                         },
@@ -87,7 +87,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                     )
                 }
                 else {
-                    deferred.reject(error)
+                    deferred.reject(new UnknownException());
                 }
             }
         );

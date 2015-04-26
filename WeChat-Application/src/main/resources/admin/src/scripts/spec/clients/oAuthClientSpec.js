@@ -49,11 +49,11 @@ describe('OAuth Client Test', function () {
             });
         }));
 
-        it('should throw Authorize Failed Error if failed', inject(function ($rootScope, $q, oAuthClient) {
+        it('should throw Authenticate Failed Error if failed', inject(function ($rootScope, $q, oAuthClient) {
             spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
                 if (url === '/uas/oauth/accesstoken' && data.clientId === 'username' && data.clientSecret === 'password') {
                     var deferred = $q.defer();
-                    deferred.reject(401);
+                    deferred.resolve({access_token: '', refresh_token: ''});
                     return deferred.promise;
                 }
             });
@@ -65,7 +65,7 @@ describe('OAuth Client Test', function () {
                     onSuccess = true;
                 },
                 function (error) {
-                    expect(error instanceof AuthorizeFailedException).toBeTruthy();
+                    expect(error instanceof AuthenticateFailedException).toBeTruthy();
                     onError = true;
                 }
             );
@@ -175,7 +175,7 @@ describe('OAuth Client Test', function () {
             spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
                 if (url === '/uas/oauth/refresh' && data.access_token === 'access' && data.refresh_token === 'refresh') {
                     var deferred = $q.defer();
-                    deferred.reject(403);
+                    deferred.resolve({access_token: '', refresh_token: ''});
                     return deferred.promise;
                 }
             });
@@ -187,7 +187,7 @@ describe('OAuth Client Test', function () {
                     onSuccess = true;
                 },
                 function (error) {
-                    expect(error instanceof AuthenticateFailedException).toBeTruthy();
+                    expect(error instanceof AuthorizeFailedException).toBeTruthy();
                     onError = true;
                 }
             );
