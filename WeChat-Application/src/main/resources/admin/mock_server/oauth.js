@@ -5,7 +5,10 @@ exports.accessToken = function (req, res) {
             refresh_token: 'refresh'
         });
     } else {
-        res.sendStatus(401);
+        res.send({
+            access_token: '',
+            refresh_token: ''
+        });
     }
 };
 
@@ -16,6 +19,9 @@ exports.refresh = function (req, res) {
             refresh_token: 'refresh'
         });
     } else {
-        res.sendStatus(401);
+        res.send({
+            access_token: '',
+            refresh_token: ''
+        });
     }
 };

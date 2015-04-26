@@ -85,12 +85,12 @@ module.exports = function (grunt) {
             test: {
                 options: {
                     delay: 400,
-                    script: 'server.js'
+                    script: 'mock_server/server.js'
                 }
             },
             server: {
                 options: {
-                    script: 'server.js'
+                    script: 'mock_server/server.js'
                 }
             }
         }

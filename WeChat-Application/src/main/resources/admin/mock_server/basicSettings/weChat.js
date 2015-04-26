@@ -6,17 +6,30 @@ exports.serverStatus = function (req, res) {
             connected: true
         });
     } else {
-        res.sendStatus(403);
+        res.sendStatus(500);
     }
 };
 
-exports.developerInfo = function (req, res) {
+exports.getDeveloperInfo = function (req, res) {
     if (req.query.access_token === 'access') {
         res.send({
-            app_id: 'app_id',
-            app_secret: 'app_secret'
+            app_id: '',
+            app_secret: ''
         });
     } else {
-        res.sendStatus(403);
+        res.sendStatus(500);
+    }
+};
+
+exports.setDeveloperInfo = function (req, res) {
+    if (req.query.access_token === 'access'
+        && req.body.app_id
+        && req.body.app_secret) {
+        res.send({
+            app_id: req.body.app_id,
+            app_secret: req.body.app_secret
+        });
+    } else {
+        res.sendStatus(500);
     }
 };

@@ -1,7 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    oAuth = require('./mock_server/oauth'),
-    WeChatSettings = require('./mock_server/basicSettings/weChat');
+    oAuth = require('./oauth'),
+    WeChatSettings = require('./basicSettings/weChat');
 
 var app = express();
 app.locals.title = 'Mock Admin Site';
@@ -15,6 +15,7 @@ app.use('/i18n', express.static(__dirname + '/i18n'));
 app.post('/uas/oauth/accesstoken', oAuth.accessToken);
 
 app.get('/api/admin/wechat/server', WeChatSettings.serverStatus);
-app.get('/api/admin/wechat/developer', WeChatSettings.developerInfo);
+app.get('/api/admin/wechat/developer', WeChatSettings.getDeveloperInfo);
+app.post('/api/admin/wechat/developer', WeChatSettings.setDeveloperInfo);
 
 app.listen(3000);
