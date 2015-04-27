@@ -43,6 +43,48 @@ admin.app.factory('apiHelper', ['$http', '$window', '$q', '$timeout', function (
         return deferred.promise;
     };
 
+    ApiHelper.put = function (url, data) {
+        var deferred = $q.defer();
+        $timeout(function () {
+            deferred.reject(new TimeOutException());
+        }, 3000);
+
+        $http.put(url, data)
+            .success(function (data, status, headers, config) {
+                deferred.resolve(data);
+            })
+            .error(function (data, status, headers, config) {
+                if (status === 404) {
+                    deferred.reject(new BadNetworkException());
+                } else {
+                    deferred.reject(status);
+                }
+            });
+
+        return deferred.promise;
+    };
+
+    ApiHelper.patch = function (url, data) {
+        var deferred = $q.defer();
+        $timeout(function () {
+            deferred.reject(new TimeOutException());
+        }, 3000);
+
+        $http.patch(url, data)
+            .success(function (data, status, headers, config) {
+                deferred.resolve(data);
+            })
+            .error(function (data, status, headers, config) {
+                if (status === 404) {
+                    deferred.reject(new BadNetworkException());
+                } else {
+                    deferred.reject(status);
+                }
+            });
+
+        return deferred.promise;
+    };
+
     ApiHelper.addParameterToURL = function (url, key, value) {
         key = encodeURI(key);
         value = encodeURI(value);

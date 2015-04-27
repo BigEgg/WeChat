@@ -70,7 +70,7 @@ public class WeChatSettingsResource {
         return new DeveloperInfoResponse(adminResourceService.getAppId(), adminResourceService.getAppSecret());
     }
 
-    @POST
+    @PUT
     @Path("/developer")
     public DeveloperInfoResponse setDeveloperInfo(@QueryParam("access_token") final String accessToken,
                                                   @NotNull final NewDeveloperInfoRequest newDeveloperInfoRequest) {
