@@ -1,7 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    oAuth = require('./oauth'),
-    WeChatSettings = require('./basicSettings/weChat');
+    oAuth = require('./mock_server/oauth'),
+    WeChatSettings = require('./mock_server/basicSettings/weChat');
 
 var app = express();
 app.locals.title = 'Mock Admin Site';

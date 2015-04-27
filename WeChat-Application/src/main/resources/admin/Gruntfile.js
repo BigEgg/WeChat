@@ -14,7 +14,7 @@ module.exports = function (grunt) {
         copy: {
             build: {
                 cwd: SRC_DIR,
-                src: ['**', '!scripts/com/**/*.js', '!scripts/spec/**/*.js', '!styles/less/**'],
+                src: ['**', '!scripts/com/**/*.js', '!scripts/spec/**/*.js', '!scripts/e2e/**/*.js', '!styles/less/**'],
                 dest: BUILD_DIR,
                 expand: true
             }
@@ -85,12 +85,12 @@ module.exports = function (grunt) {
             test: {
                 options: {
                     delay: 400,
-                    script: 'mock_server/server.js'
+                    script: 'server.js'
                 }
             },
             server: {
                 options: {
-                    script: 'mock_server/server.js'
+                    script: 'server.js'
                 }
             }
         }
@@ -105,7 +105,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-protractor-runner');
 
-    grunt.registerTask('default', ['jshint', 'jasmine', 'clean', 'less', 'concat', 'protractor', 'copy']);
+    grunt.registerTask('default', ['jshint', 'jasmine', 'clean', 'less', 'concat', 'express:test', 'protractor', 'copy']);
     grunt.registerTask('compile', ['jshint', 'jasmine', 'clean', 'less', 'concat', 'copy']);
     grunt.registerTask('unit-test', ['jshint', 'jasmine']);
     grunt.registerTask('e2e-test', ['jshint', 'jasmine', 'clean', 'less', 'concat', 'express:test', 'protractor']);
