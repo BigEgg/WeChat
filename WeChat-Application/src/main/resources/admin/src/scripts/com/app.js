@@ -1,4 +1,6 @@
-"use strict";
+/*jshint -W097 */
+'use strict';
+
 var admin = admin || {};
 admin.app = angular.module('adminApp', ['ngRoute', 'pascalprecht.translate', 'ui.utils']);
 

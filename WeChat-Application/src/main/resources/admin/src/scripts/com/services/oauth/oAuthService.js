@@ -31,5 +31,5 @@ admin.app.service('oAuthSrv', ['$q', 'oAuthRepository', 'oAuthClient', function 
 
     this.getUsername = function () {
         return oAuthRepository.getUsername();
-    }
+    };
 }]);

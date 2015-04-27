@@ -35,7 +35,8 @@ module.exports = function (grunt) {
         jshint: {
             all: [
                 'Gruntfile.js',
-                SRC_DIR + 'com/**/*.js'
+                SRC_DIR + 'scripts/com/**/*.js',
+                'mock_server/**/*.js'
             ],
             options: {
                 reporter: require('jshint-stylish'),

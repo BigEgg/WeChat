@@ -7,8 +7,7 @@ admin.app.controller('NavigateCtrl', ['$scope', '$rootScope', '$location', 'oAut
     };
 
     $scope.signIn = function (username, password) {
-        if ((username && username.length > 32)
-            || (password && password.length > 32)) {
+        if ((username && username.length > 32) || (password && password.length > 32)) {
             return;
         }
 
@@ -16,7 +15,7 @@ admin.app.controller('NavigateCtrl', ['$scope', '$rootScope', '$location', 'oAut
         oAuthSrv.signIn(username, password).then(
             function (name) {
                 $scope.status.logging = false;
-                $location.path('/dashboard')
+                $location.path('/dashboard');
             },
             function (e) {
                 $scope.status.logging = false;
@@ -35,5 +34,5 @@ admin.app.controller('NavigateCtrl', ['$scope', '$rootScope', '$location', 'oAut
 
     $scope.getLoginUsername = function () {
         return oAuthSrv.getUsername();
-    }
+    };
 }]);

@@ -39,7 +39,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                             oAuthRepository.clearData();
                             deferred.reject(error);
                         }
-                    )
+                    );
                 }
                 else {
                     deferred.reject(new UnknownException());
@@ -84,7 +84,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                             oAuthRepository.clearData();
                             deferred.reject(error);
                         }
-                    )
+                    );
                 }
                 else {
                     deferred.reject(new UnknownException());
@@ -129,7 +129,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                             oAuthRepository.clearData();
                             deferred.reject(error);
                         }
-                    )
+                    );
                 }
                 else {
                     deferred.reject(new UnknownException());
@@ -174,7 +174,7 @@ admin.app.factory('oAuthApiHelper', ['$q', 'apiHelper', 'oAuthClient', 'oAuthRep
                             oAuthRepository.clearData();
                             deferred.reject(error);
                         }
-                    )
+                    );
                 }
                 else {
                     deferred.reject(new UnknownException());
