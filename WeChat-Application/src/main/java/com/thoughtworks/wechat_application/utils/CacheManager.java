@@ -3,9 +3,9 @@ package com.thoughtworks.wechat_application.utils;
 import com.google.inject.Singleton;
 import org.joda.time.DateTime;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -17,7 +17,7 @@ public class CacheManager {
     private final Map<String, CacheObject> caches;
 
     public CacheManager() {
-        caches = new HashMap<>();
+        caches = new ConcurrentHashMap<>();
     }
 
     public void put(String key, Object value) {
