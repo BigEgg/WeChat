@@ -23,7 +23,7 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
             },
             function (error) {
                 $scope.status.statusGetting = false;
-                if (error instanceof AuthenticateFailedException) {
+                if (error instanceof AuthorizeFailedException) {
                     notify.danger(error.message);
                 }
                 else {

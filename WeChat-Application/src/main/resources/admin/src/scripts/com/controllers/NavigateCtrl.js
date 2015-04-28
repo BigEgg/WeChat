@@ -19,7 +19,7 @@ admin.app.controller('NavigateCtrl', ['$scope', '$rootScope', '$location', 'oAut
             },
             function (e) {
                 $scope.status.logging = false;
-                if (e instanceof AuthorizeFailedException) {
+                if (e instanceof AuthenticateFailedException) {
                     notify.warning(e.message);
                 } else {
                     notify.danger(e.message);

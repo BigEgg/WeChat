@@ -179,8 +179,8 @@ describe('WeChat Basic Settings Controller Test', function () {
                             connected: true
                         });
                     }
-                    if (statusType === 'authenticate') {
-                        deferred.reject(new AuthenticateFailedException());
+                    if (statusType === 'authorize') {
+                        deferred.reject(new AuthorizeFailedException());
                     }
                     if (statusType === 'unknown') {
                         deferred.reject(new UnknownException());
@@ -213,7 +213,7 @@ describe('WeChat Basic Settings Controller Test', function () {
 
             it('when authenticate failed get server status', inject(function ($rootScope, $q) {
                 spyOn(notify, 'danger');
-                statusType = 'authenticate';
+                statusType = 'authorize';
 
                 $scope.getServerStatus();
                 expect($scope.status.statusGetting).toBeTruthy();
@@ -223,7 +223,7 @@ describe('WeChat Basic Settings Controller Test', function () {
                 expect(notify.danger).toHaveBeenCalled();
             }));
 
-            it('when authenticate failed get server status', inject(function ($rootScope, $q) {
+            it('when other failed get server status', inject(function ($rootScope, $q) {
                 spyOn(notify, 'warning');
                 statusType = 'unknown';
 

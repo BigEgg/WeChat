@@ -84,10 +84,10 @@ describe('Navigate Controller Test', function () {
             expect($location.path).toHaveBeenCalledWith('/dashboard');
         }));
 
-        it('when authorize failed', inject(function ($q, $rootScope) {
+        it('when authenticate failed', inject(function ($q, $rootScope) {
             spyOn(oAuthSrv, 'signIn').and.callFake(function () {
                 var deferred = $q.defer();
-                deferred.reject(new AuthorizeFailedException());
+                deferred.reject(new AuthenticateFailedException());
                 return deferred.promise;
             });
             spyOn(notify, 'warning');
