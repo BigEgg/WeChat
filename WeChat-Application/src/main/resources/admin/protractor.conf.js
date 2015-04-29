@@ -10,6 +10,8 @@ exports.config = {
         maxInstances: 5
     },
 
+    chromeDriver: 'node_modules/chromedriver/lib/chromedriver/chromedriver',
+
     restartBrowserBetweenTests: true,
 
     specs: [
