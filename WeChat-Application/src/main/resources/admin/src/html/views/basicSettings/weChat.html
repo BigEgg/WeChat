@@ -13,9 +13,13 @@
                        translate="basicSettings.weChat.developerId.appId"></label>
 
                 <div class="col-xs-9">
-                    <input id="inputAppId" type="text" class="form-control"
-                           placeholder="{{'basicSettings.weChat.developerId.appId' | translate}}"
-                           ng-model="weChatDeveloperInfo.appId">
+                    <label id="labelAppId"
+                           style="height: 42px;  padding: 8px 12px; margin: 0;  font-family: Lato,Helvetica,Arial,sans-serif;  font-size: 15px;  line-height: 1.467;"
+                           ng-hide="weChatDeveloperInfo.isEditing">{{weChatDeveloperInfo.appId}}</label>
+                    <input id="inputAppId" type="text" class="form-control" maxlength="32"
+                           ng-class="{disabled: status.savingDeveloperInfo}"
+                           ng-show="weChatDeveloperInfo.isEditing" ng-model="weChatDeveloperInfo.new_appId"
+                           placeholder="{{'basicSettings.weChat.developerId.appId' | translate}}">
                 </div>
             </div>
             <div class="form-group">
@@ -23,18 +27,32 @@
                        translate="basicSettings.weChat.developerId.appSecret"></label>
 
                 <div class="col-xs-9">
-                    <input id="inputAppSecret" type="text" class="form-control"
-                           placeholder="{{'basicSettings.weChat.developerId.appSecret' | translate}}"
-                           ng-model="weChatDeveloperInfo.appSecret">
+                    <label id="labelAppSecret"
+                           style="height: 42px;  padding: 8px 12px; margin: 0;  font-family: Lato,Helvetica,Arial,sans-serif;  font-size: 15px;  line-height: 1.467;"
+                           ng-hide="weChatDeveloperInfo.isEditing">{{weChatDeveloperInfo.appSecret}}</label>
+                    <input id="inputAppSecret" type="text" class="form-control" maxlength="32"
+                           ng-class="{disabled: status.savingDeveloperInfo}"
+                           ng-show="weChatDeveloperInfo.isEditing" ng-model="weChatDeveloperInfo.new_appSecret"
+                           placeholder="{{'basicSettings.weChat.developerId.appSecret' | translate}}">
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-9 remark">
+                <div class="col-xs-6 remark">
                     <small translate="basicSettings.weChat.developerId.remark"></small>
                 </div>
+                <div class="col-xs-2 col-xs-offset-4">
+                    <a class="btn btn-block btn-lg btn-warning settingSubmitButton" ng-click="startEditDeveloperInfo()"
+                       translate="basicSettings.weChat.developerId.edit" ng-hide="weChatDeveloperInfo.isEditing"></a>
+                </div>
+                <div class="col-xs-2 col-xs-offset-1">
+                    <a class="btn btn-block btn-lg btn-warning settingSubmitButton" ng-click="cancelEditDeveloperInfo()"
+                       translate="basicSettings.weChat.developerId.cancel" ng-show="weChatDeveloperInfo.isEditing"
+                       ng-class="{disabled: !weChatDeveloperInfo.appId || !weChatDeveloperInfo.appSecret || status.savingDeveloperInfo}"></a>
+                </div>
                 <div class="col-xs-3">
-                    <a class="btn btn-block btn-lg btn-primary settingSubmitButton"
-                       translate="basicSettings.weChat.developerId.submit"></a>
+                    <a class="btn btn-block btn-lg btn-danger settingSubmitButton" ng-click="saveNewDeveloperInfo()"
+                       translate="basicSettings.weChat.developerId.submit" ng-show="weChatDeveloperInfo.isEditing"
+                       ng-class="{disabled: !weChatDeveloperInfo.new_appId || !weChatDeveloperInfo.new_appSecret || status.savingDeveloperInfo}"></a>
                 </div>
             </div>
         </div>

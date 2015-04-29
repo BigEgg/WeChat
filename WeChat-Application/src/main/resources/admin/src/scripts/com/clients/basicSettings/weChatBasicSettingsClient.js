@@ -39,5 +39,27 @@ admin.app.factory('weChatBasicSettingsClient', ['$q', 'oAuthApiHelper', function
         return deferred.promise;
     };
 
+    WeChatBasicSettingsClient.setDeveloperInfo = function (app_id, app_secret) {
+        var deferred = $q.defer();
+
+        oAuthApiHelper.put('/api/admin/wechat/developer', {
+            app_id: app_id,
+            app_secret: app_secret
+        }).then(
+            function (data) {
+                deferred.resolve(data);
+            },
+            function (error) {
+                if (error instanceof Error) {
+                    deferred.reject(error);
+                } else {
+                    deferred.reject(new UnknownException());
+                }
+            }
+        );
+
+        return deferred.promise;
+    };
+
     return WeChatBasicSettingsClient;
 }]);

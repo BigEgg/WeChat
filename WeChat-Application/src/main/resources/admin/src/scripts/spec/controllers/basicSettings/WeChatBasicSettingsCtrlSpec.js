@@ -64,7 +64,7 @@ describe('WeChat Basic Settings Controller Test', function () {
         expect($scope.weChatServerStatus.appToken).toBe('ABCDE_TOKEN');
         expect($scope.weChatServerStatus.connectionStatus).toBeTruthy();
 
-        expect($scope.status.statusGetting).toBeFalsy();
+        expect($scope.status.gettingStatus).toBeFalsy();
     }));
 
     it('should initiate part data when only get developer info', inject(function ($rootScope, $q, $controller) {
@@ -105,7 +105,7 @@ describe('WeChat Basic Settings Controller Test', function () {
         expect($scope.weChatServerStatus.appToken).toBe('');
         expect($scope.weChatServerStatus.connectionStatus).toBeFalsy();
 
-        expect($scope.status.statusGetting).toBeFalsy();
+        expect($scope.status.gettingStatus).toBeFalsy();
     }));
 
     it('should have default data when can not get developer info', inject(function ($rootScope, $q, $controller) {
@@ -147,7 +147,7 @@ describe('WeChat Basic Settings Controller Test', function () {
         expect($scope.weChatServerStatus.appToken).toBe('');
         expect($scope.weChatServerStatus.connectionStatus).toBeFalsy();
 
-        expect($scope.status.statusGetting).toBeFalsy();
+        expect($scope.status.gettingStatus).toBeFalsy();
     }));
 
     describe('after initiation', function () {
@@ -201,10 +201,10 @@ describe('WeChat Basic Settings Controller Test', function () {
                 statusType = 'data2';
 
                 $scope.getServerStatus();
-                expect($scope.status.statusGetting).toBeTruthy();
+                expect($scope.status.gettingStatus).toBeTruthy();
 
                 $rootScope.$apply();
-                expect($scope.status.statusGetting).toBeFalsy();
+                expect($scope.status.gettingStatus).toBeFalsy();
 
                 expect($scope.weChatServerStatus.entryPoint).toBe('http://localhost:3001/wechat');
                 expect($scope.weChatServerStatus.appToken).toBe('ABCDE_TOKEN2');
@@ -216,10 +216,10 @@ describe('WeChat Basic Settings Controller Test', function () {
                 statusType = 'authorize';
 
                 $scope.getServerStatus();
-                expect($scope.status.statusGetting).toBeTruthy();
+                expect($scope.status.gettingStatus).toBeTruthy();
 
                 $rootScope.$apply();
-                expect($scope.status.statusGetting).toBeFalsy();
+                expect($scope.status.gettingStatus).toBeFalsy();
                 expect(notify.danger).toHaveBeenCalled();
             }));
 
@@ -228,10 +228,10 @@ describe('WeChat Basic Settings Controller Test', function () {
                 statusType = 'unknown';
 
                 $scope.getServerStatus();
-                expect($scope.status.statusGetting).toBeTruthy();
+                expect($scope.status.gettingStatus).toBeTruthy();
 
                 $rootScope.$apply();
-                expect($scope.status.statusGetting).toBeFalsy();
+                expect($scope.status.gettingStatus).toBeFalsy();
                 expect(notify.warning).toHaveBeenCalled();
             }));
         })

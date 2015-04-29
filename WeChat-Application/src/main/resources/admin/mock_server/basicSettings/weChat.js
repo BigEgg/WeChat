@@ -22,9 +22,12 @@ exports.getDeveloperInfo = function (req, res) {
 };
 
 exports.setDeveloperInfo = function (req, res) {
-    if (req.query.access_token === 'access'
-        && req.body.app_id
-        && req.body.app_secret) {
+    if (!req.body.app_id || !req.body.app_secret) {
+        res.sendStatus(400);
+        return;
+    }
+
+    if (req.query.access_token === 'access') {
         res.send({
             app_id: req.body.app_id,
             app_secret: req.body.app_secret

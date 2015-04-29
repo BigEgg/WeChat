@@ -2,18 +2,19 @@ describe('WeChat Basic Settings Service Test', function () {
     var mockWeChatBasicSettingsClient;
 
     beforeEach(angular.mock.module('adminApp', function ($provide, $translateProvider) {
-            ignoreTranslate($provide, $translateProvider);
-            ignoreRoute($provide);
+        ignoreTranslate($provide, $translateProvider);
+        ignoreRoute($provide);
 
-            mockWeChatBasicSettingsClient = {
-                getServerStatus: function () {
-                },
-                getDeveloperInfo: function () {
-                }
-            };
-            $provide.value('weChatBasicSettingsClient', mockWeChatBasicSettingsClient);
-        })
-    );
+        mockWeChatBasicSettingsClient = {
+            getServerStatus: function () {
+            },
+            getDeveloperInfo: function () {
+            },
+            setDeveloperInfo: function () {
+            }
+        };
+        $provide.value('weChatBasicSettingsClient', mockWeChatBasicSettingsClient);
+    }));
 
     describe('when get WeChat server status', function () {
         it('return status when success', inject(function ($rootScope, $q, weChatBasicSettingsSrv) {
@@ -126,6 +127,62 @@ describe('WeChat Basic Settings Service Test', function () {
             expect(onSuccess).toBeFalsy();
             expect(onFailed).toBeTruthy();
             expect(mockWeChatBasicSettingsClient.getDeveloperInfo).toHaveBeenCalled();
+        }));
+    });
+
+    describe('when set WeChat developer info', function () {
+        it('return status when success', inject(function ($rootScope, $q, weChatBasicSettingsSrv) {
+            spyOn(mockWeChatBasicSettingsClient, 'setDeveloperInfo').and.callFake(function (app_id, app_secret) {
+                var deferred = $q.defer();
+                deferred.resolve({
+                    app_id: app_id,
+                    app_secret: app_secret
+                });
+                return deferred.promise;
+            });
+
+            var onSuccess = false;
+            var onFailed = false;
+            weChatBasicSettingsSrv.setDeveloperInfo('app_id', 'app_secret').then(
+                function (data) {
+                    expect(data.app_id).toBe('app_id');
+                    expect(data.app_secret).toBe('app_secret');
+                    onSuccess = true;
+                },
+                function (error) {
+                    onFailed = true;
+                }
+            );
+
+            $rootScope.$apply();
+            expect(onSuccess).toBeTruthy();
+            expect(onFailed).toBeFalsy();
+            expect(mockWeChatBasicSettingsClient.setDeveloperInfo).toHaveBeenCalledWith('app_id', 'app_secret');
+        }));
+
+        it('return error when failed', inject(function ($rootScope, $q, weChatBasicSettingsSrv) {
+            spyOn(mockWeChatBasicSettingsClient, 'setDeveloperInfo').and.callFake(function (app_id, app_secret) {
+                var deferred = $q.defer();
+                deferred.reject(new UnknownException());
+                return deferred.promise;
+            });
+
+            var onSuccess = false;
+            var onFailed = false;
+            weChatBasicSettingsSrv.setDeveloperInfo('app_id', 'app_secret').then(
+                function (data) {
+                    onSuccess = true;
+                },
+                function (error) {
+                    expect(error instanceof UnknownException).toBeTruthy();
+                    onFailed = true;
+                }
+            );
+
+            $rootScope.$apply();
+            expect(onSuccess).toBeFalsy();
+            expect(onFailed).toBeTruthy();
+            expect(mockWeChatBasicSettingsClient.setDeveloperInfo).toHaveBeenCalledWith('app_id', 'app_secret');
         }));
     });
 });
