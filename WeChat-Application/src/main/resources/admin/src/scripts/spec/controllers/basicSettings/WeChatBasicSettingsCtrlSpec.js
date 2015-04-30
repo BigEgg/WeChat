@@ -9,7 +9,9 @@ describe('WeChat Basic Settings Controller Test', function () {
     beforeEach(inject(function ($rootScope) {
         $scope = $rootScope.$new();
         weChatBasicSettingsSrv = {
-            getServerStatus: function () {
+            getConnectionStatus: function () {
+            },
+            getServerInfo: function () {
             },
             getDeveloperInfo: function () {
             },
@@ -25,6 +27,14 @@ describe('WeChat Basic Settings Controller Test', function () {
     }));
 
     it('should initiate data when can get both developer info and server status', inject(function ($rootScope, $q, $controller) {
+        spyOn(weChatBasicSettingsSrv, 'getConnectionStatus').and.callFake(function () {
+            var deferred = $q.defer();
+            deferred.resolve({
+                server_connected: true,
+                api_status: false
+            });
+            return deferred.promise;
+        });
         spyOn(weChatBasicSettingsSrv, 'getDeveloperInfo').and.callFake(function () {
             var deferred = $q.defer();
             deferred.resolve({
@@ -33,12 +43,11 @@ describe('WeChat Basic Settings Controller Test', function () {
             });
             return deferred.promise;
         });
-        spyOn(weChatBasicSettingsSrv, 'getServerStatus').and.callFake(function () {
+        spyOn(weChatBasicSettingsSrv, 'getServerInfo').and.callFake(function () {
             var deferred = $q.defer();
             deferred.resolve({
                 entry_point: 'http://localhost:3000/wechat',
-                token: 'ABCDE_TOKEN',
-                connected: true
+                token: 'ABCDE_TOKEN'
             });
             return deferred.promise;
         });
@@ -51,8 +60,13 @@ describe('WeChat Basic Settings Controller Test', function () {
 
         $rootScope.$apply();
 
+        expect(weChatBasicSettingsSrv.getConnectionStatus).toHaveBeenCalled();
         expect(weChatBasicSettingsSrv.getDeveloperInfo).toHaveBeenCalled();
-        expect(weChatBasicSettingsSrv.getServerStatus).toHaveBeenCalled();
+        expect(weChatBasicSettingsSrv.getServerInfo).toHaveBeenCalled();
+
+        expect($scope.weChatConnectionStatus).not.toBeNull();
+        expect($scope.weChatConnectionStatus.serverStatus).toBeTruthy();
+        expect($scope.weChatConnectionStatus.apiStatus).toBeFalsy();
 
         expect($scope.weChatDeveloperInfo).not.toBeNull();
         expect($scope.weChatDeveloperInfo.isEditing).toBeFalsy();
@@ -61,19 +75,24 @@ describe('WeChat Basic Settings Controller Test', function () {
         expect($scope.weChatDeveloperInfo.new_appId).toBe('');
         expect($scope.weChatDeveloperInfo.new_appSecret).toBe('');
 
-        expect($scope.status).not.toBeNull();
-        expect($scope.status.loading).toBeFalsy();
-
         expect($scope.weChatServerStatus).not.toBeNull();
         expect($scope.weChatServerStatus.entryPoint).toBe('http://localhost:3000/wechat');
         expect($scope.weChatServerStatus.appToken).toBe('ABCDE_TOKEN');
-        expect($scope.weChatServerStatus.connectionStatus).toBeTruthy();
 
+        expect($scope.status).not.toBeNull();
         expect($scope.status.gettingStatus).toBeFalsy();
         expect($scope.status.savingDeveloperInfo).toBeFalsy();
     }));
 
     it('should initiate part data when only get developer info', inject(function ($rootScope, $q, $controller) {
+        spyOn(weChatBasicSettingsSrv, 'getConnectionStatus').and.callFake(function () {
+            var deferred = $q.defer();
+            deferred.resolve({
+                server_connected: true,
+                api_status: false
+            });
+            return deferred.promise;
+        });
         spyOn(weChatBasicSettingsSrv, 'getDeveloperInfo').and.callFake(function () {
             var deferred = $q.defer();
             deferred.resolve({
@@ -82,7 +101,7 @@ describe('WeChat Basic Settings Controller Test', function () {
             });
             return deferred.promise;
         });
-        spyOn(weChatBasicSettingsSrv, 'getServerStatus').and.callFake(function () {
+        spyOn(weChatBasicSettingsSrv, 'getServerInfo').and.callFake(function () {
             var deferred = $q.defer();
             deferred.reject(new UnknownException());
             return deferred.promise;
@@ -96,8 +115,13 @@ describe('WeChat Basic Settings Controller Test', function () {
 
         $rootScope.$apply();
 
+        expect(weChatBasicSettingsSrv.getConnectionStatus).toHaveBeenCalled();
         expect(weChatBasicSettingsSrv.getDeveloperInfo).toHaveBeenCalled();
-        expect(weChatBasicSettingsSrv.getServerStatus).toHaveBeenCalled();
+        expect(weChatBasicSettingsSrv.getServerInfo).toHaveBeenCalled();
+
+        expect($scope.weChatConnectionStatus).not.toBeNull();
+        expect($scope.weChatConnectionStatus.serverStatus).toBeTruthy();
+        expect($scope.weChatConnectionStatus.apiStatus).toBeFalsy();
 
         expect($scope.weChatDeveloperInfo).not.toBeNull();
         expect($scope.weChatDeveloperInfo.isEditing).toBeFalsy();
@@ -106,30 +130,34 @@ describe('WeChat Basic Settings Controller Test', function () {
         expect($scope.weChatDeveloperInfo.new_appId).toBe('');
         expect($scope.weChatDeveloperInfo.new_appSecret).toBe('');
 
-        expect($scope.status).not.toBeNull();
-        expect($scope.status.loading).toBeFalsy();
-
         expect($scope.weChatServerStatus).not.toBeNull();
         expect($scope.weChatServerStatus.entryPoint).toBe('');
         expect($scope.weChatServerStatus.appToken).toBe('');
-        expect($scope.weChatServerStatus.connectionStatus).toBeFalsy();
 
+        expect($scope.status).not.toBeNull();
         expect($scope.status.gettingStatus).toBeFalsy();
         expect($scope.status.savingDeveloperInfo).toBeFalsy();
     }));
 
     it('should have default data when can not get developer info', inject(function ($rootScope, $q, $controller) {
+        spyOn(weChatBasicSettingsSrv, 'getConnectionStatus').and.callFake(function () {
+            var deferred = $q.defer();
+            deferred.resolve({
+                server_connected: true,
+                api_status: false
+            });
+            return deferred.promise;
+        });
         spyOn(weChatBasicSettingsSrv, 'getDeveloperInfo').and.callFake(function () {
             var deferred = $q.defer();
             deferred.reject(new UnknownException());
             return deferred.promise;
         });
-        spyOn(weChatBasicSettingsSrv, 'getServerStatus').and.callFake(function () {
+        spyOn(weChatBasicSettingsSrv, 'getServerInfo').and.callFake(function () {
             var deferred = $q.defer();
             deferred.resolve({
                 entry_point: 'http://localhost:3000/wechat',
-                token: 'ABCDE_TOKEN',
-                connected: true
+                token: 'ABCDE_TOKEN'
             });
             return deferred.promise;
         });
@@ -141,6 +169,14 @@ describe('WeChat Basic Settings Controller Test', function () {
         });
 
         $rootScope.$apply();
+
+        expect(weChatBasicSettingsSrv.getConnectionStatus).toHaveBeenCalled();
+        expect(weChatBasicSettingsSrv.getDeveloperInfo).toHaveBeenCalled();
+        expect(weChatBasicSettingsSrv.getServerInfo).toHaveBeenCalled();
+
+        expect($scope.weChatConnectionStatus).not.toBeNull();
+        expect($scope.weChatConnectionStatus.serverStatus).toBeTruthy();
+        expect($scope.weChatConnectionStatus.apiStatus).toBeFalsy();
 
         expect($scope.weChatDeveloperInfo).not.toBeNull();
         expect($scope.weChatDeveloperInfo.isEditing).toBeFalsy();
@@ -149,22 +185,24 @@ describe('WeChat Basic Settings Controller Test', function () {
         expect($scope.weChatDeveloperInfo.new_appId).toBe('');
         expect($scope.weChatDeveloperInfo.new_appSecret).toBe('');
 
-        expect($scope.status).not.toBeNull();
-        expect($scope.status.loading).toBeFalsy();
-
-        expect(weChatBasicSettingsSrv.getDeveloperInfo).toHaveBeenCalled();
-        expect(weChatBasicSettingsSrv.getServerStatus).not.toHaveBeenCalled();
-
         expect($scope.weChatServerStatus).not.toBeNull();
-        expect($scope.weChatServerStatus.entryPoint).toBe('');
-        expect($scope.weChatServerStatus.appToken).toBe('');
-        expect($scope.weChatServerStatus.connectionStatus).toBeFalsy();
+        expect($scope.weChatServerStatus.entryPoint).toBe('http://localhost:3000/wechat');
+        expect($scope.weChatServerStatus.appToken).toBe('ABCDE_TOKEN');
 
+        expect($scope.status).not.toBeNull();
         expect($scope.status.gettingStatus).toBeFalsy();
         expect($scope.status.savingDeveloperInfo).toBeFalsy();
     }));
 
     it('should start edit developer info when developer info is empty', inject(function ($rootScope, $q, $controller) {
+        spyOn(weChatBasicSettingsSrv, 'getConnectionStatus').and.callFake(function () {
+            var deferred = $q.defer();
+            deferred.resolve({
+                server_connected: true,
+                api_status: false
+            });
+            return deferred.promise;
+        });
         spyOn(weChatBasicSettingsSrv, 'getDeveloperInfo').and.callFake(function () {
             var deferred = $q.defer();
             deferred.resolve({
@@ -173,12 +211,11 @@ describe('WeChat Basic Settings Controller Test', function () {
             });
             return deferred.promise;
         });
-        spyOn(weChatBasicSettingsSrv, 'getServerStatus').and.callFake(function () {
+        spyOn(weChatBasicSettingsSrv, 'getServerInfo').and.callFake(function () {
             var deferred = $q.defer();
             deferred.resolve({
                 entry_point: 'http://localhost:3000/wechat',
-                token: 'ABCDE_TOKEN',
-                connected: true
+                token: 'ABCDE_TOKEN'
             });
             return deferred.promise;
         });
@@ -191,6 +228,14 @@ describe('WeChat Basic Settings Controller Test', function () {
 
         $rootScope.$apply();
 
+        expect(weChatBasicSettingsSrv.getConnectionStatus).toHaveBeenCalled();
+        expect(weChatBasicSettingsSrv.getDeveloperInfo).toHaveBeenCalled();
+        expect(weChatBasicSettingsSrv.getServerInfo).toHaveBeenCalled();
+
+        expect($scope.weChatConnectionStatus).not.toBeNull();
+        expect($scope.weChatConnectionStatus.serverStatus).toBeTruthy();
+        expect($scope.weChatConnectionStatus.apiStatus).toBeFalsy();
+
         expect($scope.weChatDeveloperInfo).not.toBeNull();
         expect($scope.weChatDeveloperInfo.isEditing).toBeTruthy();
         expect($scope.weChatDeveloperInfo.appId).toBe('');
@@ -198,26 +243,39 @@ describe('WeChat Basic Settings Controller Test', function () {
         expect($scope.weChatDeveloperInfo.new_appId).toBe('');
         expect($scope.weChatDeveloperInfo.new_appSecret).toBe('');
 
-        expect($scope.status).not.toBeNull();
-        expect($scope.status.loading).toBeFalsy();
-
-        expect(weChatBasicSettingsSrv.getDeveloperInfo).toHaveBeenCalled();
-        expect(weChatBasicSettingsSrv.getServerStatus).toHaveBeenCalled();
-
         expect($scope.weChatServerStatus).not.toBeNull();
         expect($scope.weChatServerStatus.entryPoint).toBe('http://localhost:3000/wechat');
         expect($scope.weChatServerStatus.appToken).toBe('ABCDE_TOKEN');
-        expect($scope.weChatServerStatus.connectionStatus).toBeTruthy();
 
+        expect($scope.status).not.toBeNull();
         expect($scope.status.gettingStatus).toBeFalsy();
         expect($scope.status.savingDeveloperInfo).toBeFalsy();
     }));
 
     describe('after initiation', function () {
-        describe('can handle server status refresh', function () {
+        describe('can handle WeChat connection status refresh', function () {
             var statusType = 'data1';
 
             beforeEach(inject(function ($rootScope, $q, $controller) {
+                spyOn(weChatBasicSettingsSrv, 'getConnectionStatus').and.callFake(function () {
+                    var deferred = $q.defer();
+                    if (statusType === 'data1') {
+                        deferred.resolve({
+                            server_connected: true,
+                            api_status: false
+                        });
+                    } else if (statusType === 'data2') {
+                        deferred.resolve({
+                            server_connected: false,
+                            api_status: true
+                        });
+                    } else if (statusType === 'authorize') {
+                        deferred.reject(new AuthorizeFailedException());
+                    } else {
+                        deferred.reject(new UnknownException());
+                    }
+                    return deferred.promise;
+                });
                 spyOn(weChatBasicSettingsSrv, 'getDeveloperInfo').and.callFake(function () {
                     var deferred = $q.defer();
                     deferred.resolve({
@@ -226,28 +284,12 @@ describe('WeChat Basic Settings Controller Test', function () {
                     });
                     return deferred.promise;
                 });
-                spyOn(weChatBasicSettingsSrv, 'getServerStatus').and.callFake(function () {
+                spyOn(weChatBasicSettingsSrv, 'getServerInfo').and.callFake(function () {
                     var deferred = $q.defer();
-                    if (statusType === 'data1') {
-                        deferred.resolve({
-                            entry_point: 'http://localhost:3000/wechat',
-                            token: 'ABCDE_TOKEN',
-                            connected: true
-                        });
-                    }
-                    if (statusType === 'data2') {
-                        deferred.resolve({
-                            entry_point: 'http://localhost:3001/wechat',
-                            token: 'ABCDE_TOKEN2',
-                            connected: true
-                        });
-                    }
-                    if (statusType === 'authorize') {
-                        deferred.reject(new AuthorizeFailedException());
-                    }
-                    if (statusType === 'unknown') {
-                        deferred.reject(new UnknownException());
-                    }
+                    deferred.resolve({
+                        entry_point: 'http://localhost:3000/wechat',
+                        token: 'ABCDE_TOKEN'
+                    });
                     return deferred.promise;
                 });
 
@@ -263,22 +305,22 @@ describe('WeChat Basic Settings Controller Test', function () {
             it('when can get server status', inject(function ($rootScope) {
                 statusType = 'data2';
 
-                $scope.getServerStatus();
+                $scope.getConnectionStatus();
                 expect($scope.status.gettingStatus).toBeTruthy();
 
                 $rootScope.$apply();
                 expect($scope.status.gettingStatus).toBeFalsy();
 
-                expect($scope.weChatServerStatus.entryPoint).toBe('http://localhost:3001/wechat');
-                expect($scope.weChatServerStatus.appToken).toBe('ABCDE_TOKEN2');
-                expect($scope.weChatServerStatus.connectionStatus).toBeTruthy();
+                expect($scope.weChatConnectionStatus).not.toBeNull();
+                expect($scope.weChatConnectionStatus.serverStatus).toBeFalsy();
+                expect($scope.weChatConnectionStatus.apiStatus).toBeTruthy();
             }));
 
             it('when authorize failed', inject(function ($rootScope) {
                 spyOn(notify, 'danger');
                 statusType = 'authorize';
 
-                $scope.getServerStatus();
+                $scope.getConnectionStatus();
                 expect($scope.status.gettingStatus).toBeTruthy();
 
                 $rootScope.$apply();
@@ -290,7 +332,7 @@ describe('WeChat Basic Settings Controller Test', function () {
                 spyOn(notify, 'warning');
                 statusType = 'unknown';
 
-                $scope.getServerStatus();
+                $scope.getConnectionStatus();
                 expect($scope.status.gettingStatus).toBeTruthy();
 
                 $rootScope.$apply();
@@ -301,6 +343,14 @@ describe('WeChat Basic Settings Controller Test', function () {
 
         describe('can edit developer info', function () {
             beforeEach(inject(function ($rootScope, $q, $controller) {
+                spyOn(weChatBasicSettingsSrv, 'getConnectionStatus').and.callFake(function () {
+                    var deferred = $q.defer();
+                    deferred.resolve({
+                        server_connected: true,
+                        api_status: false
+                    });
+                    return deferred.promise;
+                });
                 spyOn(weChatBasicSettingsSrv, 'getDeveloperInfo').and.callFake(function () {
                     var deferred = $q.defer();
                     deferred.resolve({
@@ -309,7 +359,7 @@ describe('WeChat Basic Settings Controller Test', function () {
                     });
                     return deferred.promise;
                 });
-                spyOn(weChatBasicSettingsSrv, 'getServerStatus').and.callFake(function () {
+                spyOn(weChatBasicSettingsSrv, 'getServerInfo').and.callFake(function () {
                     var deferred = $q.defer();
                     deferred.resolve({
                         entry_point: 'http://localhost:3000/wechat',
@@ -451,6 +501,14 @@ describe('WeChat Basic Settings Controller Test', function () {
 
         describe('can edit developer info', function () {
             it('cannot cancel editing if developer info is empty', inject(function ($rootScope, $q, $controller) {
+                spyOn(weChatBasicSettingsSrv, 'getConnectionStatus').and.callFake(function () {
+                    var deferred = $q.defer();
+                    deferred.resolve({
+                        server_connected: true,
+                        api_status: false
+                    });
+                    return deferred.promise;
+                });
                 spyOn(weChatBasicSettingsSrv, 'getDeveloperInfo').and.callFake(function () {
                     var deferred = $q.defer();
                     deferred.resolve({
@@ -459,7 +517,7 @@ describe('WeChat Basic Settings Controller Test', function () {
                     });
                     return deferred.promise;
                 });
-                spyOn(weChatBasicSettingsSrv, 'getServerStatus').and.callFake(function () {
+                spyOn(weChatBasicSettingsSrv, 'getServerInfo').and.callFake(function () {
                     var deferred = $q.defer();
                     deferred.resolve({
                         entry_point: 'http://localhost:3000/wechat',

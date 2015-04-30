@@ -16,6 +16,7 @@ app.post('/uas/oauth/accesstoken', oAuth.accessToken);
 app.post('/uas/oauth/refresh', oAuth.refresh);
 app.post('/uas/oauth/signout', oAuth.signOut);
 
+app.get('/api/admin/wechat/status', WeChatSettings.status);
 app.get('/api/admin/wechat/server', WeChatSettings.serverStatus);
 app.get('/api/admin/wechat/developer', WeChatSettings.getDeveloperInfo);
 app.put('/api/admin/wechat/developer', WeChatSettings.setDeveloperInfo);

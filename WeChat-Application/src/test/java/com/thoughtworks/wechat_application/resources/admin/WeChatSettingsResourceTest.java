@@ -3,6 +3,7 @@ package com.thoughtworks.wechat_application.resources.admin;
 import com.thoughtworks.wechat_application.api.admin.wechat.DeveloperInfoResponse;
 import com.thoughtworks.wechat_application.api.admin.wechat.NewDeveloperInfoRequest;
 import com.thoughtworks.wechat_application.api.admin.wechat.ServerInfoResponse;
+import com.thoughtworks.wechat_application.api.admin.wechat.WeChatConnectionStatusResponse;
 import com.thoughtworks.wechat_application.jdbi.core.AuthenticateRole;
 import com.thoughtworks.wechat_application.jdbi.core.OAuthClient;
 import com.thoughtworks.wechat_application.logic.OAuthProvider;
@@ -41,6 +42,49 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
         return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.VENDOR, Optional.<Long>empty());
     }
 
+    public static class when_try_to_got_weChat_connection_status {
+        @After
+        public void tearDown() throws Exception {
+            reset(adminResourceService);
+            reset(oAuthProvider);
+        }
+
+        @Test
+        public void return_server_info_if_access_token_valid() throws Exception {
+            when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createAdmin()));
+            when(adminResourceService.getWeChatConnectionStatus()).thenReturn(true);
+            when(adminResourceService.getWeChatAPIStatus()).thenReturn(false);
+
+            final Response response = resource.client().target("/api/admin/wechat/status").queryParam("access_token", "accessToken").request().get();
+            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
+
+            final WeChatConnectionStatusResponse status = getResponseEntity(response, WeChatConnectionStatusResponse.class);
+            assertThat(status).isNotNull();
+            assertThat(status.getWeChatConnectedStatus()).isTrue();
+            assertThat(status.getWeChatAPIStatus()).isFalse();
+
+            verify(oAuthProvider).getOAuthClient(eq("accessToken"));
+            verify(adminResourceService).getWeChatConnectionStatus();
+            verify(adminResourceService).getWeChatAPIStatus();
+        }
+
+        @Test
+        public void throw_forbidden_if_access_token_failed() throws Exception {
+            when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.<OAuthClient>empty());
+
+            final Response response = resource.client().target("/api/admin/wechat/status").queryParam("access_token", "accessToken").request().get();
+            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.INTERNAL_SERVER_ERROR);
+        }
+
+        @Test
+        public void throw_forbidden_if_access_token_not_admin() throws Exception {
+            when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createVendor()));
+
+            final Response response = resource.client().target("/api/admin/wechat/status").queryParam("access_token", "accessToken").request().get();
+            assertThat(response.getStatusInfo()).isEqualTo(Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public static class when_try_to_get_server_info {
         @After
         public void tearDown() throws Exception {
@@ -52,7 +96,6 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
         public void return_server_info_if_access_token_valid() throws Exception {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createAdmin()));
             when(adminResourceService.getAppToken()).thenReturn("abcdefghijklmn");
-            when(adminResourceService.getConnectionStatus()).thenReturn(true);
 
             final Response response = resource.client().target("/api/admin/wechat/server").queryParam("access_token", "accessToken").request().get();
             assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -61,11 +104,9 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
             assertThat(serverInfo).isNotNull();
             assertThat(serverInfo.getEntryPoint()).isEqualTo("/wechat");
             assertThat(serverInfo.getAppToken()).isEqualTo("abcdefghijklmn");
-            assertThat(serverInfo.isConnected()).isEqualTo(true);
 
             verify(oAuthProvider).getOAuthClient(eq("accessToken"));
             verify(adminResourceService).getAppToken();
-            verify(adminResourceService).getConnectionStatus();
         }
 
         @Test

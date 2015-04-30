@@ -1,5 +1,4 @@
 {
-  "connected": true,
   "entry_point": "http://localhost:3000/wechat",
   "token": "ABCDE_TOKEN"
 }

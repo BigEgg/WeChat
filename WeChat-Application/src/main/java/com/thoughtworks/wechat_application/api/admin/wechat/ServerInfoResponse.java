@@ -3,31 +3,24 @@ package com.thoughtworks.wechat_application.api.admin.wechat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ServerInfoResponse {
-    @JsonProperty("entry_point")
     private String entryPoint;
-    @JsonProperty("token")
     private String appToken;
-    @JsonProperty("connected")
-    private boolean isConnected;
 
     public ServerInfoResponse() {
     }
 
-    public ServerInfoResponse(String entryPoint, String appToken, boolean isConnected) {
+    public ServerInfoResponse(final String entryPoint, final String appToken) {
         this.entryPoint = entryPoint;
         this.appToken = appToken;
-        this.isConnected = isConnected;
     }
 
+    @JsonProperty("entry_point")
     public String getEntryPoint() {
         return entryPoint;
     }
 
+    @JsonProperty("token")
     public String getAppToken() {
         return appToken;
-    }
-
-    public boolean isConnected() {
-        return isConnected;
     }
 }

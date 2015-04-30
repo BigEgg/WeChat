@@ -63,10 +63,6 @@ public class AdminResourceService {
         setResource(AdminResourceKey.WECHAT_APP_SECRET, appId);
     }
 
-    public boolean getConnectionStatus() {
-        return Boolean.parseBoolean(getCachedResources(AdminResourceKey.WECHAT_CONNECTION_STATUS));
-    }
-
     public String getResource(final AdminResourceKey key) {
         final String keyString = key.toString();
         LOGGER.info("[GetResource] Try get admin resource: {}.", keyString);
@@ -114,8 +110,8 @@ public class AdminResourceService {
     private String getCachedResources(AdminResourceKey resourceKey) {
         final Optional<String> result = cacheManager.get(resourceKey.toString(), String.class);
         if (!result.isPresent()) {
-            final String appToken = getResource(resourceKey);
-            cacheManager.put(resourceKey.toString(), appToken);
+            final String resource = getResource(resourceKey);
+            cacheManager.put(resourceKey.toString(), resource);
         }
         return cacheManager.get(resourceKey.toString(), String.class).get();
     }
@@ -128,5 +124,13 @@ public class AdminResourceService {
         } catch (NoSuchAlgorithmException e) {
             return uuid.replace("-", "").substring(0, APP_TOKEN_LENGTH);
         }
+    }
+
+    public boolean getWeChatConnectionStatus() {
+        return Boolean.parseBoolean(getCachedResources(AdminResourceKey.WECHAT_CONNECTION_STATUS));
+    }
+
+    public boolean getWeChatAPIStatus() {
+        return Boolean.parseBoolean(getCachedResources(AdminResourceKey.WECHAT_API_STATUS));
     }
 }

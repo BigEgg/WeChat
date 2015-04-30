@@ -1,9 +1,19 @@
+exports.status = function (req, res) {
+    if (req.query.access_token === 'access') {
+        res.send({
+            server_connected: true,
+            api_status: false
+        });
+    } else {
+        res.sendStatus(500);
+    }
+};
+
 exports.serverStatus = function (req, res) {
     if (req.query.access_token === 'access') {
         res.send({
             entry_point: 'http://localhost:3000/wechat',
-            token: 'ABCDE_TOKEN',
-            connected: true
+            token: 'ABCDE_TOKEN'
         });
     } else {
         res.sendStatus(500);

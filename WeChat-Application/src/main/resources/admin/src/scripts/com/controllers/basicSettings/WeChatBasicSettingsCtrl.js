@@ -9,33 +9,15 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
     $scope.weChatServerStatus = {};
     $scope.weChatServerStatus.entryPoint = '';
     $scope.weChatServerStatus.appToken = '';
-    $scope.weChatServerStatus.connectionStatus = false;
+
+    $scope.weChatConnectionStatus = {};
+    $scope.weChatConnectionStatus.serverStatus = false;
+    $scope.weChatConnectionStatus.apiStatus = false;
 
     $scope.status = {};
-    $scope.status.loading = true;
+    //$scope.status.loading = true;
     $scope.status.gettingStatus = false;
     $scope.status.savingDeveloperInfo = false;
-
-    $scope.getServerStatus = function () {
-        $scope.status.gettingStatus = true;
-        weChatBasicSettingsSrv.getServerStatus().then(
-            function (data) {
-                $scope.status.gettingStatus = false;
-                $scope.weChatServerStatus.entryPoint = data.entry_point;
-                $scope.weChatServerStatus.appToken = data.token;
-                $scope.weChatServerStatus.connectionStatus = data.connected;
-            },
-            function (error) {
-                $scope.status.gettingStatus = false;
-                if (error instanceof AuthorizeFailedException) {
-                    notify.danger(error.message);
-                }
-                else {
-                    notify.warning(error.message);
-                }
-            }
-        );
-    };
 
     $scope.startEditDeveloperInfo = function () {
         $scope.weChatDeveloperInfo.isEditing = true;
@@ -85,6 +67,30 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
     };
 
     var init = function () {
+        $scope.getConnectionStatus();
+        getDeveloperInfo();
+        getServerInfo();
+    };
+
+    $scope.getConnectionStatus = function () {
+        $scope.status.gettingStatus = true;
+        weChatBasicSettingsSrv.getConnectionStatus().then(
+            function (data) {
+                $scope.status.gettingStatus = false;
+                $scope.weChatConnectionStatus.serverStatus = data.server_connected;
+                $scope.weChatConnectionStatus.apiStatus = data.api_status;
+            },
+            function (error) {
+                $scope.status.gettingStatus = false;
+                if (error instanceof AuthorizeFailedException) {
+                    notify.danger(error.message);
+                } else {
+                    notify.warning(error.message);
+                }
+            }
+        );
+    };
+    var getDeveloperInfo = function () {
         weChatBasicSettingsSrv.getDeveloperInfo().then(
             function (data) {
                 if (data.app_id && data.app_secret) {
@@ -93,12 +99,8 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
                 } else {
                     $scope.weChatDeveloperInfo.isEditing = true;
                 }
-
-                $scope.status.loading = false;
-                $scope.getServerStatus();
             },
             function (error) {
-                $scope.status.loading = false;
                 if (error instanceof AuthorizeFailedException) {
                     notify.danger(error.message);
                 } else {
@@ -106,8 +108,25 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
                 }
             }
         );
-
-
+    };
+    var getServerInfo = function () {
+        $scope.status.gettingStatus = true;
+        weChatBasicSettingsSrv.getServerInfo().then(
+            function (data) {
+                $scope.status.gettingStatus = false;
+                $scope.weChatServerStatus.entryPoint = data.entry_point;
+                $scope.weChatServerStatus.appToken = data.token;
+            },
+            function (error) {
+                $scope.status.gettingStatus = false;
+                if (error instanceof AuthorizeFailedException) {
+                    notify.danger(error.message);
+                }
+                else {
+                    notify.warning(error.message);
+                }
+            }
+        );
     };
 
     init();

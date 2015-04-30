@@ -62,18 +62,18 @@ var WeChatBasicSettingsPage = function () {
             return element(by.id(LOCATOR_APP_ID_INPUT)).getAttribute('value').then(function (value) {
                 return value;
             });
-        }
+        };
         this.getAppSecretInputValue = function () {
             return element(by.id(LOCATOR_APP_SECRET_INPUT)).getAttribute('value').then(function (value) {
                 return value;
             });
-        }
+        };
         this.getAppIdLabelValue = function () {
             return element(by.id(LOCATOR_APP_ID_LABEL)).getText();
-        }
+        };
         this.getAppSecretLabelValue = function () {
             return element(by.id(LOCATOR_APP_SECRET_LABEL)).getText();
-        }
+        };
     };
 
     this.actions = new Actions();
