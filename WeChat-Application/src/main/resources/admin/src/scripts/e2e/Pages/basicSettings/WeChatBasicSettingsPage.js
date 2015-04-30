@@ -1,11 +1,35 @@
 var WeChatBasicSettingsPage = function () {
     var PAGE_URL = 'http://localhost:3000/admin/html/index.html#/basicsettings/wechat';
 
-    var LOCATOR_MENU_BASIC_SETTINGS = 'basic'
+    var LOCATOR_APP_ID_LABEL = 'labelAppId'
+    var LOCATOR_APP_ID_INPUT = 'inputAppId'
+    var LOCATOR_APP_SECRET_LABEL = 'labelAppSecret'
+    var LOCATOR_APP_SECRET_INPUT = 'inputAppSecret'
+    var LOCATOR_EDIT_DEVELOPER_INFO_BUTTON = 'editDeveloperInfoBtn';
+    var LOCATOR_CANCEL_DEVELOPER_INFO_BUTTON = 'cancelDeveloperInfoBtn';
+    var LOCATOR_SAVE_DEVELOPER_INFO_BUTTON = 'saveDeveloperInfoBtn';
 
     var Actions = function () {
         this.navigate = function () {
             browser.get(PAGE_URL);
+        };
+        this.fillDeveloperInfo = function (app_id, app_secret) {
+            var appIdInput = element(by.id(LOCATOR_APP_ID_INPUT));
+            var appSecretInput = element(by.id(LOCATOR_APP_SECRET_INPUT));
+
+            appIdInput.clear();
+            appSecretInput.clear();
+            appIdInput.sendKeys(app_id);
+            appSecretInput.sendKeys(app_secret);
+        };
+        this.clickStartEditDeveloperInfo = function () {
+            element(by.id(LOCATOR_EDIT_DEVELOPER_INFO_BUTTON)).click();
+        };
+        this.clickCancelEditDeveloperInfo = function () {
+            element(by.id(LOCATOR_CANCEL_DEVELOPER_INFO_BUTTON)).click();
+        };
+        this.clickSaveEditDeveloperInfo = function () {
+            element(by.id(LOCATOR_SAVE_DEVELOPER_INFO_BUTTON)).click();
         };
     };
 
@@ -15,10 +39,41 @@ var WeChatBasicSettingsPage = function () {
                 return url === '/basicsettings/wechat';
             });
         };
+        this.isEditingDeveloperInfo = function () {
+            return element(by.id(LOCATOR_APP_ID_INPUT)).isPresent()
+                && element(by.id(LOCATOR_APP_SECRET_INPUT)).isPresent()
+                && element(by.id(LOCATOR_CANCEL_DEVELOPER_INFO_BUTTON)).isPresent()
+                && element(by.id(LOCATOR_SAVE_DEVELOPER_INFO_BUTTON)).isPresent();
+        };
+        this.isCancelDeveloperInfoButtonDisabled = function () {
+            return element(by.id(LOCATOR_CANCEL_DEVELOPER_INFO_BUTTON)).getAttribute('class').then(function (classes) {
+                return classes.indexOf('disabled') > -1;
+            });
+        };
+        this.isSaveDeveloperInfoButtonDisabled = function () {
+            return element(by.id(LOCATOR_SAVE_DEVELOPER_INFO_BUTTON)).getAttribute('class').then(function (classes) {
+                return classes.indexOf('disabled') > -1;
+            });
+        };
     };
 
     var Properties = function () {
-
+        this.getAppIdInputValue = function () {
+            return element(by.id(LOCATOR_APP_ID_INPUT)).getAttribute('value').then(function (value) {
+                return value;
+            });
+        }
+        this.getAppSecretInputValue = function () {
+            return element(by.id(LOCATOR_APP_SECRET_INPUT)).getAttribute('value').then(function (value) {
+                return value;
+            });
+        }
+        this.getAppIdLabelValue = function () {
+            return element(by.id(LOCATOR_APP_ID_LABEL)).getText();
+        }
+        this.getAppSecretLabelValue = function () {
+            return element(by.id(LOCATOR_APP_SECRET_LABEL)).getText();
+        }
     };
 
     this.actions = new Actions();

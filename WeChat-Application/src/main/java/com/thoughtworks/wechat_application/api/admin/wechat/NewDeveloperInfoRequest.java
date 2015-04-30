@@ -6,11 +6,11 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class NewDeveloperInfoRequest {
     @NotBlank
-    @Length(max = 128, min = 5)
+    @Length(max = 32)
     @JsonProperty("app_id")
     private String appId;
     @NotBlank
-    @Length(max = 128)
+    @Length(max = 32)
     @JsonProperty("app_secret")
     private String appSecret;
 

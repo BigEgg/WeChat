@@ -1,4 +1,4 @@
-describe('When open the homepage', function () {
+describe('When navigate to homepage', function () {
     var constants = require('../constants.js');
     var homepage = require('../pages/Homepage.js');
     var loggedInHomepage = require('../pages/LoggedInHomepage.js');

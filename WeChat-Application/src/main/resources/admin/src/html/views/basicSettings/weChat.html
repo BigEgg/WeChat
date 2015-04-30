@@ -15,10 +15,10 @@
                 <div class="col-xs-9">
                     <label id="labelAppId"
                            style="height: 42px;  padding: 8px 12px; margin: 0;  font-family: Lato,Helvetica,Arial,sans-serif;  font-size: 15px;  line-height: 1.467;"
-                           ng-hide="weChatDeveloperInfo.isEditing">{{weChatDeveloperInfo.appId}}</label>
+                           ng-if="!weChatDeveloperInfo.isEditing">{{weChatDeveloperInfo.appId}}</label>
                     <input id="inputAppId" type="text" class="form-control" maxlength="32"
                            ng-class="{disabled: status.savingDeveloperInfo}"
-                           ng-show="weChatDeveloperInfo.isEditing" ng-model="weChatDeveloperInfo.new_appId"
+                           ng-if="weChatDeveloperInfo.isEditing" ng-model="weChatDeveloperInfo.new_appId"
                            placeholder="{{'basicSettings.weChat.developerId.appId' | translate}}">
                 </div>
             </div>
@@ -29,10 +29,10 @@
                 <div class="col-xs-9">
                     <label id="labelAppSecret"
                            style="height: 42px;  padding: 8px 12px; margin: 0;  font-family: Lato,Helvetica,Arial,sans-serif;  font-size: 15px;  line-height: 1.467;"
-                           ng-hide="weChatDeveloperInfo.isEditing">{{weChatDeveloperInfo.appSecret}}</label>
+                           ng-if="!weChatDeveloperInfo.isEditing">{{weChatDeveloperInfo.appSecret}}</label>
                     <input id="inputAppSecret" type="text" class="form-control" maxlength="32"
                            ng-class="{disabled: status.savingDeveloperInfo}"
-                           ng-show="weChatDeveloperInfo.isEditing" ng-model="weChatDeveloperInfo.new_appSecret"
+                           ng-if="weChatDeveloperInfo.isEditing" ng-model="weChatDeveloperInfo.new_appSecret"
                            placeholder="{{'basicSettings.weChat.developerId.appSecret' | translate}}">
                 </div>
             </div>
@@ -42,17 +42,20 @@
                 </div>
                 <div class="col-xs-2 col-xs-offset-2">
                     <a class="btn btn-block btn-lg btn-warning settingButton" ng-click="startEditDeveloperInfo()"
-                       translate="basicSettings.weChat.developerId.edit" ng-hide="weChatDeveloperInfo.isEditing"></a>
+                       translate="basicSettings.weChat.developerId.edit" ng-if="!weChatDeveloperInfo.isEditing"
+                       id="editDeveloperInfoBtn"></a>
                 </div>
                 <div class="col-xs-2">
                     <a class="btn btn-block btn-lg btn-warning settingButton" ng-click="cancelEditDeveloperInfo()"
-                       translate="basicSettings.weChat.developerId.cancel" ng-show="weChatDeveloperInfo.isEditing"
-                       ng-class="{disabled: !weChatDeveloperInfo.appId || !weChatDeveloperInfo.appSecret || status.savingDeveloperInfo}"></a>
+                       translate="basicSettings.weChat.developerId.cancel" ng-if="weChatDeveloperInfo.isEditing"
+                       ng-class="{disabled: !weChatDeveloperInfo.appId || !weChatDeveloperInfo.appSecret || status.savingDeveloperInfo}"
+                       id="cancelDeveloperInfoBtn"></a>
                 </div>
                 <div class="col-xs-2">
                     <a class="btn btn-block btn-lg btn-danger settingButton" ng-click="saveNewDeveloperInfo()"
-                       translate="basicSettings.weChat.developerId.submit" ng-show="weChatDeveloperInfo.isEditing"
-                       ng-class="{disabled: !weChatDeveloperInfo.new_appId || !weChatDeveloperInfo.new_appSecret || status.savingDeveloperInfo}"></a>
+                       translate="basicSettings.weChat.developerId.submit" ng-if="weChatDeveloperInfo.isEditing"
+                       ng-class="{disabled: !weChatDeveloperInfo.new_appId || !weChatDeveloperInfo.new_appSecret || status.savingDeveloperInfo}"
+                       id="saveDeveloperInfoBtn"></a>
                 </div>
             </div>
         </div>

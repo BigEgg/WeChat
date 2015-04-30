@@ -15,7 +15,7 @@ exports.config = {
     restartBrowserBetweenTests: true,
 
     specs: [
-        'src/scripts/e2e/spec/*.js'
+        'src/scripts/e2e/spec/**/*.js'
     ],
 
     jasmineNodeOpts: {
