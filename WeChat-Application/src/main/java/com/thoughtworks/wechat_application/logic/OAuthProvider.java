@@ -71,7 +71,7 @@ public class OAuthProvider {
     }
 
     public void cleanUp() {
-        LOGGER.info("[CleanUp] Clear all expired OAuth information.");
+        LOGGER.info("[CleanUp] Try clear all expired OAuth information.");
         for (Map.Entry<String, OAuthInfo> entry : oAuthInfoMap.entrySet()) {
             if (!entry.getValue().getRefreshToken().isPresent()) {
                 oAuthInfoMap.remove(entry.getKey());
@@ -90,6 +90,21 @@ public class OAuthProvider {
             return Optional.of(client);
         } else {
             LOGGER.info("[GetOAuthClient] Cannot find the access token: {}.", accessToken);
+            return Optional.empty();
+        }
+    }
+
+    public Optional<OAuthClient> removeOAuthInfo(final String accessToken) {
+        checkNotBlank(accessToken);
+        cleanUp();
+
+        LOGGER.info("[RemoveOAuthClient] Try remove OAuth Info by access token: {}.", accessToken);
+        if (oAuthInfoMap.containsKey(accessToken)) {
+            final OAuthClient client = oAuthInfoMap.remove(accessToken).getClient();
+            LOGGER.info("[RemoveOAuthClient] Find the OAuth Info with Client(id: {}), delete it", client.getId());
+            return Optional.of(client);
+        } else {
+            LOGGER.info("[RemoveOAuthClient] Cannot find the access token: {}.", accessToken);
             return Optional.empty();
         }
     }

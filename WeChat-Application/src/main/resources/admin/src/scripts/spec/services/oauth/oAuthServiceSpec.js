@@ -9,6 +9,8 @@ describe('OAuth Service Test', function () {
             getAccessToken: function (clientId, clientSecret) {
             },
             refreshAccessToken: function (access_token, refresh_token) {
+            },
+            signOut: function (access_token) {
             }
         };
         $provide.value('oAuthClient', mockOAuthClient);
@@ -87,9 +89,12 @@ describe('OAuth Service Test', function () {
         $rootScope.$apply();
 
         spyOn(mockOAuthRepository, 'clearData');
+        spyOn(mockOAuthRepository, 'getAccessToken').and.returnValue('access');
+        spyOn(mockOAuthClient, 'signOut').and.returnValue();
 
         oAuthSrv.signOut();
         expect(mockOAuthRepository.clearData).toHaveBeenCalled();
+        expect(mockOAuthClient.signOut).toHaveBeenCalledWith('access');
     }));
 
     it('should return authorize failed exception if sign in failed', inject(function ($rootScope, $q, oAuthSrv) {

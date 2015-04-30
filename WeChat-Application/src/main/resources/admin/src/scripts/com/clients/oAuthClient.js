@@ -50,5 +50,10 @@ admin.app.factory('oAuthClient', ['$q', 'apiHelper', function ($q, apiHelper) {
         return deferred.promise;
     };
 
+    OAuthClient.signOut = function (access_token) {
+        var url = apiHelper.addParameterToURL('/uas/oauth/signout', "access_token", access_token);
+        apiHelper.post(url, null);
+    };
+
     return OAuthClient;
 }]);

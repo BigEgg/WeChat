@@ -25,23 +25,23 @@ import static org.mockito.Mockito.*;
 
 @RunWith(Enclosed.class)
 public class WeChatSettingsResourceTest extends ResourceTestBase {
+    private final static AdminResourceService adminResourceService = mock(AdminResourceService.class);
+    private final static OAuthProvider oAuthProvider = mock(OAuthProvider.class);
+
+    @ClassRule
+    public final static ResourceTestRule resource = ResourceTestRule.builder()
+            .addResource(new WeChatSettingsResource(adminResourceService, oAuthProvider))
+            .build();
+
+    private static OAuthClient createAdmin() {
+        return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.ADMIN, Optional.<Long>empty());
+    }
+
+    private static OAuthClient createVendor() {
+        return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.VENDOR, Optional.<Long>empty());
+    }
+
     public static class when_try_to_get_server_info {
-        private final static AdminResourceService adminResourceService = mock(AdminResourceService.class);
-        private final static OAuthProvider oAuthProvider = mock(OAuthProvider.class);
-
-        @ClassRule
-        public final static ResourceTestRule resource = ResourceTestRule.builder()
-                .addResource(new WeChatSettingsResource(adminResourceService, oAuthProvider))
-                .build();
-
-        private static OAuthClient createAdmin() {
-            return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.ADMIN, Optional.<Long>empty());
-        }
-
-        private static OAuthClient createVendor() {
-            return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.VENDOR, Optional.<Long>empty());
-        }
-
         @After
         public void tearDown() throws Exception {
             reset(adminResourceService);
@@ -86,22 +86,6 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
     }
 
     public static class when_try_to_get_developer_info {
-        private final static AdminResourceService adminResourceService = mock(AdminResourceService.class);
-        private final static OAuthProvider oAuthProvider = mock(OAuthProvider.class);
-
-        @ClassRule
-        public final static ResourceTestRule resource = ResourceTestRule.builder()
-                .addResource(new WeChatSettingsResource(adminResourceService, oAuthProvider))
-                .build();
-
-        private static OAuthClient createAdmin() {
-            return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.ADMIN, Optional.<Long>empty());
-        }
-
-        private static OAuthClient createVendor() {
-            return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.VENDOR, Optional.<Long>empty());
-        }
-
         @After
         public void tearDown() throws Exception {
             reset(adminResourceService);
@@ -145,22 +129,6 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
     }
 
     public static class when_try_to_set_developer_info {
-        private final static AdminResourceService adminResourceService = mock(AdminResourceService.class);
-        private final static OAuthProvider oAuthProvider = mock(OAuthProvider.class);
-
-        @ClassRule
-        public final static ResourceTestRule resource = ResourceTestRule.builder()
-                .addResource(new WeChatSettingsResource(adminResourceService, oAuthProvider))
-                .build();
-
-        private static OAuthClient createAdmin() {
-            return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.ADMIN, Optional.<Long>empty());
-        }
-
-        private static OAuthClient createVendor() {
-            return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.VENDOR, Optional.<Long>empty());
-        }
-
         @After
         public void tearDown() throws Exception {
             reset(adminResourceService);
@@ -174,7 +142,7 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
             when(adminResourceService.getAppSecret()).thenReturn("app_secret");
 
             final NewDeveloperInfoRequest request = deserializeFixture("fixtures/admin/wechat/NewDeveloperInfoRequest.json", NewDeveloperInfoRequest.class);
-            final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+            final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
             assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
 
             final DeveloperInfoResponse developerInfo = getResponseEntity(response, DeveloperInfoResponse.class);
@@ -188,20 +156,20 @@ public class WeChatSettingsResourceTest extends ResourceTestBase {
         }
 
         @Test
-        public void throw_forbidden_if_access_token_failed() throws Exception {
+        public void throw_internal_server_error_if_access_token_failed() throws Exception {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.<OAuthClient>empty());
 
             final NewDeveloperInfoRequest request = deserializeFixture("fixtures/admin/wechat/NewDeveloperInfoRequest.json", NewDeveloperInfoRequest.class);
-            final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+            final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
             assertThat(response.getStatusInfo()).isEqualTo(Response.Status.INTERNAL_SERVER_ERROR);
         }
 
         @Test
-        public void throw_forbidden_if_access_token_not_admin() throws Exception {
+        public void throw_internal_server_error_if_access_token_not_admin() throws Exception {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createVendor()));
 
             final NewDeveloperInfoRequest request = deserializeFixture("fixtures/admin/wechat/NewDeveloperInfoRequest.json", NewDeveloperInfoRequest.class);
-            final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
+            final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
             assertThat(response.getStatusInfo()).isEqualTo(Response.Status.INTERNAL_SERVER_ERROR);
         }
     }

@@ -127,6 +127,22 @@ public class OAuthProviderTest {
         assertThat(newOAuthClient.get().getClientId(), equalTo("clientId"));
     }
 
+    @Test
+    public void testRemoveOAuthInfo() throws Exception {
+        when(configuration.getoAuthAccessTokenExpireSeconds()).thenReturn(10);
+        when(configuration.getoAuthRefreshTokenExpireSeconds()).thenReturn(10);
+
+        final OAuthClient admin = createAdmin();
+        final OAuthInfo oAuthInfo = oAuthProvider.newOAuth(admin);
+
+        Optional<OAuthClient> newOAuthClient = oAuthProvider.removeOAuthInfo(oAuthInfo.getAccessToken().get());
+        assertThat(newOAuthClient.isPresent(), equalTo(true));
+        assertThat(newOAuthClient.get().getClientId(), equalTo("clientId"));
+
+        newOAuthClient = oAuthProvider.getOAuthClient(oAuthInfo.getAccessToken().get());
+        assertThat(newOAuthClient.isPresent(), equalTo(false));
+    }
+
     private OAuthClient createAdmin() {
         return new OAuthClient(1L, "clientId", "hashedClientSecret", AuthenticateRole.ADMIN, Optional.<Long>empty());
     }

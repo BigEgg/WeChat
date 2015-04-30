@@ -29,6 +29,7 @@ public class SystemEventLogService {
         private final String EVENT_NAME = "OAuth";
         private final String GET_ACCESS_TOKEN_EVENT = "GetAccessToken";
         private final String REFRESH_ACCESS_TOKEN_EVENT = "RefreshAccessToken";
+        private final String SIGN_OUT_EVENT = "SignOut";
 
         public void accessToken(final OAuthClient client, final DateTime happenedTime) {
             systemEventLogDAO.insertEventLog(client.getId(), EVENT_NAME, GET_ACCESS_TOKEN_EVENT, toUnixTimestamp(happenedTime));
@@ -36,6 +37,10 @@ public class SystemEventLogService {
 
         public void refresh(final OAuthClient client, final DateTime happenedTime) {
             systemEventLogDAO.insertEventLog(client.getId(), EVENT_NAME, REFRESH_ACCESS_TOKEN_EVENT, toUnixTimestamp(happenedTime));
+        }
+
+        public void signOut(final OAuthClient client, final DateTime happenedTime) {
+            systemEventLogDAO.insertEventLog(client.getId(), EVENT_NAME, SIGN_OUT_EVENT, toUnixTimestamp(happenedTime));
         }
     }
 }

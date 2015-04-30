@@ -16,10 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Optional;
 
@@ -78,6 +75,19 @@ public class OAuthResource {
         } else {
             LOGGER.info("[Refresh] Client refresh access token with accessToken: {} and refreshToken: {} authenticate failed.", accessToken, refreshToken);
             return new OAuthResponse();
+        }
+    }
+
+    @POST
+    @Path("/signout")
+    public void signOut(@QueryParam("access_token") final String accessToken) {
+        final Optional<OAuthClient> oAuthClientOpt = oAuthProvider.removeOAuthInfo(accessToken);
+        if (oAuthClientOpt.isPresent()) {
+            final OAuthClient oAuthClient = oAuthClientOpt.get();
+            LOGGER.info("[SignOut] Client '{}' sign out with accessToken: {}.", oAuthClient.getClientId(), accessToken);
+            eventLogService.oAuth().signOut(oAuthClient, DateTime.now());
+        } else {
+            LOGGER.info("[SignOut] Unknown client try to sign out with accessToken: {}.", accessToken);
         }
     }
 }

@@ -261,4 +261,26 @@ describe('OAuth Client Test', function () {
             });
         }));
     });
+
+    describe('when try to sign out', function () {
+        it('should call api', inject(function ($rootScope, $q, oAuthClient) {
+            spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, key, value) {
+                if (url === '/uas/oauth/signout' && key === 'access_token' && value === 'access') {
+                    return '/uas/oauth/signout?access_token=access';
+                }
+            });
+            spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
+                if (url === '/uas/oauth/signout?access_token=access' && data === null) {
+                    var deferred = $q.defer();
+                    deferred.resolve();
+                    return deferred.promise;
+                }
+            });
+
+            oAuthClient.signOut('access')
+            $rootScope.$apply();
+
+            expect(mockApiHelper.post).toHaveBeenCalledWith('/uas/oauth/signout?access_token=access', null);
+        }));
+    });
 });

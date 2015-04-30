@@ -26,6 +26,7 @@ admin.app.service('oAuthSrv', ['$q', 'oAuthRepository', 'oAuthClient', function 
     };
 
     this.signOut = function () {
+        oAuthClient.signOut(oAuthRepository.getAccessToken());
         oAuthRepository.clearData();
     };
 

@@ -45,20 +45,27 @@ public class OAuthSystemEventLogServiceTest {
     }
 
     @Test
-    public void testLogSubscribe() throws Exception {
-        service.oAuth().accessToken(createOAuthCLient(), DateTime.now());
+    public void testLogGetAccessToken() throws Exception {
+        service.oAuth().accessToken(createOAuthClient(), DateTime.now());
 
         verify(systemEventLogDAO).insertEventLog(eq(1L), eq("OAuth"), eq("GetAccessToken"), any(Timestamp.class));
     }
 
     @Test
-    public void testLogUnsubscribe() throws Exception {
-        service.oAuth().refresh(createOAuthCLient(), DateTime.now());
+    public void testLogRefreshAccessToken() throws Exception {
+        service.oAuth().refresh(createOAuthClient(), DateTime.now());
 
         verify(systemEventLogDAO).insertEventLog(eq(1L), eq("OAuth"), eq("RefreshAccessToken"), any(Timestamp.class));
     }
 
-    private OAuthClient createOAuthCLient() {
+    @Test
+    public void testLogSignOut() throws Exception {
+        service.oAuth().signOut(createOAuthClient(), DateTime.now());
+
+        verify(systemEventLogDAO).insertEventLog(eq(1L), eq("OAuth"), eq("SignOut"), any(Timestamp.class));
+    }
+
+    private OAuthClient createOAuthClient() {
         return new OAuthClient(1, "clientId", "hashedClientSecret", AuthenticateRole.ADMIN, Optional.<Long>empty());
     }
 }
