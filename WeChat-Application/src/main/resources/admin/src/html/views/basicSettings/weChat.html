@@ -37,20 +37,20 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-6 remark">
+                <div class="col-xs-8 remark">
                     <small translate="basicSettings.weChat.developerId.remark"></small>
                 </div>
-                <div class="col-xs-2 col-xs-offset-4">
-                    <a class="btn btn-block btn-lg btn-warning settingSubmitButton" ng-click="startEditDeveloperInfo()"
+                <div class="col-xs-2 col-xs-offset-2">
+                    <a class="btn btn-block btn-lg btn-warning settingButton" ng-click="startEditDeveloperInfo()"
                        translate="basicSettings.weChat.developerId.edit" ng-hide="weChatDeveloperInfo.isEditing"></a>
                 </div>
-                <div class="col-xs-2 col-xs-offset-1">
-                    <a class="btn btn-block btn-lg btn-warning settingSubmitButton" ng-click="cancelEditDeveloperInfo()"
+                <div class="col-xs-2">
+                    <a class="btn btn-block btn-lg btn-warning settingButton" ng-click="cancelEditDeveloperInfo()"
                        translate="basicSettings.weChat.developerId.cancel" ng-show="weChatDeveloperInfo.isEditing"
                        ng-class="{disabled: !weChatDeveloperInfo.appId || !weChatDeveloperInfo.appSecret || status.savingDeveloperInfo}"></a>
                 </div>
-                <div class="col-xs-3">
-                    <a class="btn btn-block btn-lg btn-danger settingSubmitButton" ng-click="saveNewDeveloperInfo()"
+                <div class="col-xs-2">
+                    <a class="btn btn-block btn-lg btn-danger settingButton" ng-click="saveNewDeveloperInfo()"
                        translate="basicSettings.weChat.developerId.submit" ng-show="weChatDeveloperInfo.isEditing"
                        ng-class="{disabled: !weChatDeveloperInfo.new_appId || !weChatDeveloperInfo.new_appSecret || status.savingDeveloperInfo}"></a>
                 </div>
@@ -75,7 +75,7 @@
                     <span class="settingInfo">{{weChatServerStatus.entryPoint}}</span>
                 </div>
                 <div class="col-xs-2">
-                    <a class="btn btn-block btn-lg btn-info settingSubmitButton" href="" ng-click="getServerStatus()"
+                    <a class="btn btn-block btn-lg btn-info settingButton" href="" ng-click="getServerStatus()"
                        translate="basicSettings.weChat.server.refreshStatus"
                        ng-class="{disabled: status.statusGetting}"></a>
                 </div>
@@ -86,7 +86,7 @@
                 <label class="col-xs-7 settingInfo">{{weChatServerStatus.appToken}}</label>
 
                 <div class="col-xs-2">
-                    <a class="btn btn-block btn-lg btn-danger settingSubmitButton" href="" ng-click="getNewToken()"
+                    <a class="btn btn-block btn-lg btn-danger settingButton" href="" ng-click="getNewToken()"
                        translate="basicSettings.weChat.server.changeToken"
                        ng-class="{disabled: status.statusGetting}"></a>
                 </div>
