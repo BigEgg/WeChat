@@ -13,9 +13,9 @@
                        translate="basicSettings.weChat.developerId.appId"></label>
 
                 <div class="col-xs-9">
-                    <label id="labelAppId"
-                           style="height: 42px;  padding: 8px 12px; margin: 0;  font-family: Lato,Helvetica,Arial,sans-serif;  font-size: 15px;  line-height: 1.467;"
-                           ng-if="!weChatDeveloperInfo.isEditing">{{weChatDeveloperInfo.appId}}</label>
+                    <label id="labelAppId" class="valueWithoutInput" ng-if="!weChatDeveloperInfo.isEditing">
+                        {{weChatDeveloperInfo.appId}}
+                    </label>
                     <input id="inputAppId" type="text" class="form-control" maxlength="32"
                            ng-class="{disabled: status.savingDeveloperInfo}"
                            ng-if="weChatDeveloperInfo.isEditing" ng-model="weChatDeveloperInfo.new_appId"
@@ -27,9 +27,9 @@
                        translate="basicSettings.weChat.developerId.appSecret"></label>
 
                 <div class="col-xs-9">
-                    <label id="labelAppSecret"
-                           style="height: 42px;  padding: 8px 12px; margin: 0;  font-family: Lato,Helvetica,Arial,sans-serif;  font-size: 15px;  line-height: 1.467;"
-                           ng-if="!weChatDeveloperInfo.isEditing">{{weChatDeveloperInfo.appSecret}}</label>
+                    <label id="labelAppSecret" class="valueWithoutInput" ng-if="!weChatDeveloperInfo.isEditing">
+                        {{weChatDeveloperInfo.appSecret}}
+                    </label>
                     <input id="inputAppSecret" type="text" class="form-control" maxlength="32"
                            ng-class="{disabled: status.savingDeveloperInfo}"
                            ng-if="weChatDeveloperInfo.isEditing" ng-model="weChatDeveloperInfo.new_appSecret"
