@@ -44,12 +44,20 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
     };
 
     $scope.cancelEditDeveloperInfo = function () {
+        if (!$scope.weChatDeveloperInfo.appId || !$scope.weChatDeveloperInfo.appSecret) {
+            return;
+        }
+
         $scope.weChatDeveloperInfo.isEditing = false;
         $scope.weChatDeveloperInfo.new_appId = '';
         $scope.weChatDeveloperInfo.new_appSecret = '';
     };
 
     $scope.saveNewDeveloperInfo = function () {
+        if (!$scope.weChatDeveloperInfo.isEditing || !$scope.weChatDeveloperInfo.new_appId || !$scope.weChatDeveloperInfo.new_appSecret) {
+            return;
+        }
+
         $scope.status.savingDeveloperInfo = true;
         weChatBasicSettingsSrv.setDeveloperInfo($scope.weChatDeveloperInfo.new_appId, $scope.weChatDeveloperInfo.new_appSecret).then(
             function (data) {
@@ -62,7 +70,12 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
             },
             function (error) {
                 $scope.status.savingDeveloperInfo = false;
-                notify.warning(error.message);
+                if (error instanceof AuthorizeFailedException) {
+                    notify.danger(error.message);
+                }
+                else {
+                    notify.warning(error.message);
+                }
             }
         );
     };
@@ -93,6 +106,8 @@ admin.app.controller('WeChatBasicSettingsCtrl', ['$scope', 'notify', 'weChatBasi
                 }
             }
         );
+
+
     };
 
     init();
