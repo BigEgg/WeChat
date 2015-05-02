@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_application.resources.admin;
+package com.thoughtworks.wechat_application.resources.admin.basicSettings;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -24,16 +24,16 @@ import javax.ws.rs.core.UriBuilder;
 @Path("/api/admin/wechat")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class WeChatSettingsResource extends AuthorizeResourceBase {
+public class WeChatBasicSettingsResource extends AuthorizeResourceBase {
     private final AdminResourceService adminResourceService;
 
     @Inject
-    public WeChatSettingsResource(final AdminResourceService adminResourceService,
-                                  final OAuthProvider oAuthProvider) {
+    public WeChatBasicSettingsResource(final AdminResourceService adminResourceService,
+                                       final OAuthProvider oAuthProvider) {
         super(oAuthProvider);
 
         this.adminResourceService = adminResourceService;
-        LOGGER = LoggerFactory.getLogger(WeChatSettingsResource.class);
+        LOGGER = LoggerFactory.getLogger(WeChatBasicSettingsResource.class);
     }
 
     @GET

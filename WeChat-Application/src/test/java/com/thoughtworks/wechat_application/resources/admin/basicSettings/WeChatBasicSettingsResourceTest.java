@@ -1,4 +1,4 @@
-package com.thoughtworks.wechat_application.resources.admin;
+package com.thoughtworks.wechat_application.resources.admin.basicSettings;
 
 import com.thoughtworks.wechat_application.api.admin.wechat.DeveloperInfoResponse;
 import com.thoughtworks.wechat_application.api.admin.wechat.NewDeveloperInfoRequest;
@@ -25,13 +25,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(Enclosed.class)
-public class WeChatSettingsResourceTest extends ResourceTestBase {
+public class WeChatBasicSettingsResourceTest extends ResourceTestBase {
     private final static AdminResourceService adminResourceService = mock(AdminResourceService.class);
     private final static OAuthProvider oAuthProvider = mock(OAuthProvider.class);
 
     @ClassRule
     public final static ResourceTestRule resource = ResourceTestRule.builder()
-            .addResource(new WeChatSettingsResource(adminResourceService, oAuthProvider))
+            .addResource(new WeChatBasicSettingsResource(adminResourceService, oAuthProvider))
             .build();
 
     private static OAuthClient createAdmin() {

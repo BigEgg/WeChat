@@ -50,7 +50,6 @@ public class AdminResourceService {
     }
 
     public void setAppSecret(final String appSecret) {
-        cacheManager.expire(AdminResourceKey.WECHAT_APP_SECRET.toString());
         setResource(AdminResourceKey.WECHAT_APP_SECRET, appSecret);
     }
 
@@ -59,7 +58,6 @@ public class AdminResourceService {
     }
 
     public void setAppId(final String appId) {
-        cacheManager.expire(AdminResourceKey.WECHAT_APP_SECRET.toString());
         setResource(AdminResourceKey.WECHAT_APP_SECRET, appId);
     }
 
@@ -84,6 +82,7 @@ public class AdminResourceService {
     }
 
     public void setResource(final AdminResourceKey key, final String value) {
+        cacheManager.expire(key.toString());
         expirableResourceService.setResource(key.toString(), RESOURCE_TYPE, value, 0);
     }
 

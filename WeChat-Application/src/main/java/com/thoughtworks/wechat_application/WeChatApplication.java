@@ -7,7 +7,7 @@ import com.thoughtworks.wechat_application.configs.inject.WeChatApplicationModul
 import com.thoughtworks.wechat_application.configs.inject.WorkflowModule;
 import com.thoughtworks.wechat_application.jdbi.*;
 import com.thoughtworks.wechat_application.resources.OAuthResource;
-import com.thoughtworks.wechat_application.resources.admin.WeChatSettingsResource;
+import com.thoughtworks.wechat_application.resources.admin.basicSettings.WeChatBasicSettingsResource;
 import com.thoughtworks.wechat_application.resources.wechat.WeChatEntryPointResource;
 import com.thoughtworks.wechat_application.resources.wechat.WeChatInboundMessageReader;
 import com.thoughtworks.wechat_application.resources.wechat.WeChatOutboundMessageWriter;
@@ -66,7 +66,7 @@ public class WeChatApplication extends Application<WeChatApplicationConfiguratio
 
         environment.jersey().register(injector.getInstance(WeChatEntryPointResource.class));
         environment.jersey().register(injector.getInstance(OAuthResource.class));
-        environment.jersey().register(injector.getInstance(WeChatSettingsResource.class));
+        environment.jersey().register(injector.getInstance(WeChatBasicSettingsResource.class));
     }
 
     private DAOModule registDAO(final Environment environment, WeChatApplicationConfiguration configuration) {
