@@ -11,9 +11,9 @@
                        translate="basicSettings.weChat.connectionStatus.server"></label>
 
                 <div class="col-xs-9">
-                    <span class="settingInfo fui-check-circle status-ok"
-                          ng-show="weChatConnectionStatus.serverStatus"></span>
-                    <span class="settingInfo fui-cross-circle status-failed"
+                    <span class="settingInfo fui-check-circle" id="serverStatus-ok"
+                          ng-class="{status-ok: weChatConnectionStatus.serverStatus}"></span>
+                    <span class="settingInfo fui-cross-circle status-failed" id="serverStatus-failed"
                           ng-hide="weChatConnectionStatus.serverStatus"></span>
                 </div>
             </div>
@@ -22,9 +22,9 @@
                        translate="basicSettings.weChat.connectionStatus.api"></label>
 
                 <div class="col-xs-9">
-                    <span class="settingInfo fui-check-circle status-ok"
+                    <span class="settingInfo fui-check-circle status-ok" id="apiStatus-ok"
                           ng-show="weChatConnectionStatus.apiStatus"></span>
-                    <span class="settingInfo fui-cross-circle status-failed"
+                    <span class="settingInfo fui-cross-circle status-failed" id="apiStatus-failed"
                           ng-hide="weChatConnectionStatus.apiStatus"></span>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                 <label class="col-xs-7 settingInfo">{{weChatServerStatus.appToken}}</label>
 
                 <div class="col-xs-2">
-                    <a class="btn btn-block btn-lg btn-danger settingButton" href="" ng-click="getNewToken()"
+                    <a class="btn btn-block btn-lg btn-danger settingButton disabled" href="" ng-click="getNewToken()"
                        translate="basicSettings.weChat.server.changeToken"
                        ng-class="{disabled: status.statusGetting}"></a>
                 </div>
