@@ -41,7 +41,7 @@ public class WeChatBasicSettingsResource extends AuthorizeResourceBase {
     public WeChatConnectionStatusResponse getStatus(@QueryParam("access_token") final String accessToken) {
         checkAccessToken(accessToken, AuthenticateRole.ADMIN);
 
-        return new WeChatConnectionStatusResponse(adminResourceService.getWeChatConnectionStatus(), adminResourceService.getWeChatAPIStatus());
+        return new WeChatConnectionStatusResponse(adminResourceService.weChat().getConnectionStatus(), adminResourceService.weChat().getAPIStatus());
     }
 
     @GET
@@ -65,7 +65,7 @@ public class WeChatBasicSettingsResource extends AuthorizeResourceBase {
         final String entryPointPath = UriBuilder.fromResource(WeChatEntryPointResource.class).build().toASCIIString();
         url.append(entryPointPath);
 
-        return new ServerInfoResponse(url.toString(), adminResourceService.getAppToken());
+        return new ServerInfoResponse(url.toString(), adminResourceService.weChat().getAppToken());
     }
 
     @GET
@@ -73,7 +73,7 @@ public class WeChatBasicSettingsResource extends AuthorizeResourceBase {
     public DeveloperInfoResponse getDeveloperInfo(@QueryParam("access_token") final String accessToken) {
         checkAccessToken(accessToken, AuthenticateRole.ADMIN);
 
-        return new DeveloperInfoResponse(adminResourceService.getAppId(), adminResourceService.getAppSecret());
+        return new DeveloperInfoResponse(adminResourceService.weChat().getAppId(), adminResourceService.weChat().getAppSecret());
     }
 
     @PUT
@@ -82,8 +82,8 @@ public class WeChatBasicSettingsResource extends AuthorizeResourceBase {
                                                   @NotNull final NewDeveloperInfoRequest newDeveloperInfoRequest) {
         checkAccessToken(accessToken, AuthenticateRole.ADMIN);
 
-        adminResourceService.setAppId(newDeveloperInfoRequest.getAppId());
-        adminResourceService.setAppSecret(newDeveloperInfoRequest.getAppSecret());
-        return new DeveloperInfoResponse(adminResourceService.getAppId(), adminResourceService.getAppSecret());
+        adminResourceService.weChat().setAppId(newDeveloperInfoRequest.getAppId());
+        adminResourceService.weChat().setAppSecret(newDeveloperInfoRequest.getAppSecret());
+        return new DeveloperInfoResponse(adminResourceService.weChat().getAppId(), adminResourceService.weChat().getAppSecret());
     }
 }

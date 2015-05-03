@@ -2,13 +2,14 @@ package com.thoughtworks.wechat_application.services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.thoughtworks.wechat_application.jdbi.TextMessageDAO;
 import com.thoughtworks.wechat_application.jdbi.core.Label;
 import com.thoughtworks.wechat_application.jdbi.core.TextMessage;
-import com.thoughtworks.wechat_application.jdbi.TextMessageDAO;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.NotSupportedException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import static com.thoughtworks.wechat_core.util.precondition.ArgumentPreconditio
 @Singleton
 public class TextMessageService {
     private final static Logger LOGGER = LoggerFactory.getLogger(TextMessageService.class);
+    private final String SYSTEM_MESSAGE_TITLE_PREFIX = "Admin_";
     private final TextMessageDAO textMessageDAO;
     private final LabelService labelService;
 
@@ -68,6 +70,10 @@ public class TextMessageService {
         LOGGER.info("[DeleteMessage] Try delete text message(title: {}).", title);
         final TextMessage textMessage = textMessageDAO.getTextMessageByTitle(title);
         if (textMessage != null) {
+            if (textMessage.getTitle().startsWith(SYSTEM_MESSAGE_TITLE_PREFIX)) {
+                LOGGER.info("[DeleteMessage] Cannot delete text message(id: {}, title: {}), it's a system message.", textMessage.getId(), title);
+                throw new NotSupportedException();
+            }
             textMessageDAO.deleteMessage(textMessage.getId());
             LOGGER.info("[DeleteMessage] Delete text message(id: {}, title: {}) success.", textMessage.getId(), title);
             return true;
@@ -78,8 +84,8 @@ public class TextMessageService {
     }
 
     public List<TextMessage> getAllMessages() {
-        List<TextMessage> messages = textMessageDAO.getAllMessages();
-        LOGGER.info("[GetAllMessage] Get {} messages.", messages.size());
+        final List<TextMessage> messages = textMessageDAO.getAllMessages(SYSTEM_MESSAGE_TITLE_PREFIX);
+        LOGGER.info("[GetAllMessage] Get all {} non-admin messages.", messages.size());
         return messages;
     }
 
@@ -90,6 +96,22 @@ public class TextMessageService {
         final Optional<TextMessage> textMessage = Optional.ofNullable(textMessageDAO.getTextMessageByTitle(title));
         LOGGER.info("[GetTextMessageByTitle] Get text message with title: {}. Status {}.", title, textMessage.isPresent());
         return textMessage;
+    }
+
+    public TextMessage getTextSystemMessageByTitle(final String title) {
+        checkNotBlank(title);
+
+        final String systemMessageTitle = SYSTEM_MESSAGE_TITLE_PREFIX + title;
+        LOGGER.info("[GetTextSystemMessageByTitle] Try get text system message with title: {}.", title);
+        final TextMessage textMessage = textMessageDAO.getTextMessageByTitle(systemMessageTitle);
+        if (textMessage == null) {
+            LOGGER.warn("[GetTextSystemMessageByTitle] Cannot find text system message with title: {}. Create it.", title);
+            textMessageDAO.createTextMessage(systemMessageTitle, "", toUnixTimestamp(DateTime.now()));
+            return textMessageDAO.getTextMessageByTitle(systemMessageTitle);
+        } else {
+            LOGGER.info("[GetTextSystemMessageByTitle] Get one text system message with title: {}.", title);
+            return textMessage;
+        }
     }
 
     public List<TextMessage> getTextMessageByLabel(final Label label) {

@@ -4,17 +4,15 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.logic.workflow.BasicWorkflowContext;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStepResult;
+import com.thoughtworks.wechat_application.models.systemMessage.TextSystemMessage;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceKey;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
-import com.thoughtworks.wechat_core.messages.outbound.messages.OutboundTextMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -45,12 +43,13 @@ public class DefaultWorkflowStepTest {
 
     @Test
     public void testHandle() throws Exception {
-        when(adminResourceService.getMessageResource(AdminResourceKey.DEFAULT_RESPONSE)).thenReturn(Optional.of(new OutboundTextMessage("Content")));
+        when(adminResourceService.systemMessage()).thenReturn(mock(AdminResourceService.SystemMessageService.class));
+        when(adminResourceService.systemMessage().getMessageResource(AdminResourceKey.DEFAULT_RESPONSE)).thenReturn(new TextSystemMessage("Content"));
 
         final BasicWorkflowContext context = new BasicWorkflowContext();
         final WorkflowStepResult result = step.handle(mock(InboundMessageEnvelop.class), context);
 
-        verify(adminResourceService).getMessageResource(eq(AdminResourceKey.DEFAULT_RESPONSE));
+        verify(adminResourceService.systemMessage()).getMessageResource(eq(AdminResourceKey.DEFAULT_RESPONSE));
         assertThat(result, equalTo(WorkflowStepResult.WORKFLOW_COMPLETE));
         assertThat(context.getOutboundMessage().isPresent(), equalTo(true));
     }

@@ -75,39 +75,35 @@ public class TextMessageDAOTest extends AbstractDAOTest {
 
     @Test
     public void testGetAllMessages() throws Exception {
-        textMessageDAO.createTextMessage("SubscribeMessage", "Welcome", getHappenedTime());
+        textMessageDAO.createTextMessage("Admin_Subscribe", "Welcome", getHappenedTime());
         textMessageDAO.createTextMessage("Welcome", "Welcome", getHappenedTime());
 
-        final List<TextMessage> messages = textMessageDAO.getAllMessages();
+        final List<TextMessage> messages = textMessageDAO.getAllMessages("Admin_");
         assertThat(messages, notNullValue());
-        assertThat(messages.size(), equalTo(2));
+        assertThat(messages.size(), equalTo(1));
 
-        assertThat(messages.get(0).getId(), equalTo(1L));
-        assertThat(messages.get(0).getTitle(), equalTo("SubscribeMessage"));
+        assertThat(messages.get(0).getId(), equalTo(2L));
+        assertThat(messages.get(0).getTitle(), equalTo("Welcome"));
         assertThat(messages.get(0).getContent(), equalTo("Welcome"));
-
-        assertThat(messages.get(1).getId(), equalTo(2L));
-        assertThat(messages.get(1).getTitle(), equalTo("Welcome"));
-        assertThat(messages.get(1).getContent(), equalTo("Welcome"));
     }
 
     @Test
     public void testGetAllMessages_Empty() throws Exception {
-        final List<TextMessage> messages = textMessageDAO.getAllMessages();
+        final List<TextMessage> messages = textMessageDAO.getAllMessages("Admin_");
         assertThat(messages, notNullValue());
         assertThat(messages.size(), equalTo(0));
     }
 
     @Test
     public void testDeleteMessage() throws Exception {
-        final long messageId = textMessageDAO.createTextMessage("SubscribeMessage", "Welcome", getHappenedTime());
+        final long messageId = textMessageDAO.createTextMessage("Subscribe", "Welcome", getHappenedTime());
         textMessageDAO.createTextMessage("Welcome", "Welcome", getHappenedTime());
 
-        List<TextMessage> messages = textMessageDAO.getAllMessages();
+        List<TextMessage> messages = textMessageDAO.getAllMessages("Admin_");
         assertThat(messages.size(), equalTo(2));
 
         textMessageDAO.deleteMessage(messageId);
-        messages = textMessageDAO.getAllMessages();
+        messages = textMessageDAO.getAllMessages("Admin_");
         assertThat(messages.size(), equalTo(1));
 
         assertThat(messages.get(0).getId(), equalTo(2L));

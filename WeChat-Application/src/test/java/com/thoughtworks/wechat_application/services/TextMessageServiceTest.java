@@ -2,15 +2,16 @@ package com.thoughtworks.wechat_application.services;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.thoughtworks.wechat_application.jdbi.TextMessageDAO;
 import com.thoughtworks.wechat_application.jdbi.core.Label;
 import com.thoughtworks.wechat_application.jdbi.core.TextMessage;
-import com.thoughtworks.wechat_application.jdbi.TextMessageDAO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.ws.rs.NotSupportedException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -101,6 +102,12 @@ public class TextMessageServiceTest {
         assertThat(result, equalTo(true));
     }
 
+    @Test(expected = NotSupportedException.class)
+    public void testDeleteMessage_SystemMessage() throws Exception {
+        when(textMessageDAO.getTextMessageByTitle("Admin_Title")).thenReturn(createTextSystemMessage());
+        service.deleteMessage("Admin_Title");
+    }
+
     @Test
     public void testDeleteMessage_NotExist() throws Exception {
         when(textMessageDAO.getTextMessageByTitle("Title")).thenReturn(null);
@@ -114,12 +121,13 @@ public class TextMessageServiceTest {
 
     @Test
     public void testGetAllMessages() throws Exception {
-        when(textMessageDAO.getAllMessages()).thenReturn(Arrays.asList());
+        when(textMessageDAO.getAllMessages("Admin_")).thenReturn(Arrays.asList(createTextMessage()));
 
         final List<TextMessage> messages = service.getAllMessages();
 
-        verify(textMessageDAO).getAllMessages();
+        verify(textMessageDAO).getAllMessages("Admin_");
         assertThat(messages, notNullValue());
+        assertThat(messages.size(), equalTo(1));
     }
 
     @Test
@@ -140,6 +148,29 @@ public class TextMessageServiceTest {
 
         verify(textMessageDAO).getTextMessageByTitle(eq("title"));
         assertThat(textMessage.isPresent(), equalTo(true));
+    }
+
+    @Test
+    public void testGetTextSystemMessageByTitle_NotExist() throws Exception {
+        when(textMessageDAO.getTextMessageByTitle("Admin_title")).thenReturn(null, createTextSystemMessage());
+
+        final TextMessage textMessage = service.getTextSystemMessageByTitle("title");
+
+        verify(textMessageDAO, times(2)).getTextMessageByTitle(eq("Admin_title"));
+        verify(textMessageDAO).createTextMessage(eq("Admin_title"), eq(""), any(Timestamp.class));
+        assertThat(textMessage, notNullValue());
+        assertThat(textMessage.getContent(), equalTo("Content123"));
+    }
+
+    @Test
+    public void testGetTextSystemMessageByTitle_Exist() throws Exception {
+        when(textMessageDAO.getTextMessageByTitle("Admin_title")).thenReturn(createTextSystemMessage());
+
+        final TextMessage textMessage = service.getTextSystemMessageByTitle("title");
+
+        verify(textMessageDAO).getTextMessageByTitle(eq("Admin_title"));
+        assertThat(textMessage, notNullValue());
+        assertThat(textMessage.getContent(), equalTo("Content123"));
     }
 
     @Test
@@ -208,6 +239,10 @@ public class TextMessageServiceTest {
 
     private TextMessage createTextMessage() {
         return new TextMessage(1L, "Title", "Content");
+    }
+
+    private TextMessage createTextSystemMessage() {
+        return new TextMessage(2L, "Admin_Title", "Content123");
     }
 
     private Label createLabel1() {

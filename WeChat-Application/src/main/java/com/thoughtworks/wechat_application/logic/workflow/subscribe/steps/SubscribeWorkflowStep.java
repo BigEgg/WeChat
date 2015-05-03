@@ -7,13 +7,13 @@ import com.thoughtworks.wechat_application.logic.workflow.WorkflowContext;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStep;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStepResult;
 import com.thoughtworks.wechat_application.logic.workflow.exception.WorkflowNotSupportMessageException;
-import com.thoughtworks.wechat_application.services.WeChatEventLogService;
+import com.thoughtworks.wechat_application.models.systemMessage.SystemMessage;
 import com.thoughtworks.wechat_application.services.MemberService;
+import com.thoughtworks.wechat_application.services.WeChatEventLogService;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceKey;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.inbound.event.InboundSubscribeEvent;
-import com.thoughtworks.wechat_core.messages.outbound.OutboundMessage;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,9 +51,9 @@ public class SubscribeWorkflowStep implements WorkflowStep {
         Member member = memberService.subscribeMember(memberOpenId);
         weChatEventLogService.member().subscribe(member, DateTime.now());
 
-        Optional<OutboundMessage> responseMessage = adminResourceService.getMessageResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
-        context.setOutboundMessage(responseMessage);
-        LOGGER.info("[Handle] Set subscribe response message. Have message? {}.", responseMessage.isPresent());
+        final SystemMessage systemMessage = adminResourceService.systemMessage().getMessageResource(AdminResourceKey.SUBSCRIBE_RESPONSE);
+        context.setOutboundMessage(Optional.of(systemMessage.toOutboundMessage()));
+        LOGGER.info("[Handle] Return subscribe response message.");
 
         return WorkflowStepResult.WORKFLOW_COMPLETE;
     }

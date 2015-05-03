@@ -52,8 +52,9 @@ public class WeChatBasicSettingsResourceTest extends ResourceTestBase {
         @Test
         public void return_server_info_if_access_token_valid() throws Exception {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createAdmin()));
-            when(adminResourceService.getWeChatConnectionStatus()).thenReturn(true);
-            when(adminResourceService.getWeChatAPIStatus()).thenReturn(false);
+            when(adminResourceService.weChat()).thenReturn(mock(AdminResourceService.WeChatService.class));
+            when(adminResourceService.weChat().getConnectionStatus()).thenReturn(true);
+            when(adminResourceService.weChat().getAPIStatus()).thenReturn(false);
 
             final Response response = resource.client().target("/api/admin/wechat/status").queryParam("access_token", "accessToken").request().get();
             assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -64,8 +65,8 @@ public class WeChatBasicSettingsResourceTest extends ResourceTestBase {
             assertThat(status.getWeChatAPIStatus()).isFalse();
 
             verify(oAuthProvider).getOAuthClient(eq("accessToken"));
-            verify(adminResourceService).getWeChatConnectionStatus();
-            verify(adminResourceService).getWeChatAPIStatus();
+            verify(adminResourceService.weChat()).getConnectionStatus();
+            verify(adminResourceService.weChat()).getAPIStatus();
         }
 
         @Test
@@ -95,7 +96,8 @@ public class WeChatBasicSettingsResourceTest extends ResourceTestBase {
         @Test
         public void return_server_info_if_access_token_valid() throws Exception {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createAdmin()));
-            when(adminResourceService.getAppToken()).thenReturn("abcdefghijklmn");
+            when(adminResourceService.weChat()).thenReturn(mock(AdminResourceService.WeChatService.class));
+            when(adminResourceService.weChat().getAppToken()).thenReturn("abcdefghijklmn");
 
             final Response response = resource.client().target("/api/admin/wechat/server").queryParam("access_token", "accessToken").request().get();
             assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -106,7 +108,7 @@ public class WeChatBasicSettingsResourceTest extends ResourceTestBase {
             assertThat(serverInfo.getAppToken()).isEqualTo("abcdefghijklmn");
 
             verify(oAuthProvider).getOAuthClient(eq("accessToken"));
-            verify(adminResourceService).getAppToken();
+            verify(adminResourceService.weChat()).getAppToken();
         }
 
         @Test
@@ -136,8 +138,9 @@ public class WeChatBasicSettingsResourceTest extends ResourceTestBase {
         @Test
         public void return_server_info_if_access_token_valid() throws Exception {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createAdmin()));
-            when(adminResourceService.getAppId()).thenReturn("app_id");
-            when(adminResourceService.getAppSecret()).thenReturn("app_secret");
+            when(adminResourceService.weChat()).thenReturn(mock(AdminResourceService.WeChatService.class));
+            when(adminResourceService.weChat().getAppId()).thenReturn("app_id");
+            when(adminResourceService.weChat().getAppSecret()).thenReturn("app_secret");
 
             final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request().get();
             assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -148,8 +151,8 @@ public class WeChatBasicSettingsResourceTest extends ResourceTestBase {
             assertThat(developerInfo.getAppSecret()).isEqualTo("app_secret");
 
             verify(oAuthProvider).getOAuthClient(eq("accessToken"));
-            verify(adminResourceService).getAppId();
-            verify(adminResourceService).getAppSecret();
+            verify(adminResourceService.weChat()).getAppId();
+            verify(adminResourceService.weChat()).getAppSecret();
         }
 
         @Test
@@ -179,8 +182,9 @@ public class WeChatBasicSettingsResourceTest extends ResourceTestBase {
         @Test
         public void return_server_info_if_access_token_valid() throws Exception {
             when(oAuthProvider.getOAuthClient("accessToken")).thenReturn(Optional.of(createAdmin()));
-            when(adminResourceService.getAppId()).thenReturn("app_id");
-            when(adminResourceService.getAppSecret()).thenReturn("app_secret");
+            when(adminResourceService.weChat()).thenReturn(mock(AdminResourceService.WeChatService.class));
+            when(adminResourceService.weChat().getAppId()).thenReturn("app_id");
+            when(adminResourceService.weChat().getAppSecret()).thenReturn("app_secret");
 
             final NewDeveloperInfoRequest request = deserializeFixture("fixtures/admin/wechat/NewDeveloperInfoRequest.json", NewDeveloperInfoRequest.class);
             final Response response = resource.client().target("/api/admin/wechat/developer").queryParam("access_token", "accessToken").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
@@ -192,8 +196,8 @@ public class WeChatBasicSettingsResourceTest extends ResourceTestBase {
             assertThat(developerInfo.getAppSecret()).isEqualTo("app_secret");
 
             verify(oAuthProvider).getOAuthClient(eq("accessToken"));
-            verify(adminResourceService).setAppId(eq("app_id"));
-            verify(adminResourceService).setAppSecret(eq("app_secret"));
+            verify(adminResourceService.weChat()).setAppId(eq("app_id"));
+            verify(adminResourceService.weChat()).setAppSecret(eq("app_secret"));
         }
 
         @Test

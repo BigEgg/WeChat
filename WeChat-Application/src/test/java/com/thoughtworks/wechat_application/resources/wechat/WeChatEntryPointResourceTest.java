@@ -5,7 +5,6 @@ import com.google.inject.Injector;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowEngine;
 import com.thoughtworks.wechat_application.resources.exceptions.WeChatMessageAuthenticationException;
 import com.thoughtworks.wechat_application.resources.exceptions.WebApplicationNotAcceptableException;
-import com.thoughtworks.wechat_application.services.admin.AdminResourceKey;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +30,8 @@ public class WeChatEntryPointResourceTest {
 
         @Before
         public void setUp() throws Exception {
-            when(adminResourceService.getAppToken()).thenReturn(token);
+            when(adminResourceService.weChat()).thenReturn(mock(AdminResourceService.WeChatService.class));
+            when(adminResourceService.weChat().getAppToken()).thenReturn(token);
 
             injector = Guice.createInjector(binder -> {
                 binder.bind(AdminResourceService.class).toInstance(adminResourceService);
@@ -70,7 +70,7 @@ public class WeChatEntryPointResourceTest {
         public void should_return_echo_string() throws Exception {
             resource.weChatVerify(signature, timestamp, nonce, echoString);
 
-            verify(adminResourceService).setResource(eq(AdminResourceKey.WECHAT_CONNECTION_STATUS), eq("true"));
+            verify(adminResourceService.weChat()).setConnectionStatus(eq("true"));
         }
     }
 
@@ -82,7 +82,8 @@ public class WeChatEntryPointResourceTest {
 
         @Before
         public void setUp() throws Exception {
-            when(adminResourceService.getAppToken()).thenReturn(token);
+            when(adminResourceService.weChat()).thenReturn(mock(AdminResourceService.WeChatService.class));
+            when(adminResourceService.weChat().getAppToken()).thenReturn(token);
 
             injector = Guice.createInjector(binder -> {
                 binder.bind(AdminResourceService.class).toInstance(adminResourceService);

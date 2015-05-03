@@ -25,13 +25,13 @@ public interface TextMessageDAO {
     @SqlQuery("SELECT * FROM TextMessage WHERE Title = :title")
     public TextMessage getTextMessageByTitle(@Bind("title") final String title);
 
-    @SqlUpdate("UPDATE TextMessage SET Content = :content, ModifiedTime = :modifiedTime WHERE :title = title")
+    @SqlUpdate("UPDATE TextMessage SET Content = :content, ModifiedTime = :modifiedTime WHERE Title = :title")
     public void updateContent(@Bind("title") final String title,
                               @Bind("content") final String content,
                               @Bind("modifiedTime") final Timestamp modifiedTime);
 
-    @SqlQuery("SELECT * FROM TextMessage")
-    public List<TextMessage> getAllMessages();
+    @SqlQuery("SELECT * FROM TextMessage WHERE Title NOT LIKE CONCAT(:admin_prefix, '%')")
+    public List<TextMessage> getAllMessages(@Bind("admin_prefix") final String adminPrefix);
 
     @SqlUpdate("DELETE FROM TextMessage WHERE Id = :id")
     public void deleteMessage(@Bind("id") final long id);

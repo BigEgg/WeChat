@@ -5,11 +5,14 @@ import com.google.inject.Singleton;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowContext;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStep;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowStepResult;
+import com.thoughtworks.wechat_application.models.systemMessage.SystemMessage;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceKey;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 @Singleton
 public class DefaultWorkflowStep implements WorkflowStep {
@@ -23,7 +26,8 @@ public class DefaultWorkflowStep implements WorkflowStep {
 
     @Override
     public WorkflowStepResult handle(InboundMessageEnvelop inboundMessageEnvelop, WorkflowContext context) {
-        context.setOutboundMessage(adminResourceService.getMessageResource(AdminResourceKey.DEFAULT_RESPONSE));
+        final SystemMessage systemMessage = adminResourceService.systemMessage().getMessageResource(AdminResourceKey.DEFAULT_RESPONSE);
+        context.setOutboundMessage(Optional.of(systemMessage.toOutboundMessage()));
         return WorkflowStepResult.WORKFLOW_COMPLETE;
     }
 }

@@ -6,7 +6,6 @@ import com.google.inject.Singleton;
 import com.thoughtworks.wechat_application.logic.workflow.WorkflowEngine;
 import com.thoughtworks.wechat_application.resources.exceptions.WeChatMessageAuthenticationException;
 import com.thoughtworks.wechat_application.resources.exceptions.WebApplicationNotAcceptableException;
-import com.thoughtworks.wechat_application.services.admin.AdminResourceKey;
 import com.thoughtworks.wechat_application.services.admin.AdminResourceService;
 import com.thoughtworks.wechat_core.messages.inbound.InboundMessageEnvelop;
 import com.thoughtworks.wechat_core.messages.outbound.OutboundMessage;
@@ -71,9 +70,10 @@ public class WeChatEntryPointResource {
                 Optional.ofNullable(nonce));
 
         if (echoStr == null) {
+            adminResourceService.weChat().setConnectionStatus("false");
             throw new WebApplicationNotAcceptableException();
         } else {
-            adminResourceService.setResource(AdminResourceKey.WECHAT_CONNECTION_STATUS, "true");
+            adminResourceService.weChat().setConnectionStatus("true");
             return echoStr;
         }
     }
@@ -85,7 +85,7 @@ public class WeChatEntryPointResource {
             throw new WebApplicationNotAcceptableException();
         }
 
-        if (!validation(signature.get(), adminResourceService.getAppToken(), timestamp.get(), nonce.get())) {
+        if (!validation(signature.get(), adminResourceService.weChat().getAppToken(), timestamp.get(), nonce.get())) {
             throw new WeChatMessageAuthenticationException();
         }
     }
