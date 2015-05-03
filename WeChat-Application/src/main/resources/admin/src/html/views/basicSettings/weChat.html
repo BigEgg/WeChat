@@ -11,8 +11,8 @@
                        translate="basicSettings.weChat.connectionStatus.server"></label>
 
                 <div class="col-xs-9">
-                    <span class="settingInfo fui-check-circle" id="serverStatus-ok"
-                          ng-class="{status-ok: weChatConnectionStatus.serverStatus}"></span>
+                    <span class="settingInfo fui-check-circle status-ok" id="serverStatus-ok"
+                          ng-show="weChatConnectionStatus.serverStatus"></span>
                     <span class="settingInfo fui-cross-circle status-failed" id="serverStatus-failed"
                           ng-hide="weChatConnectionStatus.serverStatus"></span>
                 </div>
