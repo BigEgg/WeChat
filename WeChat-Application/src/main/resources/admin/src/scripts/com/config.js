@@ -23,6 +23,10 @@ admin.app.config(function ($routeProvider, $translateProvider) {
             controller: 'WeChatBasicSettingsCtrl',
             templateUrl: '../html/views/basicSettings/weChat.html'
         })
+        .when('/basicsettings/systemmessage', {
+            controller: 'SystemMessageBasicSettingsCtrl',
+            templateUrl: '../html/views/basicSettings/systemMessage.html'
+        })
         .otherwise({
             redirectTo: '/'
         });

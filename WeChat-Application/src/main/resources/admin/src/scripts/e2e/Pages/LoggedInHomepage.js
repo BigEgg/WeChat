@@ -4,6 +4,7 @@ var LoggedInHomepage = function () {
 
     var LOCATOR_MENU_BASIC_SETTINGS = 'menu_basic_settings';
     var LOCATOR_MENU_BASIC_SETTINGS_WECHAT = 'menu_basic_settings_wechat';
+    var LOCATOR_MENU_BASIC_SETTINGS_SYSTEM_MESSAGE = 'menu_basic_settings_system_message';
 
     var LOCATOR_MENU_USER = 'menu_user';
     var LOCATOR_MENU_USER_USERNAME = 'menu_user_username';
@@ -13,6 +14,10 @@ var LoggedInHomepage = function () {
         this.clickWeChatBasicSettingsMenu = function () {
             element(by.id(LOCATOR_MENU_BASIC_SETTINGS)).click();
             element(by.id(LOCATOR_MENU_BASIC_SETTINGS_WECHAT)).click();
+        };
+        this.clickSystemMessageSettingsMenu = function () {
+            element(by.id(LOCATOR_MENU_BASIC_SETTINGS)).click();
+            element(by.id(LOCATOR_MENU_BASIC_SETTINGS_SYSTEM_MESSAGE)).click();
         };
         this.clickGeneralDashboardMenu = function () {
             element(by.id(LOCATOR_MENU_DASHBOARD)).click();

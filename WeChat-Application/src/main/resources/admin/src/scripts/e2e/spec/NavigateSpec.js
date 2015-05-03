@@ -19,6 +19,14 @@ describe('Test the navigate', function () {
             expect(weChatBasicSettingsPage.status.isInThisPage()).toBeTruthy();
         });
 
+        it('can navigate to System Message Basic Settings page', function () {
+            var systemMessageBasicSettingsPage = require('../pages/basicSettings/SystemMessageBasicSettingsPage.js')
+
+            expect(systemMessageBasicSettingsPage.status.isInThisPage()).toBeFalsy();
+            loggedInHomepage.actions.clickSystemMessageSettingsMenu();
+            expect(systemMessageBasicSettingsPage.status.isInThisPage()).toBeTruthy();
+        });
+
         it('can navigate to General Dashboard page', function () {
             var generalDashboardPage = require('../pages/dashboard/DashboardPage.js');
 
