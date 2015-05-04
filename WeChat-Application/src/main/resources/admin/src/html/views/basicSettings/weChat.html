@@ -11,10 +11,8 @@
                        translate="basicSettings.weChat.connectionStatus.server"></label>
 
                 <div class="col-xs-9">
-                    <span class="settingInfo fui-check-circle status-ok" id="serverStatus-ok"
-                          ng-show="weChatConnectionStatus.serverStatus"></span>
-                    <span class="settingInfo fui-cross-circle status-failed" id="serverStatus-failed"
-                          ng-hide="weChatConnectionStatus.serverStatus"></span>
+                    <span class="settingInfo " id="serverStatus"
+                          ng-class="{true: 'fui-check-circle status-ok', false: 'fui-cross-circle status-failed'}[weChatConnectionStatus.serverStatus]"></span>
                 </div>
             </div>
             <div class="form-group">
@@ -22,10 +20,8 @@
                        translate="basicSettings.weChat.connectionStatus.api"></label>
 
                 <div class="col-xs-9">
-                    <span class="settingInfo fui-check-circle status-ok" id="apiStatus-ok"
-                          ng-show="weChatConnectionStatus.apiStatus"></span>
-                    <span class="settingInfo fui-cross-circle status-failed" id="apiStatus-failed"
-                          ng-hide="weChatConnectionStatus.apiStatus"></span>
+                    <span class="settingInfo " id="apiStatus"
+                          ng-class="{true: 'fui-check-circle status-ok', false: 'fui-cross-circle status-failed'}[weChatConnectionStatus.apiStatus]"></span>
                 </div>
             </div>
 

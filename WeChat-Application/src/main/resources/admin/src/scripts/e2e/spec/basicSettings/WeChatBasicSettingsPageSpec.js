@@ -20,8 +20,8 @@ describe('When navigate to WeChat Basic Settings page', function () {
         expect(weChatBasicSettingsPage.status.isCancelDeveloperInfoButtonDisabled()).toBeTruthy();
         expect(weChatBasicSettingsPage.status.isSaveDeveloperInfoButtonDisabled()).toBeTruthy();
 
-        expect(weChatBasicSettingsPage.properties.getServerStatus()).toBe('true');
-        expect(weChatBasicSettingsPage.properties.getAPIStatus()).toBe('false');
+        expect(weChatBasicSettingsPage.properties.getServerStatus()).toBe('ok');
+        expect(weChatBasicSettingsPage.properties.getAPIStatus()).toBe('failed');
     });
 
     describe('for developer info', function () {

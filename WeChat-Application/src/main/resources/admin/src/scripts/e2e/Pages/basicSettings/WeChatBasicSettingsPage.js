@@ -1,6 +1,8 @@
 var WeChatBasicSettingsPage = function () {
     var PAGE_URL = 'http://localhost:3000/admin/html/index.html#/basicsettings/wechat';
 
+    var LOCATOR_SERVER_STATUS = 'serverStatus';
+    var LOCATOR_API_STATUS = 'apiStatus';
     var LOCATOR_APP_ID_LABEL = 'labelAppId';
     var LOCATOR_APP_ID_INPUT = 'inputAppId';
     var LOCATOR_APP_SECRET_LABEL = 'labelAppSecret';
@@ -73,6 +75,30 @@ var WeChatBasicSettingsPage = function () {
         };
         this.getAppSecretLabelValue = function () {
             return element(by.id(LOCATOR_APP_SECRET_LABEL)).getText();
+        };
+        this.getServerStatus = function () {
+            return element(by.id(LOCATOR_SERVER_STATUS)).getAttribute('class').then(function (classes) {
+                console.log("server" + classes);
+                if (classes.indexOf('fui-check-circle status-ok') > -1) {
+                    return 'ok';
+                } else if (classes.indexOf('fui-cross-circle status-failed') > -1) {
+                    return 'failed';
+                } else {
+                    return 'unknown';
+                }
+            });
+        };
+        this.getAPIStatus = function () {
+            return element(by.id(LOCATOR_API_STATUS)).getAttribute('class').then(function (classes) {
+                console.log("api" + classes);
+                if (classes.indexOf('fui-check-circle status-ok') > -1) {
+                    return 'ok';
+                } else if (classes.indexOf('fui-cross-circle status-failed') > -1) {
+                    return 'failed';
+                } else {
+                    return 'unknown';
+                }
+            });
         };
     };
 
