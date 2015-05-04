@@ -8,3 +8,86 @@
 .settingInfo {
   line-height: 40px;
 }
+
+.select-list {
+  color: rgb(121, 135, 149);
+  margin-bottom: 20px;
+  border-radius: 6px;
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    background-color: rgb(44, 62, 80);
+    border-radius: 0 0 6px 6px;
+  }
+  li {
+    background: rgb(52, 73, 94);
+    background-size: 20px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.214;
+    margin-top: 2px;
+    padding: 18px 25px 21px 25px;
+    position: relative;
+    transition: .25s;
+
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      border-radius: 0 0 6px 6px;
+      padding-bottom: 21px;
+    }
+    &.select-message {
+      background: transparent;
+      color: rgb(26, 188, 156);
+
+      .message-name {
+        color: rgb(26, 188, 156);
+      }
+    }
+  }
+
+  .title {
+    position: relative;
+    padding: 19px 25px 20px;
+    color: rgb(52, 73, 94);
+    background: rgb(26, 188, 156);
+    border-radius: 6px 6px 0 0;
+
+    .title-field {
+      padding: 5px 0;
+      margin: 0;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 23px;
+      color: rgb(52, 73, 94);
+      text-indent: 0;
+      background: 0 0;
+      border: none;
+      border-image-source: initial;
+      border-image-slice: initial;
+      border-image-repeat: initial;
+      outline: 0;
+      box-shadow: none;
+    }
+  }
+}
+
+.message-icon {
+  float: left;
+  font-size: 24px;
+  padding: 11px 22px 0 0;
+}
+
+.message-content {
+  padding-top: 1px;
+  overflow: hidden;
+}
+
+.message-name {
+  color: rgb(255, 255, 255);
+  font-size: 17px;
+  margin: 1px 0 3px;
+}

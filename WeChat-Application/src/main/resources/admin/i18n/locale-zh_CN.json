@@ -49,5 +49,12 @@
   "basicSettings.weChat.server.token": "Token(令牌)",
   "basicSettings.weChat.server.changeToken": "更新令牌",
   "basicSettings.weChat.server.remark": "在这里的信息是微信服务器和客户端之间通讯用的，一定记得要填写到<a href='https://mp.weixin.qq.com'>微信公众平台</a>哦。",
-  "basicSettings.systemMessage.title": "系统默认对话"
+  "basicSettings.systemMessage.title": "系统默认对话",
+  "basicSettings.systemMessage.messageType.title": "对话类型",
+  "basicSettings.systemMessage.messageType.subscribe.title": "用户首次关注",
+  "basicSettings.systemMessage.messageType.subscribe.remark": "用户首次关注微信公众号时回复的消息",
+  "basicSettings.systemMessage.messageType.resubscribe.title": "用户再次关注",
+  "basicSettings.systemMessage.messageType.resubscribe.remark": "用户取消关注后再关注微信公众号时回复的消息",
+  "basicSettings.systemMessage.messageType.default.title": "默认回复",
+  "basicSettings.systemMessage.messageType.default.remark": "相应用户消息时，公众号默认回复的消息"
 }
