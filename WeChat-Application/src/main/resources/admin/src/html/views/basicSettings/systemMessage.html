@@ -9,7 +9,8 @@
                     <p class="title-field" translate="basicSettings.systemMessage.messageType.title"></p>
                 </div>
                 <ul>
-                    <li class="select-message">
+                    <li ng-class="{'select-message': modifyingMessage === 'Subscribe'}"
+                        ng-click="modifyMessage('Subscribe')">
                         <div class="message-icon fui-user"></div>
                         <div class="message-content">
                             <h4 class="message-name"
@@ -17,7 +18,8 @@
                             <span translate="basicSettings.systemMessage.messageType.subscribe.remark"></span>
                         </div>
                     </li>
-                    <li class="">
+                    <li ng-class="{'select-message': modifyingMessage === 'Resubscribe'}"
+                        ng-click="modifyMessage('Resubscribe')">
                         <div class="message-icon fui-user"></div>
                         <div class="message-content">
                             <h4 class="message-name"
@@ -25,7 +27,8 @@
                             <span translate="basicSettings.systemMessage.messageType.resubscribe.remark"></span>
                         </div>
                     </li>
-                    <li class="">
+                    <li ng-class="{'select-message': modifyingMessage === 'Default'}"
+                        ng-click="modifyMessage('Default')">
                         <div class="message-icon fui-user"></div>
                         <div class="message-content">
                             <h4 class="message-name"
