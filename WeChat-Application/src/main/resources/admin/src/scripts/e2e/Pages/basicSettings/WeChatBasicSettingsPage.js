@@ -1,10 +1,10 @@
 var WeChatBasicSettingsPage = function () {
     var PAGE_URL = 'http://localhost:3000/admin/html/index.html#/basicsettings/wechat';
 
-    var LOCATOR_APP_ID_LABEL = 'labelAppId'
-    var LOCATOR_APP_ID_INPUT = 'inputAppId'
-    var LOCATOR_APP_SECRET_LABEL = 'labelAppSecret'
-    var LOCATOR_APP_SECRET_INPUT = 'inputAppSecret'
+    var LOCATOR_APP_ID_LABEL = 'labelAppId';
+    var LOCATOR_APP_ID_INPUT = 'inputAppId';
+    var LOCATOR_APP_SECRET_LABEL = 'labelAppSecret';
+    var LOCATOR_APP_SECRET_INPUT = 'inputAppSecret';
     var LOCATOR_EDIT_DEVELOPER_INFO_BUTTON = 'editDeveloperInfoBtn';
     var LOCATOR_CANCEL_DEVELOPER_INFO_BUTTON = 'cancelDeveloperInfoBtn';
     var LOCATOR_SAVE_DEVELOPER_INFO_BUTTON = 'saveDeveloperInfoBtn';
@@ -40,10 +40,10 @@ var WeChatBasicSettingsPage = function () {
             });
         };
         this.isEditingDeveloperInfo = function () {
-            return element(by.id(LOCATOR_APP_ID_INPUT)).isPresent()
-                && element(by.id(LOCATOR_APP_SECRET_INPUT)).isPresent()
-                && element(by.id(LOCATOR_CANCEL_DEVELOPER_INFO_BUTTON)).isPresent()
-                && element(by.id(LOCATOR_SAVE_DEVELOPER_INFO_BUTTON)).isPresent();
+            return element(by.id(LOCATOR_APP_ID_INPUT)).isPresent() &&
+                element(by.id(LOCATOR_APP_SECRET_INPUT)).isPresent() &&
+                element(by.id(LOCATOR_CANCEL_DEVELOPER_INFO_BUTTON)).isPresent() &&
+                element(by.id(LOCATOR_SAVE_DEVELOPER_INFO_BUTTON)).isPresent();
         };
         this.isCancelDeveloperInfoButtonDisabled = function () {
             return element(by.id(LOCATOR_CANCEL_DEVELOPER_INFO_BUTTON)).getAttribute('class').then(function (classes) {

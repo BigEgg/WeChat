@@ -53,7 +53,7 @@ describe('Navigate Controller Test', function () {
 
             expect($scope.isLoggedIn()).toBeFalsy();
             expect(oAuthSrv.isLoggedIn).toHaveBeenCalled();
-        })
+        });
     });
 
     it('should return to home page after sign out', function () {

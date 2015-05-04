@@ -40,5 +40,5 @@ describe('OAuth Repository Test', function () {
         expect(oAuthRepository.getAccessToken()).toBe('');
         expect(oAuthRepository.getRefreshToken()).toBe('');
         expect(oAuthRepository.getUsername()).toBe('');
-    }))
+    }));
 });

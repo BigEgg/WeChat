@@ -36,6 +36,8 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 SRC_DIR + 'scripts/com/**/*.js',
+                SRC_DIR + 'scripts/e2e/**/*.js',
+                SRC_DIR + 'scripts/spec/**/*.js',
                 'mock_server/**/*.js'
             ],
             options: {

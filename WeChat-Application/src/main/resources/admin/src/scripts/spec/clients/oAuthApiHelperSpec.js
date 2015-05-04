@@ -430,23 +430,21 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                     if (value === 'new_access') {
-                        return '/api/test?access_token=new_access'
+                        return '/api/test?access_token=new_access';
                     }
                 });
                 spyOn(mockApiHelper, 'get').and.callFake(function (url) {
+                    var deferred = $q.defer();
                     if (url === '/api/test?access_token=access') {
-                        var deferred = $q.defer();
                         deferred.reject(500);
-                        return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
-                        var deferred = $q.defer();
                         deferred.resolve({test: 'value'});
-                        return deferred.promise;
                     }
+                    return deferred.promise;
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
@@ -487,23 +485,21 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                     if (value === 'new_access') {
-                        return '/api/test?access_token=new_access'
+                        return '/api/test?access_token=new_access';
                     }
                 });
                 spyOn(mockApiHelper, 'get').and.callFake(function (url) {
+                    var deferred = $q.defer();
                     if (url === '/api/test?access_token=access') {
-                        var deferred = $q.defer();
                         deferred.reject(500);
-                        return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
-                        var deferred = $q.defer();
                         deferred.reject(404);
-                        return deferred.promise;
                     }
+                    return deferred.promise;
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
@@ -546,23 +542,21 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                     if (value === 'new_access') {
-                        return '/api/test?access_token=new_access'
+                        return '/api/test?access_token=new_access';
                     }
                 });
                 spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
+                    var deferred = $q.defer();
                     if (url === '/api/test?access_token=access') {
-                        var deferred = $q.defer();
                         deferred.reject(500);
-                        return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
-                        var deferred = $q.defer();
                         deferred.resolve({test: 'value'});
-                        return deferred.promise;
                     }
+                    return deferred.promise;
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
@@ -603,23 +597,21 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                     if (value === 'new_access') {
-                        return '/api/test?access_token=new_access'
+                        return '/api/test?access_token=new_access';
                     }
                 });
                 spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
+                    var deferred = $q.defer();
                     if (url === '/api/test?access_token=access') {
-                        var deferred = $q.defer();
                         deferred.reject(500);
-                        return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
-                        var deferred = $q.defer();
                         deferred.reject(403);
-                        return deferred.promise;
                     }
+                    return deferred.promise;
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
@@ -662,23 +654,21 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                     if (value === 'new_access') {
-                        return '/api/test?access_token=new_access'
+                        return '/api/test?access_token=new_access';
                     }
                 });
                 spyOn(mockApiHelper, 'put').and.callFake(function (url, data) {
+                    var deferred = $q.defer();
                     if (url === '/api/test?access_token=access') {
-                        var deferred = $q.defer();
                         deferred.reject(500);
-                        return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
-                        var deferred = $q.defer();
                         deferred.resolve({test: 'value'});
-                        return deferred.promise;
                     }
+                    return deferred.promise;
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
@@ -719,23 +709,21 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                     if (value === 'new_access') {
-                        return '/api/test?access_token=new_access'
+                        return '/api/test?access_token=new_access';
                     }
                 });
                 spyOn(mockApiHelper, 'put').and.callFake(function (url, data) {
+                    var deferred = $q.defer();
                     if (url === '/api/test?access_token=access') {
-                        var deferred = $q.defer();
                         deferred.reject(500);
-                        return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
-                        var deferred = $q.defer();
                         deferred.reject(403);
-                        return deferred.promise;
                     }
+                    return deferred.promise;
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
@@ -778,23 +766,21 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                     if (value === 'new_access') {
-                        return '/api/test?access_token=new_access'
+                        return '/api/test?access_token=new_access';
                     }
                 });
                 spyOn(mockApiHelper, 'patch').and.callFake(function (url, data) {
+                    var deferred = $q.defer();
                     if (url === '/api/test?access_token=access') {
-                        var deferred = $q.defer();
                         deferred.reject(500);
-                        return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
-                        var deferred = $q.defer();
                         deferred.resolve({test: 'value'});
-                        return deferred.promise;
                     }
+                    return deferred.promise;
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
@@ -835,23 +821,21 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'setAccessToken');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                     if (value === 'new_access') {
-                        return '/api/test?access_token=new_access'
+                        return '/api/test?access_token=new_access';
                     }
                 });
                 spyOn(mockApiHelper, 'patch').and.callFake(function (url, data) {
+                    var deferred = $q.defer();
                     if (url === '/api/test?access_token=access') {
-                        var deferred = $q.defer();
                         deferred.reject(500);
-                        return deferred.promise;
                     }
                     if (url === '/api/test?access_token=new_access') {
-                        var deferred = $q.defer();
                         deferred.reject(403);
-                        return deferred.promise;
                     }
+                    return deferred.promise;
                 });
                 spyOn(mockOAuthClient, 'refreshAccessToken').and.callFake(function (access_token, refresh_token) {
                     if (refresh_token === 'refresh' && access_token === 'access') {
@@ -896,7 +880,7 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'clearData');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                 });
                 spyOn(mockApiHelper, 'get').and.callFake(function (url) {
@@ -945,7 +929,7 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'clearData');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                 });
                 spyOn(mockApiHelper, 'post').and.callFake(function (url, data) {
@@ -994,7 +978,7 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'clearData');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                 });
                 spyOn(mockApiHelper, 'put').and.callFake(function (url, data) {
@@ -1043,7 +1027,7 @@ describe('OAuth API Helper Test', function () {
                 spyOn(mockOAuthRepository, 'clearData');
                 spyOn(mockApiHelper, 'addParameterToURL').and.callFake(function (url, parameter, value) {
                     if (value === 'access') {
-                        return '/api/test?access_token=access'
+                        return '/api/test?access_token=access';
                     }
                 });
                 spyOn(mockApiHelper, 'patch').and.callFake(function (url, data) {

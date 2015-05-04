@@ -22,26 +22,26 @@ var LoggedInHomepage = function () {
         this.clickGeneralDashboardMenu = function () {
             element(by.id(LOCATOR_MENU_DASHBOARD)).click();
             element(by.id(LOCATOR_MENU_DASHBOARD_GENERAL)).click();
-        }
+        };
         this.signOut = function () {
             element(by.id(LOCATOR_MENU_USER)).click();
             element(by.id(LOCATOR_MENU_USER_SIGN_OUT)).click();
-        }
+        };
     };
 
     var Status = function () {
         this.isDashboardMenuPresent = function () {
-            return element(by.id(LOCATOR_MENU_DASHBOARD)).isPresent()
-                && element(by.id(LOCATOR_MENU_DASHBOARD_GENERAL)).isPresent();
+            return element(by.id(LOCATOR_MENU_DASHBOARD)).isPresent() &&
+                element(by.id(LOCATOR_MENU_DASHBOARD_GENERAL)).isPresent();
         };
         this.isBasicSettingsMenuPresent = function () {
-            return element(by.id(LOCATOR_MENU_BASIC_SETTINGS)).isPresent()
-                && element(by.id(LOCATOR_MENU_BASIC_SETTINGS_WECHAT)).isPresent();
+            return element(by.id(LOCATOR_MENU_BASIC_SETTINGS)).isPresent() &&
+                element(by.id(LOCATOR_MENU_BASIC_SETTINGS_WECHAT)).isPresent();
         };
         this.isUserMenuPresent = function () {
-            return element(by.id(LOCATOR_MENU_USER)).isPresent()
-                && element(by.id(LOCATOR_MENU_USER_USERNAME)).isPresent()
-                && element(by.id(LOCATOR_MENU_USER_SIGN_OUT)).isPresent();
+            return element(by.id(LOCATOR_MENU_USER)).isPresent() &&
+                element(by.id(LOCATOR_MENU_USER_USERNAME)).isPresent() &&
+                element(by.id(LOCATOR_MENU_USER_SIGN_OUT)).isPresent();
         };
     };
 

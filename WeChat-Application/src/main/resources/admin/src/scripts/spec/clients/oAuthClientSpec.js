@@ -277,7 +277,7 @@ describe('OAuth Client Test', function () {
                 }
             });
 
-            oAuthClient.signOut('access')
+            oAuthClient.signOut('access');
             $rootScope.$apply();
 
             expect(mockApiHelper.post).toHaveBeenCalledWith('/uas/oauth/signout?access_token=access', null);

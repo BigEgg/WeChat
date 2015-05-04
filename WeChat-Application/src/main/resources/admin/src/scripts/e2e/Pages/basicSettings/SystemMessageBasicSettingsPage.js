@@ -3,7 +3,7 @@ var SystemMessageBaicSettingsPage = function () {
 
     var Actions = function () {
         this.navigate = function () {
-            browser.get(PAGE_URL)
+            browser.get(PAGE_URL);
         };
     };
 

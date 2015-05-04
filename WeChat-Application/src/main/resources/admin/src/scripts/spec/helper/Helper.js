@@ -14,6 +14,6 @@ var ignoreRoute = function ($provide) {
         return {
             path: function (url) {
             }
-        }
+        };
     });
 };

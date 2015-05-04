@@ -20,7 +20,7 @@ describe('Test the navigate', function () {
         });
 
         it('can navigate to System Message Basic Settings page', function () {
-            var systemMessageBasicSettingsPage = require('../pages/basicSettings/SystemMessageBasicSettingsPage.js')
+            var systemMessageBasicSettingsPage = require('../pages/basicSettings/SystemMessageBasicSettingsPage.js');
 
             expect(systemMessageBasicSettingsPage.status.isInThisPage()).toBeFalsy();
             loggedInHomepage.actions.clickSystemMessageSettingsMenu();
