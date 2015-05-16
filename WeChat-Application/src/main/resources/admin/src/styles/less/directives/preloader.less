@@ -1,0 +1,45 @@
+.preloader {
+  margin: 100px;
+  position: relative;
+  
+  span {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background: #27AE60;
+    opacity: 0.5;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+    animation: preloader 1.2s infinite ease-in-out;
+  }
+
+  span:nth-child(1) {
+    left: 0px;
+  }
+
+  span:nth-child(2) {
+    left: 22px;
+    animation-delay: 0.2s;
+  }
+
+  span:nth-child(3) {
+    left: 44px;
+    animation-delay: 0.4s;
+  }
+
+  span:nth-child(4) {
+    left: 66px;
+    animation-delay: 0.6s;
+  }
+
+  span:nth-child(5) {
+    left: 88px;
+    animation-delay: 0.8s;
+  }
+
+  @keyframes preloader {
+    25% { opacity: 0.7; background: #E74C3C; }
+    50% { opacity: 1; transform: translateY(20px); box-shadow: 0 15px 3px rgba(0, 0, 0, 0.05); }
+    75% { opacity: 0.7; background: #3498DB; }
+  }
+}
